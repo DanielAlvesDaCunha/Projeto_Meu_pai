@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import type { Role } from "@prisma/client";
@@ -26,11 +25,15 @@ declare module "next-auth/jwt" {
   }
 }
 
+function authSecret() {
+  return process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || process.env.SECRET_KEY;
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  // Credentials + JWT: no adapter (PrismaAdapter breaks callback on many Vercel setups).
   session: { strategy: "jwt" },
   trustHost: true,
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || process.env.SECRET_KEY,
+  secret: authSecret(),
   pages: {
     signIn: "/entrar",
   },
