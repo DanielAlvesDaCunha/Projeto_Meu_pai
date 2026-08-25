@@ -1,0 +1,28 @@
+{
+  "name": "paulo-suculentas",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "build": "prisma generate && next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:push": "prisma db push",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "next": "^15.2.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "prisma": "^6.5.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

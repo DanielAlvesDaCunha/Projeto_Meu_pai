@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Contato | {{ STORE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="container section page-intro">
+  <div class="section-title">
+    <h1>Contato</h1>
+  </div>
+  <p class="page-lead text-muted">
+    Pedidos, dúvidas sobre mudas, frete ou retirada — fale direto com a loja no WhatsApp.
+  </p>
+</section>
+
+<section class="container pb-4">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="checkout-panel h-100">
+        <h2 class="h5 mb-3">WhatsApp da loja</h2>
+        <p class="text-muted">
+          Este é o canal oficial do <strong>{{ STORE_NAME }}</strong>.
+          Pedidos feitos pelo site abrem uma conversa já com a lista de mudas.
+        </p>
+        <p class="mb-1"><strong>Número:</strong> {{ WHATSAPP_LABEL }}</p>
+        <p class="mb-4 text-muted small">Horário: seg a sáb · comercial</p>
+        <a class="btn btn-wa" href="{{ WHATSAPP_GENERAL_URL }}" target="_blank" rel="noopener">
+          Abrir WhatsApp
+        </a>
+        <a class="btn btn-outline-secondary ms-2" href="{% url 'como_pedir' %}">Ver como pedir</a>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="checkout-panel h-100">
+        <h2 class="h5 mb-3">O que você pode perguntar</h2>
+        <ul class="contact-list text-muted mb-0">
+          <li>Disponibilidade de uma muda específica</li>
+          <li>Tamanho do vaso / pote / cuia</li>
+          <li>Frete para sua cidade ou retirada</li>
+          <li>Pagamento (Pix e outras formas)</li>
+          <li>Status depois do pagamento</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-note mt-4">
+    <strong>Atendimento humano</strong>
+    <p class="mb-0 text-muted">
+      Quem responde é a própria loja. Não usamos robô para fechar pedido —
+      assim você combina tudo com clareza antes de pagar.
+    </p>
+  </div>
+</section>
+{% endblock %}

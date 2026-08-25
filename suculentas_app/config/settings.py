@@ -87,6 +87,15 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-STORE_NAME = os.getenv("STORE_NAME", "Cantinho das Suculentas")
+STORE_NAME = os.getenv("STORE_NAME", "Paulo Suculentas")
 WHATSAPP_NUMBER = os.getenv("WHATSAPP_NUMBER", "5511999999999")
 WHATSAPP_LABEL = os.getenv("WHATSAPP_LABEL", "(11) 99999-9999")
+
+# whatsapp (atual) | stripe (futuro — ver catalog/payments.py)
+PAYMENT_PROVIDER = os.getenv("PAYMENT_PROVIDER", "whatsapp").lower()
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+STRIPE_ENABLED = PAYMENT_PROVIDER == "stripe" and bool(
+    STRIPE_PUBLISHABLE_KEY and STRIPE_SECRET_KEY
+)

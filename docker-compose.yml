@@ -1,15 +1,21 @@
 services:
-  suculentas_django:
-    container_name: suculentas_django
+  suculentas_web:
+    container_name: suculentas_web
     build:
       context: .
     ports:
-      - "43127:8000"
+      - "43127:3000"
     volumes:
-      - ./suculentas_app:/suculentas_app
-      - ./data/media:/suculentas_app/media
+      - ./web:/app
+      - /app/node_modules
+      - /app/.next
+      - ./data/media:/app/public/media
     env_file:
       - ./dotenv_files/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-suculentas_user}:${POSTGRES_PASSWORD:-Suculentas1234}@suculentas_psql:5432/${POSTGRES_DB:-suculentas}?schema=public
+      POSTGRES_HOST: suculentas_psql
+      POSTGRES_PORT: "5432"
     depends_on:
       - suculentas_psql
     restart: unless-stopped

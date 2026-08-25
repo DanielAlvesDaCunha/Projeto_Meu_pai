@@ -3,14 +3,75 @@
 {% block title %}{{ category.name }} | {{ STORE_NAME }}{% endblock %}
 
 {% block content %}
-<section class="container section">
-  <div class="section-title"><h1>{{ category.name }}</h1></div>
+<section class="container category-page">
+  <nav class="breadcrumb-nav" aria-label="breadcrumb">
+    <a href="{% url 'home' %}">Início</a>
+    <span>/</span>
+    <span>{{ category.name }}</span>
+  </nav>
+
   <div class="row g-4">
-    {% for product in products %}
-      {% include "catalog/_product_card.html" with product=product %}
-    {% empty %}
-      <p class="text-muted">Nenhum produto nesta categoria.</p>
-    {% endfor %}
+    <aside class="col-lg-3">
+      <div class="filter-panel">
+        <details open>
+          <summary>Categorias</summary>
+          <ul class="filter-cats">
+            {% for cat in all_categories %}
+              <li>
+                <a href="{% url 'category' cat.slug %}" class="{% if cat.slug == category.slug %}is-active{% endif %}">
+                  {{ cat.name }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </details>
+
+        <details open>
+          <summary>Preço</summary>
+          <form class="price-filter" method="get" action="{% url 'category' category.slug %}">
+            {% if sort and sort != 'relevancia' %}
+              <input type="hidden" name="ordenar" value="{{ sort }}" />
+            {% endif %}
+            <div class="price-inputs">
+              <label>
+                <span>De</span>
+                <input type="number" name="de" step="0.01" min="0" placeholder="{{ bound_min|floatformat:0 }}" value="{{ price_min }}" />
+              </label>
+              <label>
+                <span>Até</span>
+                <input type="number" name="ate" step="0.01" min="0" placeholder="{{ bound_max|floatformat:0 }}" value="{{ price_max }}" />
+              </label>
+            </div>
+            <button type="submit" class="btn btn-filter">Aplicar</button>
+          </form>
+        </details>
+      </div>
+    </aside>
+
+    <div class="col-lg-9">
+      <div class="category-head">
+        <h1>{{ category.name }}</h1>
+        <form class="sort-form" method="get" action="{% url 'category' category.slug %}">
+          {% if price_min %}<input type="hidden" name="de" value="{{ price_min }}" />{% endif %}
+          {% if price_max %}<input type="hidden" name="ate" value="{{ price_max }}" />{% endif %}
+          <label for="ordenar">Ordenar</label>
+          <select id="ordenar" name="ordenar" onchange="this.form.submit()">
+            <option value="relevancia" {% if sort == 'relevancia' %}selected{% endif %}>Relevância</option>
+            <option value="menor-preco" {% if sort == 'menor-preco' %}selected{% endif %}>Menor preço</option>
+            <option value="maior-preco" {% if sort == 'maior-preco' %}selected{% endif %}>Maior preço</option>
+            <option value="nome" {% if sort == 'nome' %}selected{% endif %}>Nome</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="row g-3 g-md-4 product-row">
+        {% for product in products %}
+          {% include "catalog/_product_card.html" with product=product %}
+        {% empty %}
+          <p class="text-muted">Nenhum produto nesta categoria.</p>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}

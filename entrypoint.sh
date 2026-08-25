@@ -1,17 +1,17 @@
 #!/bin/sh
 set -e
 
-mkdir -p /suculentas_app/staticfiles /suculentas_app/media
-
 echo "Waiting for Postgres ($POSTGRES_HOST:$POSTGRES_PORT)..."
 while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
   sleep 1
 done
 echo "Postgres is up."
 
-python manage.py collectstatic --noinput
-python manage.py makemigrations catalog --noinput
-python manage.py migrate --noinput
-python manage.py seed_catalog || true
+if [ -z "$DATABASE_URL" ]; then
+  export DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public"
+fi
 
-exec python manage.py runserver 0.0.0.0:8000
+npx prisma db push --accept-data-loss
+npm run seed || true
+
+exec npm run dev

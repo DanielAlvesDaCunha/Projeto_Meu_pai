@@ -1,5 +1,13 @@
 <div class="col-6 col-md-4 col-lg-3">
-  <article class="product h-100">
+  <article
+    class="product h-100"
+    data-product
+    data-product-id="{{ product.id }}"
+    data-product-name="{{ product.name }}"
+    data-product-price="{{ product.price }}"
+    data-product-sku="{{ product.sku }}"
+    data-product-image="{% if product.image %}{{ product.image.url }}{% endif %}"
+  >
     <div class="product-media">
       {% if product.discount_percent %}
         <span class="badge-off">{{ product.discount_percent }}% OFF</span>
@@ -12,16 +20,11 @@
     </div>
     <div class="product-body">
       <h3>{{ product.name }}</h3>
-      {% if product.sku %}<p class="sku">{{ product.sku }}</p>{% endif %}
-      {% if product.old_price %}
-        <p class="old-price">R$ {{ product.old_price|floatformat:2 }}</p>
-      {% else %}
-        <p class="old-price">&nbsp;</p>
-      {% endif %}
       <p class="price">R$ {{ product.price|floatformat:2 }}</p>
       <p class="installments">{{ product.installment_text }}</p>
-      <p class="pix">ou R$ {{ product.pix_price|floatformat:2 }} via Pix</p>
-      <a class="btn btn-buy w-100" href="{{ product.whatsapp_url }}" target="_blank" rel="noopener">Comprar</a>
+      <div class="product-actions">
+        <button type="button" class="btn btn-buy" data-add-to-cart>Comprar</button>
+      </div>
     </div>
   </article>
 </div>

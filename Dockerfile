@@ -1,30 +1,24 @@
-FROM python:3.12-slim-bookworm
+FROM node:20-bookworm-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    NODE_ENV=development
 
-WORKDIR /suculentas_app
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     netcat-openbsd \
-    libjpeg62-turbo \
-    zlib1g \
+    openssl \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./suculentas_app/requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+COPY web/package.json web/package-lock.json ./
+RUN npm ci
 
-COPY ./suculentas_app /suculentas_app
-COPY ./scripts /scripts
-COPY ./entrypoint.sh /entrypoint.sh
+COPY web ./
+COPY entrypoint.sh /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh \
+    && npx prisma generate
 
-RUN adduser --disabled-password --no-create-home duser \
-    && mkdir -p /suculentas_app/staticfiles /suculentas_app/media \
-    && chown -R duser:duser /suculentas_app \
-    && chmod -R +x /scripts \
-    && chmod +x /entrypoint.sh
-
-EXPOSE 8000
+EXPOSE 3000
 
 ENTRYPOINT ["/entrypoint.sh"]

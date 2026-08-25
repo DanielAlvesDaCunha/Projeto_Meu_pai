@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Finalizar pedido | {{ STORE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="container section checkout-page">
+  <div class="section-title">
+    <h1>Finalizar pedido</h1>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="checkout-panel">
+        <h2 class="h5 mb-3">Seu pedido</h2>
+        <div data-checkout-empty class="checkout-empty" hidden>
+          <p class="mb-3 text-muted">Seu pedido está vazio.</p>
+          <a class="btn btn-buy" href="{% url 'home' %}">Ver catálogo</a>
+        </div>
+        <div data-checkout-list class="checkout-list"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <form class="checkout-panel checkout-form" data-checkout-form hidden>
+        <h2 class="h5 mb-3">Dados para o WhatsApp</h2>
+        <p class="text-muted small mb-3">
+          Preencha o que quiser. Tudo vai na mensagem pronta para o WhatsApp.
+          {% if PAYMENT_PROVIDER == "stripe" and STRIPE_ENABLED %}
+            Pagamento online (Stripe) estará disponível em breve.
+          {% else %}
+            Hoje o pagamento é combinado no WhatsApp (Pix ou outro).
+          {% endif %}
+        </p>
+
+        <div class="mb-3">
+          <label class="form-label" for="checkout-name">Seu nome</label>
+          <input class="form-control" id="checkout-name" name="name" type="text" placeholder="Ex.: Maria" autocomplete="name" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="checkout-city">Cidade / bairro</label>
+          <input class="form-control" id="checkout-city" name="city" type="text" placeholder="Ex.: Holambra" autocomplete="address-level2" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="checkout-note">Observações</label>
+          <textarea class="form-control" id="checkout-note" name="note" rows="3" placeholder="Ex.: retirar sábado, vaso pequeno..."></textarea>
+        </div>
+
+        <div class="checkout-totals mb-3">
+          <div class="d-flex justify-content-between">
+            <span>Subtotal</span>
+            <strong data-checkout-subtotal>R$ 0,00</strong>
+          </div>
+          <div class="d-flex justify-content-between text-success">
+            <span>Pix (−3%)</span>
+            <strong data-checkout-pix>R$ 0,00</strong>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-wa w-100">
+          Enviar pedido no WhatsApp
+        </button>
+        <a class="btn btn-outline-secondary w-100 mt-2" href="{% url 'home' %}">Continuar comprando</a>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

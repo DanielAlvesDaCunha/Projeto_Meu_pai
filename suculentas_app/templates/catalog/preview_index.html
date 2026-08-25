@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Opções de cor — Paulo Suculentas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Montserrat, sans-serif;
+      background: #f0f0f0;
+      color: #222;
+      padding: 2rem 1rem 3rem;
+    }
+    h1 { text-align: center; font-size: 1.4rem; margin: 0 0 0.4rem; }
+    .lead { text-align: center; color: #666; margin: 0 0 2rem; }
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    a.card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+      transition: transform .2s ease;
+    }
+    a.card:hover { transform: translateY(-3px); }
+    .swatch { height: 120px; display: flex; }
+    .swatch span { flex: 1; }
+    .body { padding: 1.1rem 1.2rem 1.3rem; }
+    .body h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+    .body p { margin: 0 0 0.9rem; color: #666; font-size: 0.88rem; line-height: 1.45; }
+    .cta {
+      display: inline-block;
+      padding: 0.55rem 0.9rem;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escolha a cor da loja</h1>
+  <p class="lead">Abra cada opção e compare. Depois me diga 1, 2 ou 3.</p>
+  <div class="grid">
+    <a class="card" href="{% url 'preview_theme' 1 %}">
+      <div class="swatch">
+        <span style="background:#F7F7F5"></span>
+        <span style="background:#4F7A4F"></span>
+        <span style="background:#3F6340"></span>
+        <span style="background:#1F1F1F"></span>
+      </div>
+      <div class="body">
+        <h2>1 · Musgo</h2>
+        <p>Fundo claro, verde planta. Limpo e clássico para suculentas.</p>
+        <span class="cta" style="background:#4F7A4F">Ver opção 1</span>
+      </div>
+    </a>
+    <a class="card" href="{% url 'preview_theme' 2 %}">
+      <div class="swatch">
+        <span style="background:#1A221A"></span>
+        <span style="background:#7BA87B"></span>
+        <span style="background:#2A352A"></span>
+        <span style="background:#E8EDE8"></span>
+      </div>
+      <div class="body">
+        <h2>2 · Escuro botanical</h2>
+        <p>Fundo escuro, verde claro no botão. Mais premium.</p>
+        <span class="cta" style="background:#7BA87B;color:#1A221A">Ver opção 2</span>
+      </div>
+    </a>
+    <a class="card" href="{% url 'preview_theme' 3 %}">
+      <div class="swatch">
+        <span style="background:#F7F4EF"></span>
+        <span style="background:#6B7F5A"></span>
+        <span style="background:#8B6B4A"></span>
+        <span style="background:#2C2A26"></span>
+      </div>
+      <div class="body">
+        <h2>3 · Terra suave</h2>
+        <p>Creme + verde oliva + toque de terra. Clima de viveiro.</p>
+        <span class="cta" style="background:#6B7F5A">Ver opção 3</span>
+      </div>
+    </a>
+  </div>
+</body>
+</html>

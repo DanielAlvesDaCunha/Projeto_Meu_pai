@@ -1,50 +1,210 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="container section" id="destaques">
-  <div class="section-title">
-    <h1>Destaques</h1>
-  </div>
-  <div class="row g-4">
-    {% for product in featured %}
-      {% include "catalog/_product_card.html" with product=product %}
-    {% empty %}
-      <p class="text-muted">Nenhum destaque cadastrado ainda. Cadastre no admin.</p>
-    {% endfor %}
+{# 1) Hero — primeira foto #}
+<section class="hero-est">
+  <div id="homeHero" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="hero-slide">
+          <div class="hero-copy">
+            <p class="hero-kicker">Grande variedade de</p>
+            <h1>suculentas</h1>
+            <a class="btn btn-buy hero-cta" href="#promocoes">Comprar</a>
+          </div>
+          <div class="hero-badges">
+            <div><strong>Melhor qualidade</strong></div>
+            <div><strong>Melhor preço</strong></div>
+          </div>
+          <img class="hero-plants" src="https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80" alt="Suculentas" />
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="hero-slide hero-slide-alt">
+          <div class="hero-copy">
+            <p class="hero-kicker">Pedido fácil pelo</p>
+            <h1>WhatsApp</h1>
+            <a class="btn btn-buy hero-cta" href="{% url 'como_pedir' %}">Como pedir</a>
+          </div>
+          <img class="hero-plants" src="https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1600&q=80" alt="Mudas" />
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="hero-slide">
+          <div class="hero-copy">
+            <p class="hero-kicker">Fotos reais das</p>
+            <h1>mudas</h1>
+            <a class="btn btn-buy hero-cta" href="#categorias">Ver categorias</a>
+          </div>
+          <img class="hero-plants" src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1600&q=80" alt="Variedades" />
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeHero" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeHero" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Próximo</span>
+    </button>
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#homeHero" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#homeHero" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#homeHero" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
   </div>
 </section>
 
-<section class="trust py-4 my-4">
+{# 2) Serviços #}
+<section class="services-row">
   <div class="container">
-    <div class="row g-3">
-      <div class="col-md-3">
-        <strong>Pedido pelo WhatsApp</strong>
-        <div class="text-muted small">Escolha no site e finalize na conversa</div>
+    <div class="row g-3 justify-content-center">
+      <div class="col-md-4">
+        <div class="service-card">
+          <div class="service-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"/></svg>
+          </div>
+          <div>
+            <h3>Envio individual</h3>
+            <p>As plantas são enviadas individualmente e identificadas</p>
+          </div>
+        </div>
       </div>
-      <div class="col-md-3">
-        <strong>Fotos reais</strong>
-        <div class="text-muted small">Você vê a planta antes de pedir</div>
+      <div class="col-md-4">
+        <div class="service-card">
+          <div class="service-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 1 3 5v6c0 5.6 3.8 10.7 9 12 5.2-1.3 9-6.4 9-12V5l-9-4zm-1 15.3-3.8-3.8 1.4-1.4 2.4 2.4 5.2-5.2 1.4 1.4L11 16.3z"/></svg>
+          </div>
+          <div>
+            <h3>Site seguro</h3>
+            <p>Você só paga depois de confirmar no WhatsApp</p>
+          </div>
+        </div>
       </div>
-      <div class="col-md-3">
-        <strong>Retirada ou entrega</strong>
-        <div class="text-muted small">Combinamos frete e horário no chat</div>
-      </div>
-      <div class="col-md-3">
-        <strong>Pix com desconto</strong>
-        <div class="text-muted small">Preço especial combinado no pedido</div>
+      <div class="col-md-4">
+        <div class="service-card">
+          <div class="service-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9 1.96 2.5H17V9.5h2.5zM18 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
+          <div>
+            <h3>Enviamos / retirada</h3>
+            <p>Receba suas plantas onde estiver!</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-{% with products=products_by_slug.kits %}
-<section class="container section" id="kits">
-  <div class="section-title"><h2>Mais vendidos</h2></div>
-  <div class="row g-4">
+{# 3) Compre por categoria #}
+<section class="container section" id="categorias">
+  <div class="section-title">
+    <h2>Compre por categoria:</h2>
+  </div>
+  <div class="category-grid">
+    {% for cat in categories %}
+      <a class="category-card" href="{% url 'category' cat.slug %}">
+        {% with first=cat.products.all.0 %}
+          {% if first.image %}
+            <img src="{{ first.image.url }}" alt="{{ cat.name }}" loading="lazy" />
+          {% else %}
+            <div class="category-fallback"></div>
+          {% endif %}
+        {% endwith %}
+        <span class="category-label">{{ cat.name }}</span>
+      </a>
+    {% empty %}
+      <a class="category-card" href="#suculentas">
+        <div class="category-fallback"></div>
+        <span class="category-label">Suculentas</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+{# 4) Promoções #}
+<section class="container section" id="promocoes">
+  <div class="section-title"><h2>Promoções</h2></div>
+  <div class="row g-3 g-md-4 product-row">
+    {% for product in featured %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted text-center">Nenhuma promoção no momento.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{# 5) Banners verticais por categoria (foto do meio) #}
+<section class="banner-trio">
+  <div class="container-fluid px-2 px-md-3">
+    <div class="row g-2 g-md-3">
+      {% for cat in categories %}
+        <div class="col-md-4">
+          <a class="banner-panel" href="{% url 'category' cat.slug %}">
+            {% with first=cat.products.all.0 %}
+              {% if first.image %}
+                <img src="{{ first.image.url }}" alt="{{ cat.name }}" loading="lazy" />
+              {% else %}
+                <div class="banner-fallback"></div>
+              {% endif %}
+            {% endwith %}
+            <div class="banner-overlay">
+              <h3>{{ cat.name }}</h3>
+              <p>Novidades</p>
+              <span class="btn btn-buy btn-sm-banner">Ver mais</span>
+            </div>
+          </a>
+        </div>
+      {% empty %}
+        <div class="col-md-4">
+          <a class="banner-panel" href="#suculentas">
+            <div class="banner-fallback"></div>
+            <div class="banner-overlay">
+              <h3>Suculentas</h3>
+              <p>Novidades</p>
+              <span class="btn btn-buy btn-sm-banner">Ver mais</span>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# 6) Novidades / seções de produtos #}
+<section class="container section" id="novidades">
+  <div class="section-title"><h2>Novidades</h2></div>
+  <div class="row g-3 g-md-4 product-row">
+    {% for product in novidades %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted text-center">Sem novidades no momento.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% with products=products_by_slug.suculentas %}
+<section class="container section" id="suculentas">
+  <div class="section-title"><h2>Suculentas</h2></div>
+  <div class="row g-3 g-md-4 product-row">
     {% for product in products %}
       {% include "catalog/_product_card.html" with product=product %}
     {% empty %}
-      <p class="text-muted">Sem kits no momento.</p>
+      <p class="text-muted text-center">Sem suculentas cadastradas.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endwith %}
+
+{% with products=products_by_slug.kits %}
+<section class="container section" id="kits">
+  <div class="section-title"><h2>Kits</h2></div>
+  <div class="row g-3 g-md-4 product-row">
+    {% for product in products %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted text-center">Sem kits no momento.</p>
     {% endfor %}
   </div>
 </section>
@@ -53,59 +213,13 @@
 {% with products=products_by_slug.cactos %}
 <section class="container section" id="cactos">
   <div class="section-title"><h2>Cactos</h2></div>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4 product-row">
     {% for product in products %}
       {% include "catalog/_product_card.html" with product=product %}
     {% empty %}
-      <p class="text-muted">Sem cactos no momento.</p>
+      <p class="text-muted text-center">Sem itens nesta seção.</p>
     {% endfor %}
   </div>
 </section>
 {% endwith %}
-
-<section class="section-alt py-4" id="como-pedir">
-  <div class="container">
-    <div class="section-title"><h2>Como pedir</h2></div>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="step-card h-100">
-          <span class="n">1</span>
-          <div>
-            <strong>Escolha a planta</strong>
-            <p class="mb-0 text-muted">Veja foto, nome e preço no catálogo.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="step-card h-100">
-          <span class="n">2</span>
-          <div>
-            <strong>Clique em Comprar</strong>
-            <p class="mb-0 text-muted">Abre o WhatsApp com a mensagem pronta.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="step-card h-100">
-          <span class="n">3</span>
-          <div>
-            <strong>Combine a entrega</strong>
-            <p class="mb-0 text-muted">Retirada ou entrega — falamos na conversa.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="container section" id="contato">
-  <div class="contact-box d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <div>
-      <h2 class="h4 mb-2">Contato</h2>
-      <p class="mb-1 text-muted">Dúvidas ou pedidos maiores — chame no WhatsApp.</p>
-      <p class="mb-0 fw-bold">WhatsApp: {{ WHATSAPP_LABEL }}</p>
-    </div>
-    <a class="btn btn-buy" href="{{ WHATSAPP_GENERAL_URL }}" target="_blank" rel="noopener">Falar no WhatsApp</a>
-  </div>
-</section>
 {% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Como pedir | {{ STORE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="container section page-intro">
+  <div class="section-title">
+    <h1>Como pedir</h1>
+  </div>
+  <p class="page-lead text-muted">
+    Tutorial rápido: escolha as mudas no site, monte o pedido e finalize no WhatsApp.
+    Sem cadastro e sem carrinho complicado.
+  </p>
+</section>
+
+<section class="container pb-2">
+  <ol class="tutorial-steps">
+    <li class="tutorial-step">
+      <span class="n">1</span>
+      <div>
+        <h2>Escolha a muda e a quantidade</h2>
+        <p class="text-muted mb-0">
+          No catálogo, use <strong>−</strong> e <strong>+</strong> para definir quantas unidades quer
+          e toque em <strong>Adicionar</strong>. Pode misturar várias suculentas no mesmo pedido.
+        </p>
+      </div>
+    </li>
+    <li class="tutorial-step">
+      <span class="n">2</span>
+      <div>
+        <h2>Revise o pedido</h2>
+        <p class="text-muted mb-0">
+          Abra <strong>Pedido</strong> no topo da página. Lá você vê cada muda, ajusta a quantidade,
+          remove o que não quiser e confere o subtotal e o valor no Pix.
+        </p>
+      </div>
+    </li>
+    <li class="tutorial-step">
+      <span class="n">3</span>
+      <div>
+        <h2>Envie no WhatsApp</h2>
+        <p class="text-muted mb-0">
+          Em <a href="{% url 'checkout' %}">Meu pedido</a>, preencha nome, cidade e observações
+          (se quiser) e toque em <strong>Enviar pedido no WhatsApp</strong>.
+          A mensagem já sai pronta com mudas, quantidades e preços.
+        </p>
+      </div>
+    </li>
+    <li class="tutorial-step">
+      <span class="n">4</span>
+      <div>
+        <h2>Combine pagamento e entrega</h2>
+        <p class="text-muted mb-0">
+          No chat confirmamos disponibilidade, frete ou retirada e a forma de pagamento
+          (Pix ou o que combinarmos). Só depois disso o pedido é fechado.
+        </p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="tutorial-cta d-flex flex-wrap gap-2 mt-4 mb-4">
+    <a class="btn btn-buy" href="{% url 'home' %}#destaques">Ir para o catálogo</a>
+    <a class="btn btn-outline-secondary" href="{% url 'checkout' %}">Abrir meu pedido</a>
+  </div>
+</section>
+
+<section class="section-alt py-4" id="depois-do-pagamento">
+  <div class="container">
+    <div class="section-title">
+      <h2>Depois que você pagar</h2>
+    </div>
+    <p class="page-lead text-muted mb-4">
+      Transparência do começo ao fim — o que acontece após a confirmação do pagamento.
+    </p>
+
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="trust-card h-100">
+          <strong>1. Confirmamos o Pix</strong>
+          <p class="text-muted small mb-0">
+            Assim que o pagamento cair, avisamos no WhatsApp que o pedido está confirmado.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="trust-card h-100">
+          <strong>2. Separação das mudas</strong>
+          <p class="text-muted small mb-0">
+            Separamos as plantas do seu pedido com cuidado, conferindo nome e quantidade.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="trust-card h-100">
+          <strong>3. Embalagem segura</strong>
+          <p class="text-muted small mb-0">
+            Embalamos para proteger as mudas no transporte (ou preparamos para retirada).
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="trust-card h-100">
+          <strong>4. Envio ou retirada</strong>
+          <p class="text-muted small mb-0">
+            Enviamos o código de rastreio (se houver frete) ou combinamos o horário de retirada.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-note mt-4">
+      <strong>Compromisso {{ STORE_NAME }}</strong>
+      <p class="mb-0 text-muted">
+        Você só paga depois de confirmar o pedido no WhatsApp. Se alguma muda não estiver disponível,
+        avisamos antes e oferecemos troca ou ajuste no valor — sem surpresa.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="contact-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <h2 class="h5 mb-2">Ainda com dúvida?</h2>
+      <p class="mb-0 text-muted">Chame no WhatsApp — respondemos com prazer.</p>
+    </div>
+    <a class="btn btn-buy" href="{% url 'contato' %}">Ir para contato</a>
+  </div>
+</section>
+{% endblock %}

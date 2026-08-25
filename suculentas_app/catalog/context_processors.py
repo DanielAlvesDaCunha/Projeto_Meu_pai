@@ -1,12 +1,14 @@
+from urllib.parse import quote
+
 from django.conf import settings
+
+from .models import Category
 
 
 def store_settings(request):
     general = (
-        f"Olá! Vi o site {settings.STORE_NAME} e quero saber o que tem disponível."
+        f"Olá! Vi o site {settings.STORE_NAME} e quero saber quais suculentas estão disponíveis."
     )
-    from urllib.parse import quote
-
     return {
         "STORE_NAME": settings.STORE_NAME,
         "WHATSAPP_NUMBER": settings.WHATSAPP_NUMBER,
@@ -14,4 +16,7 @@ def store_settings(request):
         "WHATSAPP_GENERAL_URL": (
             f"https://wa.me/{settings.WHATSAPP_NUMBER}?text={quote(general)}"
         ),
+        "PAYMENT_PROVIDER": settings.PAYMENT_PROVIDER,
+        "STRIPE_ENABLED": settings.STRIPE_ENABLED,
+        "NAV_CATEGORIES": Category.objects.all(),
     }

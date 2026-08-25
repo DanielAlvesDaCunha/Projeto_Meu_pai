@@ -133,8 +133,8 @@ SAMPLES = [
 
 CATEGORIES = [
     ("suculentas", "Suculentas", 1),
-    ("kits", "Kits", 2),
-    ("cactos", "Cactos", 3),
+    ("cactos", "Cactos", 2),
+    ("kits", "Kits", 3),
 ]
 
 
@@ -147,7 +147,18 @@ class Command(BaseCommand):
             cat, _ = Category.objects.get_or_create(
                 slug=slug, defaults={"name": name, "order": order}
             )
+            if cat.name != name or cat.order != order:
+                cat.name = name
+                cat.order = order
+                cat.save(update_fields=["name", "order"])
             cats[slug] = cat
+
+        # Remove categoria de lista que não usamos (Gibbifloras)
+        gibb = Category.objects.filter(slug="gibbifloras").first()
+        if gibb:
+            Product.objects.filter(category=gibb).delete()
+            gibb.delete()
+            self.stdout.write("Removida categoria gibbifloras")
 
         created = 0
         for item in SAMPLES:

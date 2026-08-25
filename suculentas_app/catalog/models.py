@@ -68,11 +68,11 @@ class Product(models.Model):
     def installment_text(self):
         price = float(self.price)
         if price < 20:
-            n = 2
+            n = 3
         else:
-            n = min(6, max(2, int(price // 5)))
+            n = min(6, max(3, int(price // 5)))
         parcela = self.price / Decimal(n)
-        return f"até {n}x de R$ {parcela:.2f}".replace(".", ",")
+        return f"{n} x de R$ {parcela:.2f}".replace(".", ",")
 
     @property
     def price_br(self):
