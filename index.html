@@ -11,79 +11,63 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="topbar">
-      <div class="wrap topbar-inner">
-        <span>Entrega e retirada combinadas pelo WhatsApp</span>
-        <a id="wa-top" href="#" target="_blank" rel="noopener">
-          WhatsApp: (11) 99999-9999
-        </a>
-      </div>
-    </div>
+    <div class="accent-bar" aria-hidden="true"></div>
 
-    <header class="header">
+    <header class="header" id="topo">
       <div class="wrap header-inner">
         <a class="logo" href="#topo">
           <span class="logo-mark" aria-hidden="true"></span>
-          <span>
-            <strong>Cantinho das Suculentas</strong>
-            <small>Suculentas e cactos</small>
-          </span>
+          <span class="logo-text">Cantinho das Suculentas</span>
         </a>
-        <nav class="nav" aria-label="Principal">
+        <a class="wa-link" id="wa-top" href="#" target="_blank" rel="noopener">
+          WhatsApp (11) 99999-9999
+        </a>
+      </div>
+      <nav class="nav-bar" aria-label="Principal">
+        <div class="wrap nav-inner">
           <a href="#topo">Início</a>
           <a href="#destaques">Suculentas</a>
           <a href="#kits">Kits</a>
+          <a href="#cactos">Cactos</a>
           <a href="#como-pedir">Como pedir</a>
           <a href="#contato">Contato</a>
-        </nav>
-        <a class="btn-wa-header" id="wa-header" href="#" target="_blank" rel="noopener"
-          >Pedir no WhatsApp</a
-        >
-      </div>
+        </div>
+      </nav>
     </header>
 
-    <main id="topo">
-      <section class="banner" aria-label="Destaque">
-        <div class="banner-slide is-active">
-          <img
-            src="https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=1600&q=80"
-            alt="Suculentas em vaso"
-          />
-          <div class="banner-caption wrap">
-            <h1>Suculentas selecionadas</h1>
-            <p>Escolha no site e finalize pelo WhatsApp</p>
-            <a class="btn-primary" href="#destaques">Ver produtos</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="trust wrap">
-        <div class="trust-item">
-          <strong>Pedido fácil</strong>
-          <span>Catálogo no site, venda no WhatsApp</span>
-        </div>
-        <div class="trust-item">
-          <strong>Fotos reais</strong>
-          <span>Você vê a planta antes de pedir</span>
-        </div>
-        <div class="trust-item">
-          <strong>Combinamos tudo</strong>
-          <span>Preço, retirada ou entrega na conversa</span>
-        </div>
-      </section>
-
+    <main>
       <section class="section wrap" id="destaques">
         <div class="section-title">
-          <h2>Destaques</h2>
-          <a href="#contato">Ver tudo</a>
+          <h1>Destaques</h1>
         </div>
         <div class="products" id="grid-destaques"></div>
+      </section>
+
+      <section class="trust">
+        <div class="wrap trust-inner">
+          <div class="trust-item">
+            <strong>Pedido pelo WhatsApp</strong>
+            <span>Escolha no site e finalize na conversa</span>
+          </div>
+          <div class="trust-item">
+            <strong>Fotos reais</strong>
+            <span>Você vê a planta antes de pedir</span>
+          </div>
+          <div class="trust-item">
+            <strong>Retirada ou entrega</strong>
+            <span>Combinamos frete e horário no chat</span>
+          </div>
+          <div class="trust-item">
+            <strong>Pix com desconto</strong>
+            <span>Preço especial combinado no pedido</span>
+          </div>
+        </div>
       </section>
 
       <section class="section wrap" id="kits">
@@ -91,6 +75,13 @@
           <h2>Mais vendidos</h2>
         </div>
         <div class="products" id="grid-mais"></div>
+      </section>
+
+      <section class="section wrap" id="cactos">
+        <div class="section-title">
+          <h2>Cactos</h2>
+        </div>
+        <div class="products" id="grid-cactos"></div>
       </section>
 
       <section class="section section-alt" id="como-pedir">
@@ -109,7 +100,7 @@
             <li>
               <span class="n">2</span>
               <div>
-                <strong>Clique em “Comprar”</strong>
+                <strong>Clique em Comprar</strong>
                 <p>Abre o WhatsApp com a mensagem pronta.</p>
               </div>
             </li>
@@ -127,29 +118,34 @@
       <section class="section wrap" id="contato">
         <div class="contact-box">
           <div>
-            <h2>Fale conosco</h2>
-            <p>
-              Dúvidas, disponibilidade ou pedidos maiores — chame no WhatsApp.
-            </p>
+            <h2>Contato</h2>
+            <p>Dúvidas ou pedidos maiores — chame no WhatsApp.</p>
             <p class="contact-phone">WhatsApp: (11) 99999-9999</p>
           </div>
-          <a class="btn-primary" id="wa-contato" href="#" target="_blank" rel="noopener"
-            >Abrir WhatsApp</a
+          <a class="btn-buy" id="wa-contato" href="#" target="_blank" rel="noopener"
+            >Falar no WhatsApp</a
           >
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <div class="wrap footer-inner">
+      <div class="wrap footer-grid">
         <div>
           <strong>Cantinho das Suculentas</strong>
           <p>Suculentas e cactos · vendas pelo WhatsApp</p>
+          <p class="contact-phone">WhatsApp: (11) 99999-9999</p>
         </div>
-        <div class="footer-links">
+        <div>
+          <strong>Links</strong>
           <a href="#destaques">Suculentas</a>
+          <a href="#kits">Kits</a>
           <a href="#como-pedir">Como pedir</a>
-          <a id="wa-footer" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <div>
+          <strong>Atendimento</strong>
+          <a id="wa-footer" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+          <span>Seg a sáb · horário comercial</span>
         </div>
       </div>
       <div class="wrap footer-copy">

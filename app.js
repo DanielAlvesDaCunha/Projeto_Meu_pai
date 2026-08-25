@@ -67,6 +67,37 @@ const maisVendidos = [
   },
 ];
 
+const cactos = [
+  {
+    nome: "Cacto Variado PT 6",
+    sku: "CAC-VAR-06",
+    preco: 14.0,
+    de: 18.0,
+    foto: "https://images.unsplash.com/photo-1509937528035-ad76254b0356?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    nome: "Opuntia Microdasys PT 9",
+    sku: "OPU-MIC-09",
+    preco: 26.0,
+    de: null,
+    foto: "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=700&q=80&sat=-40",
+  },
+  {
+    nome: "Echinocactus Grusonii PT 11",
+    sku: "ECH-GRU-11",
+    preco: 39.0,
+    de: 45.0,
+    foto: "https://images.unsplash.com/photo-1509937528035-ad76254b0356?auto=format&fit=crop&w=700&q=80&sat=-10",
+  },
+  {
+    nome: "Mammillaria PT 9",
+    sku: "MAM-PT-09",
+    preco: 20.0,
+    de: 24.0,
+    foto: "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=700&q=80&sat=-50",
+  },
+];
+
 function money(v) {
   return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
@@ -111,7 +142,7 @@ function cardHTML(p) {
         ${p.de ? `<p class="old-price">${money(p.de)}</p>` : `<p class="old-price">&nbsp;</p>`}
         <p class="price">${money(p.preco)}</p>
         <p class="installments">${parcelas(p.preco)}</p>
-        <p class="pix">ou <strong>${pixPrice(p.preco)}</strong> via Pix</p>
+        <p class="pix">ou ${pixPrice(p.preco)} via Pix</p>
         <a class="btn-buy" href="${waLink(msg)}" target="_blank" rel="noopener">Comprar</a>
       </div>
     </article>
@@ -126,11 +157,14 @@ document.querySelectorAll("[id^='wa-']").forEach((el) => {
   el.href = linkGeral();
 });
 
-document.querySelectorAll("#wa-top, .contact-phone").forEach((el) => {
-  if (el.id === "wa-top") el.textContent = `WhatsApp: ${WHATSAPP_LABEL}`;
-  if (el.classList.contains("contact-phone"))
-    el.textContent = `WhatsApp: ${WHATSAPP_LABEL}`;
+document.querySelectorAll("#wa-top").forEach((el) => {
+  el.textContent = `WhatsApp ${WHATSAPP_LABEL}`;
+});
+
+document.querySelectorAll(".contact-phone").forEach((el) => {
+  el.textContent = `WhatsApp: ${WHATSAPP_LABEL}`;
 });
 
 render("grid-destaques", destaques);
 render("grid-mais", maisVendidos);
+render("grid-cactos", cactos);
