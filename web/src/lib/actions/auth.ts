@@ -3,7 +3,7 @@
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
-import { prisma, hasUsableDatabaseUrl } from "@/lib/prisma";
+import { prisma, describeDatabaseUrlIssue, hasUsableDatabaseUrl } from "@/lib/prisma";
 import { resolveLoginRedirect } from "@/lib/session";
 
 export type AuthFormState = {
@@ -16,7 +16,7 @@ export async function registerCustomer(
   formData: FormData
 ): Promise<AuthFormState> {
   if (!hasUsableDatabaseUrl()) {
-    return { error: "Banco de dados indisponível. Configure DATABASE_URL." };
+    return { error: describeDatabaseUrlIssue() || "Banco de dados indisponível." };
   }
 
   const name = String(formData.get("name") || "").trim();
@@ -81,7 +81,7 @@ export async function loginUser(
   }
 
   if (!hasUsableDatabaseUrl()) {
-    return { error: "Banco de dados indisponível. Configure DATABASE_URL." };
+    return { error: describeDatabaseUrlIssue() || "Banco de dados indisponível." };
   }
 
   const user = await prisma.user.findUnique({ where: { email } });

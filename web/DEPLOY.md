@@ -1,22 +1,33 @@
 # Deploy / produção (Vercel)
 
-## 1. Banco (Neon)
+## 1. Banco (Neon) — **obrigatório para login e admin**
 
-1. Crie um projeto em [Neon](https://neon.tech) e copie a connection string.
-2. Na Vercel → Project → Settings → Environment Variables:
-   - `DATABASE_URL` = connection string do Neon (`?sslmode=require`)
-3. Nunca use `suculentas_psql` na Vercel (hostname só existe no Docker).
+Sem `DATABASE_URL` na Vercel o site abre, mas **login e admin não funcionam**.
 
-No build/deploy, rode as migrations:
+### Passo a passo na Vercel
+
+1. Abra o projeto na [Vercel Dashboard](https://vercel.com/dashboard)
+2. **Storage** → **Create Database** → **Postgres** (Neon)
+3. Conecte ao projeto — a Vercel cria `DATABASE_URL` automaticamente
+4. Confira em **Settings → Environment Variables**:
+   - `DATABASE_URL` deve ser algo como `postgresql://...@...neon.tech/...?sslmode=require`
+   - **Não** pode conter `suculentas_psql` (isso é só Docker local)
+5. Adicione também (se ainda não tiver):
+   - `AUTH_SECRET` — string longa aleatória (32+ caracteres)
+   - `AUTH_URL` = `https://seu-dominio.vercel.app`
+   - `NEXTAUTH_URL` = mesma URL
+   - `ADMIN_EMAIL` / `ADMIN_PASSWORD` — conta admin do seed
+6. **Redeploy** (Deployments → ⋯ → Redeploy)
+
+O build roda `prisma db push` + `seed` e cria as tabelas + usuário admin.
+
+### Testar local (Docker)
 
 ```bash
-cd web
-npx prisma db push
-# ou: npx prisma migrate deploy
-npm run seed
+docker compose up -d --build
 ```
 
-No Docker local o `entrypoint.sh` já faz `db push` + seed.
+Login local: http://127.0.0.1:43127/entrar
 
 ## 2. Auth
 

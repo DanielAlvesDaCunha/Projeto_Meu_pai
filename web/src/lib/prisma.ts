@@ -17,14 +17,21 @@ export const FALLBACK_CATEGORIES = [
 ];
 
 /** Docker hostname only works inside compose — never on Vercel. */
-export function hasUsableDatabaseUrl() {
+export function describeDatabaseUrlIssue(): string | null {
   const url = process.env.DATABASE_URL || "";
-  if (!url) return false;
-  // Vercel cannot resolve Docker hostnames; allow them only inside Compose.
-  if (url.includes("suculentas_psql")) {
-    return Boolean(process.env.POSTGRES_HOST) && !process.env.VERCEL;
+  if (!url.trim()) {
+    return "DATABASE_URL não está configurada. Na Vercel: Storage → Postgres (Neon) → copie a connection string.";
   }
-  return true;
+  if (url.includes("suculentas_psql") || url.includes("@postgres:")) {
+    if (process.env.VERCEL) {
+      return "DATABASE_URL aponta para o Docker local. Na Vercel use a URL do Neon (postgres.neon.tech), não suculentas_psql.";
+    }
+  }
+  return null;
+}
+
+export function hasUsableDatabaseUrl() {
+  return describeDatabaseUrlIssue() === null;
 }
 
 export async function getNavCategories() {
