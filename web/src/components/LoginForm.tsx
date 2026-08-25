@@ -12,7 +12,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
   return (
     <form action={action} className="auth-card">
       <h1>Entrar</h1>
-      <p className="muted">Admin vai para o painel; cliente vai para Minha conta.</p>
+      <p className="muted">Área do cliente. Lojista: use o painel em /admin/entrar</p>
       {callbackUrl ? <input type="hidden" name="callbackUrl" value={callbackUrl} /> : null}
       <div className="form-field">
         <label htmlFor="email">E-mail</label>

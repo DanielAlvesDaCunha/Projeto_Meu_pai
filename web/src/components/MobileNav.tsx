@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { logoutUser } from "@/lib/actions/auth";
+import { logoutAdmin, logoutUser } from "@/lib/actions/auth";
 
 type NavCategory = { slug: string; name: string };
 
@@ -26,6 +26,12 @@ function accountHref(user: Props["user"]) {
   if (!user) return "/entrar";
   if (user.role === "ADMIN") return "/admin";
   return "/conta";
+}
+
+function accountLabel(user: Props["user"]) {
+  if (!user) return "Entrar";
+  if (user.role === "ADMIN") return "Gerenciar loja";
+  return "Minha conta";
 }
 
 export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Props) {
@@ -76,13 +82,21 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
           {user ? (
             <>
               <Link href={accountHref(user)} onClick={onClose}>
-                Minha conta
+                {accountLabel(user)}
               </Link>
-              <form action={logoutUser}>
-                <button type="submit" className="nav-mobile-logout">
-                  Sair
-                </button>
-              </form>
+              {user.role === "ADMIN" ? (
+                <form action={logoutAdmin}>
+                  <button type="submit" className="nav-mobile-logout">
+                    Sair
+                  </button>
+                </form>
+              ) : (
+                <form action={logoutUser}>
+                  <button type="submit" className="nav-mobile-logout">
+                    Sair
+                  </button>
+                </form>
+              )}
             </>
           ) : (
             <>

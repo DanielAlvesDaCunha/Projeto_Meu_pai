@@ -116,6 +116,10 @@ export async function logoutUser() {
   await signOut({ redirectTo: "/" });
 }
 
+export async function logoutAdmin() {
+  await signOut({ redirectTo: "/admin/entrar" });
+}
+
 export async function updateProfile(
   _prev: AuthFormState,
   formData: FormData

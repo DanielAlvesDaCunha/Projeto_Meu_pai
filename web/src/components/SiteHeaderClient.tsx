@@ -29,7 +29,9 @@ function accountHref(user: Props["user"]) {
 }
 
 function accountLabel(user: Props["user"]) {
-  return user ? "Minha conta" : "Entrar";
+  if (!user) return "Entrar";
+  if (user.role === "ADMIN") return "Gerenciar loja";
+  return "Minha conta";
 }
 
 export function SiteHeaderClient({

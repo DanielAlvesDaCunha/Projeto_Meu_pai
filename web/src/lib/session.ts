@@ -16,7 +16,10 @@ export async function requireSession(callbackUrl = "/conta") {
 }
 
 export async function requireAdminSession() {
-  const user = await requireSession("/admin");
+  const user = await getSessionUser();
+  if (!user) {
+    redirect(`/admin/entrar?callbackUrl=${encodeURIComponent("/admin")}`);
+  }
   if (user.role !== "ADMIN") redirect("/conta");
   return user;
 }
