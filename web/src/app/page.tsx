@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
+import { getDemoCatalog } from "@/lib/demoCatalog";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
 import { getStoreConfig } from "@/lib/store";
@@ -58,6 +59,14 @@ export default async function HomePage() {
     } catch (error) {
       console.error("Home catalog query failed:", error);
     }
+  }
+
+  // Sem banco / sem produtos → exemplos com fotos da web (Unsplash)
+  if (!categories.length || !featured.length) {
+    const demo = getDemoCatalog();
+    categories = demo.categories;
+    featured = demo.featured;
+    novidades = demo.novidades;
   }
 
   return (

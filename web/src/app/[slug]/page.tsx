@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { SortSelect } from "@/components/SortSelect";
+import { DEMO_CATEGORIES, getDemoCatalog } from "@/lib/demoCatalog";
 import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
 
@@ -16,7 +17,59 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
 
-  if (!hasUsableDatabaseUrl()) notFound();
+  // Sem banco na nuvem → mostra catálogo demo com fotos
+  if (!hasUsableDatabaseUrl()) {
+    const demoCat = DEMO_CATEGORIES.find((c) => c.slug === slug);
+    if (!demoCat) notFound();
+    const all = getDemoCatalog().categories;
+    let products = [...demoCat.products];
+    const sort = sp.ordenar || "relevancia";
+    if (sort === "menor-preco") products.sort((a, b) => a.price - b.price);
+    if (sort === "maior-preco") products.sort((a, b) => b.price - a.price);
+    if (sort === "nome") products.sort((a, b) => a.name.localeCompare(b.name));
+
+    return (
+      <section className="container category-page">
+        <nav className="breadcrumb-nav" aria-label="breadcrumb">
+          <Link href="/">Início</Link>
+          <span>/</span>
+          <span>{demoCat.name}</span>
+        </nav>
+        <div className="category-layout">
+          <aside>
+            <div className="filter-panel">
+              <details open>
+                <summary>Categorias</summary>
+                <ul className="filter-cats">
+                  {all.map((cat) => (
+                    <li key={cat.slug}>
+                      <Link
+                        href={`/${cat.slug}`}
+                        className={cat.slug === demoCat.slug ? "is-active" : undefined}
+                      >
+                        {cat.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </div>
+          </aside>
+          <div>
+            <div className="category-head">
+              <h1>{demoCat.name}</h1>
+              <SortSelect defaultValue={sort} />
+            </div>
+            <div className="product-row">
+              {products.map((p) => (
+                <ProductCard key={p.id} product={toProductDTO(p)} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   let category;
   try {
