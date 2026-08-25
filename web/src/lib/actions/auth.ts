@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
 import { prisma, hasUsableDatabaseUrl } from "@/lib/prisma";
+import { resolveLoginRedirect } from "@/lib/session";
 
 export type AuthFormState = {
   error?: string;
@@ -73,17 +74,33 @@ export async function loginUser(
     .trim()
     .toLowerCase();
   const password = String(formData.get("password") || "");
-  const callbackUrl = String(formData.get("callbackUrl") || "/conta");
+  const callbackUrl = String(formData.get("callbackUrl") || "");
 
   if (!email || !password) {
     return { error: "Informe e-mail e senha." };
   }
 
+  if (!hasUsableDatabaseUrl()) {
+    return { error: "Banco de dados indisponível. Configure DATABASE_URL." };
+  }
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user?.passwordHash) {
+    return { error: "E-mail ou senha inválidos." };
+  }
+
+  const ok = await bcrypt.compare(password, user.passwordHash);
+  if (!ok) {
+    return { error: "E-mail ou senha inválidos." };
+  }
+
+  const redirectTo = resolveLoginRedirect(user.role, callbackUrl);
+
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl.startsWith("/") ? callbackUrl : "/conta",
+      redirectTo,
     });
   } catch (error) {
     if (error instanceof AuthError) {

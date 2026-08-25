@@ -29,6 +29,22 @@ export function isAdminRole(role?: Role | string | null) {
   return role === "ADMIN";
 }
 
+export function resolveLoginRedirect(role?: Role | string | null, callbackUrl?: string) {
+  const raw = (callbackUrl || "").trim();
+  const safe = raw.startsWith("/") && !raw.startsWith("//") ? raw : "";
+
+  if (isAdminRole(role)) {
+    if (safe.startsWith("/admin")) return safe;
+    return "/admin";
+  }
+
+  if (safe && !safe.startsWith("/admin") && safe !== "/entrar" && safe !== "/cadastro") {
+    return safe;
+  }
+
+  return "/conta";
+}
+
 export function slugify(input: string) {
   return input
     .normalize("NFD")
