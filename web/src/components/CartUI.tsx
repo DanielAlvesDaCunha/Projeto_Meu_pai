@@ -94,17 +94,20 @@ export function CartToast() {
   return <div className="cart-toast">{toast}</div>;
 }
 
-export function CartButton() {
+export function CartButton({ variant = "icon" }: { variant?: "icon" | "utility" }) {
   const { count, openDrawer } = useCart();
+  const cls = variant === "utility" ? "cart-toggle cart-toggle-utility" : "cart-toggle";
+
   return (
-    <button type="button" className="cart-toggle" onClick={openDrawer} aria-label="Pedido">
+    <button type="button" className={cls} onClick={openDrawer} aria-label="Meu carrinho">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
         <path
           fill="currentColor"
           d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2L21 5H6.2L5.3 2H1v2h2.4l3.6 8.6-.9 1.6c-.4.8.2 1.8 1.1 1.8z"
         />
       </svg>
-      {count > 0 && <span className="cart-badge">{count}</span>}
+      {variant === "utility" && <span>Meu carrinho</span>}
+      <span className="cart-badge">{count}</span>
     </button>
   );
 }

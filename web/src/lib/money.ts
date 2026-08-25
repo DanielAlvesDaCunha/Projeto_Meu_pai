@@ -33,6 +33,7 @@ export type ProductDTO = {
   oldPrice: number | null;
   image: string;
   featured: boolean;
+  stock?: number;
   categorySlug?: string;
 };
 
@@ -45,6 +46,7 @@ export function toProductDTO(p: {
   oldPrice: { toString(): string } | number | null;
   image: string;
   featured: boolean;
+  stock?: number;
   category?: { slug: string };
 }): ProductDTO {
   return {
@@ -56,6 +58,7 @@ export function toProductDTO(p: {
     oldPrice: p.oldPrice != null ? Number(p.oldPrice) : null,
     image: p.image,
     featured: p.featured,
+    stock: p.stock,
     categorySlug: p.category?.slug,
   };
 }

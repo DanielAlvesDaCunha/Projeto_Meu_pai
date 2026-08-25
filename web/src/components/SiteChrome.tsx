@@ -1,54 +1,28 @@
 import Link from "next/link";
-import { CartButton, CartDrawer, CartToast } from "@/components/CartUI";
+import { CartDrawer, CartToast } from "@/components/CartUI";
+import { SiteHeaderClient } from "@/components/SiteHeaderClient";
 import { getStoreConfig, whatsappGeneralUrl } from "@/lib/store";
 import { getNavCategories } from "@/lib/prisma";
+import { getSessionUser } from "@/lib/session";
 
 export async function SiteHeader() {
   const store = getStoreConfig();
   const wa = whatsappGeneralUrl(store);
   const categories = await getNavCategories();
+  const user = await getSessionUser();
 
   return (
     <>
       <div className="adbar">
         Pedidos pelo WhatsApp · envio ou retirada combinados na conversa
       </div>
-      <header className="site-header">
-        <div className="head-row">
-          <form className="search-box" action="/" method="get" role="search">
-            <input type="search" name="q" placeholder="O que você está buscando?" aria-label="Buscar" />
-            <button type="submit" aria-label="Buscar">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-                <path
-                  fill="currentColor"
-                  d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                />
-              </svg>
-            </button>
-          </form>
-          <Link className="logo" href="/">
-            <span className="logo-mark" aria-hidden />
-            <span className="logo-text">{store.storeName}</span>
-          </Link>
-          <div className="header-actions">
-            <a className="util-wa" href={wa} target="_blank" rel="noopener noreferrer">
-              WhatsApp
-            </a>
-            <CartButton />
-          </div>
-        </div>
-        <nav className="nav-bar">
-          <Link href="/">Início</Link>
-          {categories.map((cat) => (
-            <Link key={cat.slug} href={`/${cat.slug}`}>
-              {cat.name}
-            </Link>
-          ))}
-          <Link href="/#promocoes">Promoções</Link>
-          <Link href="/como-pedir">Como pedir</Link>
-          <Link href="/contato">Contato</Link>
-        </nav>
-      </header>
+      <SiteHeaderClient
+        storeName={store.storeName}
+        storeTagline="SUCULENTAS & CACTOS"
+        whatsappUrl={wa}
+        categories={categories}
+        user={user}
+      />
     </>
   );
 }
@@ -88,13 +62,15 @@ export async function SiteFooter() {
                 {cat.name}
               </Link>
             ))}
-            <Link href="/#promocoes">Promoções</Link>
+            <Link href="/promocoes">Promoções</Link>
+            <Link href="/novidades">Novidades</Link>
           </div>
           <div>
             <strong>Navegação</strong>
             <Link href="/como-pedir">Como pedir</Link>
             <Link href="/contato">Contato</Link>
             <Link href="/pedido">Meu pedido</Link>
+            <Link href="/conta">Minha conta</Link>
           </div>
           <div>
             <strong>Entre em contato</strong>
@@ -102,7 +78,7 @@ export async function SiteFooter() {
               WhatsApp {store.whatsappLabel}
             </a>
             <span>Seg a sáb · horário comercial</span>
-            <span>Pagamento combinado no chat (Pix)</span>
+            <span>Pagamento online (Pix) ou WhatsApp</span>
           </div>
         </div>
         <div className="container pay-row">

@@ -60,7 +60,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               <h1>{demoCat.name}</h1>
               <SortSelect defaultValue={sort} />
             </div>
-            <div className="product-row">
+            <div className="product-row product-row-catalog">
               {products.map((p) => (
                 <ProductCard key={p.id} product={toProductDTO(p)} />
               ))}
@@ -185,7 +185,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
           </div>
 
-          <div className="product-row">
+          <div className="product-row product-row-catalog">
             {products.length === 0 ? (
               <p className="muted">Nenhum produto nesta categoria.</p>
             ) : (

@@ -6,11 +6,13 @@ import { discountPercent, installmentText, money, type ProductDTO } from "@/lib/
 export function ProductCard({ product }: { product: ProductDTO }) {
   const { addItem } = useCart();
   const off = discountPercent(product.price, product.oldPrice);
+  const outOfStock = product.stock != null && product.stock <= 0;
 
   return (
     <article className="product">
       <div className="product-media">
         {off != null && <span className="badge-off">{off}% OFF</span>}
+        {outOfStock && <span className="badge-off badge-soldout">Esgotado</span>}
         {product.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={product.image} alt={product.name} loading="lazy" />
@@ -31,6 +33,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           <button
             type="button"
             className="btn-buy"
+            disabled={outOfStock}
             onClick={() =>
               addItem({
                 id: String(product.id),
@@ -41,7 +44,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
               })
             }
           >
-            Comprar
+            {outOfStock ? "Esgotado" : "Comprar"}
           </button>
         </div>
       </div>

@@ -46,7 +46,7 @@ export default async function HomePage() {
 
       featured = await prisma.product.findMany({
         where: { available: true, featured: true },
-        take: 8,
+        take: 4,
         orderBy: [{ order: "asc" }, { name: "asc" }],
       });
 
@@ -143,10 +143,15 @@ export default async function HomePage() {
 
       <section className="container section" id="promocoes">
         <div className="section-title">
-          <h2>Promoções</h2>
+          <h2>
+            <Link href="/promocoes">Promoções</Link>
+          </h2>
+          <Link className="section-more" href="/promocoes">
+            Ver todas
+          </Link>
         </div>
-        <div className="product-row">
-          {featured.map((p) => (
+        <div className="product-row product-row-4">
+          {featured.slice(0, 4).map((p) => (
             <ProductCard key={p.id} product={toProductDTO(p)} />
           ))}
         </div>
@@ -177,7 +182,12 @@ export default async function HomePage() {
 
       <section className="container section" id="novidades">
         <div className="section-title">
-          <h2>Novidades</h2>
+          <h2>
+            <Link href="/novidades">Novidades</Link>
+          </h2>
+          <Link className="section-more" href="/novidades">
+            Ver todas
+          </Link>
         </div>
         <div className="product-row product-row-4">
           {novidades.slice(0, 4).map((p) => (

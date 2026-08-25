@@ -20,10 +20,9 @@ export const FALLBACK_CATEGORIES = [
 export function hasUsableDatabaseUrl() {
   const url = process.env.DATABASE_URL || "";
   if (!url) return false;
-  if (url.includes("suculentas_psql")) return false;
-  if (url.includes("@localhost") || url.includes("@127.0.0.1")) {
-    // allow local next outside docker if someone points to localhost
-    return true;
+  // Vercel cannot resolve Docker hostnames; allow them only inside Compose.
+  if (url.includes("suculentas_psql")) {
+    return Boolean(process.env.POSTGRES_HOST) && !process.env.VERCEL;
   }
   return true;
 }

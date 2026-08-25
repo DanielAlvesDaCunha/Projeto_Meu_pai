@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY web/package.json web/package-lock.json ./
+COPY web/prisma ./prisma
 RUN npm ci
 
 COPY web ./

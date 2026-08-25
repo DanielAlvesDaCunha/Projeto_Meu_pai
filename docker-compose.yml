@@ -16,6 +16,8 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-suculentas_user}:${POSTGRES_PASSWORD:-Suculentas1234}@suculentas_psql:5432/${POSTGRES_DB:-suculentas}?schema=public
       POSTGRES_HOST: suculentas_psql
       POSTGRES_PORT: "5432"
+      AUTH_URL: http://127.0.0.1:43127
+      NEXTAUTH_URL: http://127.0.0.1:43127
     depends_on:
       - suculentas_psql
     restart: unless-stopped

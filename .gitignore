@@ -21,3 +21,4 @@ dotenv_files/.env
 web/node_modules/
 web/.next/
 web/public/media/
+web/tsconfig.tsbuildinfo

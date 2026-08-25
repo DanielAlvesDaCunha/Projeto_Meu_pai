@@ -7,7 +7,7 @@ const SLIDES = [
   {
     kicker: "Grande variedade de",
     title: "suculentas",
-    cta: { href: "#promocoes", label: "Comprar" },
+    cta: { href: "/promocoes", label: "Comprar" },
     image:
       "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
     alt: "Suculentas",
