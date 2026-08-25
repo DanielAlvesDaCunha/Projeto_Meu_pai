@@ -22,6 +22,16 @@ const NAV_LINKS = [
   { href: "/contato", label: "Contato" },
 ] as const;
 
+function accountHref(user: Props["user"]) {
+  if (!user) return "/entrar";
+  if (user.role === "ADMIN") return "/admin";
+  return "/conta";
+}
+
+function accountLabel(user: Props["user"]) {
+  return user ? "Minha conta" : "Entrar";
+}
+
 export function SiteHeaderClient({
   storeName,
   storeTagline,
@@ -83,17 +93,15 @@ export function SiteHeaderClient({
                 </svg>
                 <span>Atendimento</span>
               </a>
-              {user?.role !== "ADMIN" && (
-                <Link className="util-item" href={user ? "/conta" : "/entrar"}>
-                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-                    <path
-                      fill="currentColor"
-                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                    />
-                  </svg>
-                  <span>{user ? "Minha conta" : "Entrar"}</span>
-                </Link>
-              )}
+              <Link className="util-item" href={accountHref(user)}>
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
+                  <path
+                    fill="currentColor"
+                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                  />
+                </svg>
+                <span>{accountLabel(user)}</span>
+              </Link>
               <CartButton variant="utility" />
             </div>
 

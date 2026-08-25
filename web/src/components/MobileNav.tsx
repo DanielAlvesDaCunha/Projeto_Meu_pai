@@ -22,6 +22,12 @@ const LINKS = [
   { href: "/contato", label: "Contato" },
 ] as const;
 
+function accountHref(user: Props["user"]) {
+  if (!user) return "/entrar";
+  if (user.role === "ADMIN") return "/admin";
+  return "/conta";
+}
+
 export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Props) {
   useEffect(() => {
     document.body.classList.toggle("menu-open", open);
@@ -69,18 +75,14 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
         <div className="nav-mobile-foot">
           {user ? (
             <>
-              {user.role !== "ADMIN" && (
-                <Link href="/conta" onClick={onClose}>
-                  Minha conta
-                </Link>
-              )}
-              {user.role !== "ADMIN" && (
-                <form action={logoutUser}>
-                  <button type="submit" className="nav-mobile-logout">
-                    Sair
-                  </button>
-                </form>
-              )}
+              <Link href={accountHref(user)} onClick={onClose}>
+                Minha conta
+              </Link>
+              <form action={logoutUser}>
+                <button type="submit" className="nav-mobile-logout">
+                  Sair
+                </button>
+              </form>
             </>
           ) : (
             <>
