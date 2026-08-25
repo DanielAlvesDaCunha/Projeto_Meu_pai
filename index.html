@@ -3,84 +3,175 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cantinho das Suculentas</title>
+    <title>Cantinho das Suculentas | Suculentas e Cactos</title>
     <meta
       name="description"
-      content="Suculentas selecionadas. Escolha no site e peça pelo WhatsApp."
+      content="Suculentas e cactos selecionados. Veja o catálogo e peça pelo WhatsApp."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="top">
-      <a class="brand" href="#topo">Cantinho das Suculentas</a>
-      <a class="wa-top" id="wa-geral" href="#" target="_blank" rel="noopener">
-        Falar no WhatsApp
-      </a>
+    <div class="topbar">
+      <div class="wrap topbar-inner">
+        <span>Entrega e retirada combinadas pelo WhatsApp</span>
+        <a id="wa-top" href="#" target="_blank" rel="noopener">
+          WhatsApp: (11) 99999-9999
+        </a>
+      </div>
+    </div>
+
+    <header class="header">
+      <div class="wrap header-inner">
+        <a class="logo" href="#topo">
+          <span class="logo-mark">🌿</span>
+          <span>
+            <strong>Cantinho das Suculentas</strong>
+            <small>Suculentas e cactos</small>
+          </span>
+        </a>
+        <nav class="nav" aria-label="Principal">
+          <a href="#topo">Início</a>
+          <a href="#destaques">Suculentas</a>
+          <a href="#kits">Kits</a>
+          <a href="#como-pedir">Como pedir</a>
+          <a href="#contato">Contato</a>
+        </nav>
+        <a class="btn-wa-header" id="wa-header" href="#" target="_blank" rel="noopener"
+          >Pedir no WhatsApp</a
+        >
+      </div>
     </header>
 
     <main id="topo">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Venda direta pelo WhatsApp</p>
-          <h1>Cantinho das Suculentas</h1>
-          <p class="lead">
-            Escolha a planta que gostar e peça pelo WhatsApp. Sem carrinho,
-            sem cadastro — só conversa e entrega.
-          </p>
-          <div class="cta-row">
-            <a class="btn btn-primary" href="#catalogo">Ver suculentas</a>
-            <a
-              class="btn btn-ghost"
-              id="wa-hero"
-              href="#"
-              target="_blank"
-              rel="noopener"
-              >Pedir agora</a
-            >
+      <section class="banner" aria-label="Destaque">
+        <div class="banner-slide is-active">
+          <img
+            src="https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=1600&q=80"
+            alt="Suculentas em vaso"
+          />
+          <div class="banner-caption wrap">
+            <h1>Suculentas selecionadas</h1>
+            <p>Escolha no site e finalize pelo WhatsApp</p>
+            <a class="btn-primary" href="#destaques">Ver produtos</a>
           </div>
         </div>
       </section>
 
-      <section class="catalog" id="catalogo">
-        <div class="section-head">
-          <h2>Disponíveis agora</h2>
-          <p>Toque em “Quero esta” e a mensagem já abre pronta no WhatsApp.</p>
+      <section class="trust wrap">
+        <div class="trust-item">
+          <strong>Pedido fácil</strong>
+          <span>Catálogo no site, venda no WhatsApp</span>
         </div>
-        <div class="grid" id="grid"></div>
+        <div class="trust-item">
+          <strong>Fotos reais</strong>
+          <span>Você vê a planta antes de pedir</span>
+        </div>
+        <div class="trust-item">
+          <strong>Combinamos tudo</strong>
+          <span>Preço, retirada ou entrega na conversa</span>
+        </div>
       </section>
 
-      <section class="how">
-        <div class="section-head">
-          <h2>Como funciona</h2>
-          <p>Três passos. Tudo pelo celular.</p>
+      <section class="section wrap" id="destaques">
+        <div class="section-title">
+          <h2>Destaques</h2>
+          <a href="#contato">Ver tudo</a>
         </div>
-        <ol class="steps">
-          <li>
-            <strong>Escolha</strong>
-            <span>Veja as fotos e o preço aqui no site.</span>
-          </li>
-          <li>
-            <strong>Chame no WhatsApp</strong>
-            <span>A mensagem já traz o nome da planta.</span>
-          </li>
-          <li>
-            <strong>Combine entrega</strong>
-            <span>Retirada ou entrega — combinamos na conversa.</span>
-          </li>
-        </ol>
+        <div class="products" id="grid-destaques"></div>
+      </section>
+
+      <section class="section wrap" id="kits">
+        <div class="section-title">
+          <h2>Mais vendidos</h2>
+        </div>
+        <div class="products" id="grid-mais"></div>
+      </section>
+
+      <section class="section section-alt" id="como-pedir">
+        <div class="wrap">
+          <div class="section-title">
+            <h2>Como pedir</h2>
+          </div>
+          <ol class="steps">
+            <li>
+              <span class="n">1</span>
+              <div>
+                <strong>Escolha a planta</strong>
+                <p>Veja foto, nome e preço no catálogo.</p>
+              </div>
+            </li>
+            <li>
+              <span class="n">2</span>
+              <div>
+                <strong>Clique em “Comprar”</strong>
+                <p>Abre o WhatsApp com a mensagem pronta.</p>
+              </div>
+            </li>
+            <li>
+              <span class="n">3</span>
+              <div>
+                <strong>Combine a entrega</strong>
+                <p>Retirada ou entrega — falamos na conversa.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section wrap" id="contato">
+        <div class="contact-box">
+          <div>
+            <h2>Fale conosco</h2>
+            <p>
+              Dúvidas, disponibilidade ou pedidos maiores — chame no WhatsApp.
+            </p>
+            <p class="contact-phone">WhatsApp: (11) 99999-9999</p>
+          </div>
+          <a class="btn-primary" id="wa-contato" href="#" target="_blank" rel="noopener"
+            >Abrir WhatsApp</a
+          >
+        </div>
       </section>
     </main>
 
-    <footer class="foot">
-      <p>Cantinho das Suculentas · vendas pelo WhatsApp</p>
-      <a id="wa-footer" href="#" target="_blank" rel="noopener">Abrir conversa</a>
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <div>
+          <strong>Cantinho das Suculentas</strong>
+          <p>Suculentas e cactos · vendas pelo WhatsApp</p>
+        </div>
+        <div class="footer-links">
+          <a href="#destaques">Suculentas</a>
+          <a href="#como-pedir">Como pedir</a>
+          <a id="wa-footer" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+      <div class="wrap footer-copy">
+        <small>© Cantinho das Suculentas</small>
+      </div>
     </footer>
+
+    <a
+      class="wa-float"
+      id="wa-float"
+      href="#"
+      target="_blank"
+      rel="noopener"
+      aria-label="WhatsApp"
+    >
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M16.1 3C9.4 3 4 8.3 4 14.9c0 2.1.6 4.1 1.6 5.9L4 29l8.4-1.6c1.7.9 3.6 1.4 5.6 1.4 6.7 0 12.1-5.4 12.1-12S22.8 3 16.1 3zm0 21.9c-1.8 0-3.5-.5-5-1.3l-.4-.2-5 1 1-4.8-.2-.4A9.7 9.7 0 0 1 6.3 15c0-5.4 4.4-9.8 9.8-9.8s9.8 4.4 9.8 9.8-4.4 9.9-9.8 9.9zm5.4-7.3c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 2-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.2-.6-.3z"
+        />
+      </svg>
+    </a>
 
     <script src="app.js"></script>
   </body>

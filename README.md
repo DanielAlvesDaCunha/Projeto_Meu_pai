@@ -1,10 +1,10 @@
 # Cantinho das Suculentas
 
-Site simples em HTML para catálogo de suculentas com pedido pelo WhatsApp.
+Catálogo HTML simples no estilo de loja online (grade de produtos, banner, botão Comprar), com pedido pelo WhatsApp.
+
+Referência visual: lojas como BNS Plantas e Suculentas Holambra.
 
 ## Como rodar
-
-Na pasta do projeto:
 
 ```bash
 python3 -m http.server 43127
@@ -14,10 +14,6 @@ Abra: http://127.0.0.1:43127
 
 ## Configurar
 
-1. Em `app.js`, troque `WHATSAPP` pelo número com DDI (ex.: `5511999999999`).
-2. Edite a lista `plantas` (nome, preço, descrição, foto).
-3. Para fotos próprias: coloque imagens na pasta `fotos/` e use caminhos como `fotos/echeveria.jpg`.
-
-## Fluxo sugerido das fotos
-
-O site é a fonte das fotos. Tire a foto uma vez, use no site e, se quiser, envie a mesma imagem no WhatsApp para o cliente. Não dá para puxar automaticamente as fotos do WhatsApp de forma simples.
+1. Em `app.js`, altere `WHATSAPP` e `WHATSAPP_LABEL`.
+2. Edite as listas `destaques` e `maisVendidos`.
+3. Fotos próprias: pasta `fotos/` e caminho `fotos/nome.jpg`.

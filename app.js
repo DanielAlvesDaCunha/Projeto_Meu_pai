@@ -1,75 +1,136 @@
 /**
  * CONFIGURE AQUI
- * Troque o número pelo WhatsApp do seu pai (só dígitos, com DDI 55).
- * Exemplo: 5511999999999
+ * Número do WhatsApp com DDI (só dígitos). Ex.: 5511999999999
  */
 const WHATSAPP = "5511999999999";
+const WHATSAPP_LABEL = "(11) 99999-9999";
 
-const plantas = [
+const destaques = [
   {
-    nome: "Echeveria Blue Bird",
-    preco: "R$ 28",
-    desc: "Roseta azul-acinzentada, compacta e fácil de cuidar.",
-    foto: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=800&q=80",
+    nome: "Echeveria Raindrops PT 11",
+    sku: "ECH-RAIN-11",
+    preco: 28.0,
+    de: 32.0,
+    foto: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=700&q=80",
   },
   {
-    nome: "Haworthia Zebra",
-    preco: "R$ 32",
-    desc: "Listras brancas marcantes. Gosta de luz indireta.",
-    foto: "https://images.unsplash.com/photo-1485955900004-4eecf6f8bb41?auto=format&fit=crop&w=800&q=80",
+    nome: "Graptoveria Lulu PT 9",
+    sku: "GRA-LULU-09",
+    preco: 18.0,
+    de: 22.0,
+    foto: "https://images.unsplash.com/photo-1485955900004-4eecf6f8bb41?auto=format&fit=crop&w=700&q=80",
   },
   {
-    nome: "Sedum Burrito",
-    preco: "R$ 35",
-    desc: "Pendente com folhinhas gorduchas. Ótima em vaso alto.",
-    foto: "https://images.unsplash.com/photo-1463936577429-48e3ccee649f?auto=format&fit=crop&w=800&q=80",
+    nome: "Echeveria Roman PT 9",
+    sku: "ECH-ROM-09",
+    preco: 16.0,
+    de: null,
+    foto: "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=700&q=80",
   },
   {
-    nome: "Crassula Ovata",
-    preco: "R$ 45",
-    desc: "Árvore da fortuna. Cresce bem em sol da manhã.",
-    foto: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    nome: "Aloe Vera Mini",
-    preco: "R$ 25",
-    desc: "Pequena, resistente e ótima para iniciantes.",
-    foto: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=900&q=80&sat=-20",
-  },
-  {
-    nome: "Graptopetalum",
-    preco: "R$ 30",
-    desc: "Tons rosados no sol. Ideal para varanda.",
-    foto: "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=800&q=80",
+    nome: "Haworthia Zebra PT 9",
+    sku: "HAW-ZEB-09",
+    preco: 24.0,
+    de: 29.0,
+    foto: "https://images.unsplash.com/photo-1463936577429-48e3ccee649f?auto=format&fit=crop&w=700&q=80",
   },
 ];
+
+const maisVendidos = [
+  {
+    nome: "Kit 6 Suculentas Variadas PT 6",
+    sku: "KIT-SUC-06",
+    preco: 69.0,
+    de: 84.0,
+    foto: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    nome: "Sedum Burrito PT 11",
+    sku: "SED-BUR-11",
+    preco: 32.0,
+    de: 38.0,
+    foto: "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    nome: "Crassula Ovata PT 11",
+    sku: "CRA-OVA-11",
+    preco: 35.0,
+    de: null,
+    foto: "https://images.unsplash.com/photo-1501004318641-b39e64514be8?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    nome: "Aloe Vera Mini PT 9",
+    sku: "ALO-MIN-09",
+    preco: 22.0,
+    de: 26.0,
+    foto: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=700&q=80&sat=-30",
+  },
+];
+
+function money(v) {
+  return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function pixPrice(v) {
+  return money(+(v * 0.97).toFixed(2));
+}
+
+function parcelas(v) {
+  if (v < 20) return `até 2x de ${money(v / 2)}`;
+  const n = Math.min(6, Math.max(2, Math.floor(v / 5)));
+  return `até ${n}x de ${money(v / n)}`;
+}
 
 function waLink(texto) {
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 }
 
 function linkGeral() {
-  return waLink("Olá! Vi o site Cantinho das Suculentas e quero saber o que tem disponível.");
+  return waLink(
+    "Olá! Vi o site Cantinho das Suculentas e quero saber o que tem disponível."
+  );
 }
 
-document.getElementById("wa-geral").href = linkGeral();
-document.getElementById("wa-hero").href = linkGeral();
-document.getElementById("wa-footer").href = linkGeral();
+function desconto(de, preco) {
+  if (!de || de <= preco) return null;
+  return Math.round(((de - preco) / de) * 100);
+}
 
-const grid = document.getElementById("grid");
-
-plantas.forEach((p) => {
-  const msg = `Olá! Tenho interesse na suculenta "${p.nome}" (${p.preco}). Ainda está disponível?`;
-  const card = document.createElement("article");
-  card.className = "plant";
-  card.innerHTML = `
-    <img src="${p.foto}" alt="${p.nome}" loading="lazy" width="800" height="1000" />
-    <div class="plant-body">
-      <h3>${p.nome}</h3>
-      <p class="price">${p.preco}</p>
-      <p class="desc">${p.desc}</p>
-      <a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Quero esta</a>
-    </div>
+function cardHTML(p) {
+  const off = desconto(p.de, p.preco);
+  const msg = `Olá! Quero comprar: ${p.nome} (${money(p.preco)}). Ainda está disponível?`;
+  return `
+    <article class="product">
+      <div class="product-media">
+        ${off ? `<span class="badge">${off}% OFF</span>` : ""}
+        <img src="${p.foto}" alt="${p.nome}" loading="lazy" width="700" height="700" />
+      </div>
+      <div class="product-body">
+        <h3>${p.nome}</h3>
+        <p class="sku">${p.sku}</p>
+        ${p.de ? `<p class="old-price">${money(p.de)}</p>` : `<p class="old-price">&nbsp;</p>`}
+        <p class="price">${money(p.preco)}</p>
+        <p class="installments">${parcelas(p.preco)}</p>
+        <p class="pix">ou <strong>${pixPrice(p.preco)}</strong> via Pix</p>
+        <a class="btn-buy" href="${waLink(msg)}" target="_blank" rel="noopener">Comprar</a>
+      </div>
+    </article>
   `;
-  grid.appendChild(card);
+}
+
+function render(id, lista) {
+  document.getElementById(id).innerHTML = lista.map(cardHTML).join("");
+}
+
+document.querySelectorAll("[id^='wa-']").forEach((el) => {
+  el.href = linkGeral();
 });
+
+document.querySelectorAll("#wa-top, .contact-phone").forEach((el) => {
+  if (el.id === "wa-top") el.textContent = `WhatsApp: ${WHATSAPP_LABEL}`;
+  if (el.classList.contains("contact-phone"))
+    el.textContent = `WhatsApp: ${WHATSAPP_LABEL}`;
+});
+
+render("grid-destaques", destaques);
+render("grid-mais", maisVendidos);
