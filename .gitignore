@@ -1,9 +1,18 @@
-# Dependências / build
-node_modules/
-.next/
-dist/
-*.log
+# Python / Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+.venv/
+venv/
+suculentas_app/staticfiles/
+suculentas_app/media/
 
-# OS
+# Docker / data
+data/
+dotenv_files/.env
+
+# OS / IDE
 .DS_Store
-Thumbs.db
+.idea/
+.vscode/
+*.log

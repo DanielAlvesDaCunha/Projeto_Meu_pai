@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container section" id="destaques">
+  <div class="section-title">
+    <h1>Destaques</h1>
+  </div>
+  <div class="row g-4">
+    {% for product in featured %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted">Nenhum destaque cadastrado ainda. Cadastre no admin.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="trust py-4 my-4">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <strong>Pedido pelo WhatsApp</strong>
+        <div class="text-muted small">Escolha no site e finalize na conversa</div>
+      </div>
+      <div class="col-md-3">
+        <strong>Fotos reais</strong>
+        <div class="text-muted small">Você vê a planta antes de pedir</div>
+      </div>
+      <div class="col-md-3">
+        <strong>Retirada ou entrega</strong>
+        <div class="text-muted small">Combinamos frete e horário no chat</div>
+      </div>
+      <div class="col-md-3">
+        <strong>Pix com desconto</strong>
+        <div class="text-muted small">Preço especial combinado no pedido</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% with products=products_by_slug.kits %}
+<section class="container section" id="kits">
+  <div class="section-title"><h2>Mais vendidos</h2></div>
+  <div class="row g-4">
+    {% for product in products %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted">Sem kits no momento.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endwith %}
+
+{% with products=products_by_slug.cactos %}
+<section class="container section" id="cactos">
+  <div class="section-title"><h2>Cactos</h2></div>
+  <div class="row g-4">
+    {% for product in products %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted">Sem cactos no momento.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endwith %}
+
+<section class="section-alt py-4" id="como-pedir">
+  <div class="container">
+    <div class="section-title"><h2>Como pedir</h2></div>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="step-card h-100">
+          <span class="n">1</span>
+          <div>
+            <strong>Escolha a planta</strong>
+            <p class="mb-0 text-muted">Veja foto, nome e preço no catálogo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card h-100">
+          <span class="n">2</span>
+          <div>
+            <strong>Clique em Comprar</strong>
+            <p class="mb-0 text-muted">Abre o WhatsApp com a mensagem pronta.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card h-100">
+          <span class="n">3</span>
+          <div>
+            <strong>Combine a entrega</strong>
+            <p class="mb-0 text-muted">Retirada ou entrega — falamos na conversa.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container section" id="contato">
+  <div class="contact-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <h2 class="h4 mb-2">Contato</h2>
+      <p class="mb-1 text-muted">Dúvidas ou pedidos maiores — chame no WhatsApp.</p>
+      <p class="mb-0 fw-bold">WhatsApp: {{ WHATSAPP_LABEL }}</p>
+    </div>
+    <a class="btn btn-buy" href="{{ WHATSAPP_GENERAL_URL }}" target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</section>
+{% endblock %}

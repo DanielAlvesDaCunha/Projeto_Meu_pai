@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} | {{ STORE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="section-title"><h1>{{ category.name }}</h1></div>
+  <div class="row g-4">
+    {% for product in products %}
+      {% include "catalog/_product_card.html" with product=product %}
+    {% empty %}
+      <p class="text-muted">Nenhum produto nesta categoria.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

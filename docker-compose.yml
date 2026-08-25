@@ -1,0 +1,29 @@
+services:
+  suculentas_django:
+    container_name: suculentas_django
+    build:
+      context: .
+    ports:
+      - "43127:8000"
+    volumes:
+      - ./suculentas_app:/suculentas_app
+      - ./data/media:/suculentas_app/media
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - suculentas_psql
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  suculentas_psql:
+    container_name: suculentas_psql
+    image: postgres:16-alpine
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
+    ports:
+      - "43128:5432"
+    restart: unless-stopped

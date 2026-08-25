@@ -1,0 +1,27 @@
+<div class="col-6 col-md-4 col-lg-3">
+  <article class="product h-100">
+    <div class="product-media">
+      {% if product.discount_percent %}
+        <span class="badge-off">{{ product.discount_percent }}% OFF</span>
+      {% endif %}
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" />
+      {% else %}
+        <div class="no-photo">Sem foto</div>
+      {% endif %}
+    </div>
+    <div class="product-body">
+      <h3>{{ product.name }}</h3>
+      {% if product.sku %}<p class="sku">{{ product.sku }}</p>{% endif %}
+      {% if product.old_price %}
+        <p class="old-price">R$ {{ product.old_price|floatformat:2 }}</p>
+      {% else %}
+        <p class="old-price">&nbsp;</p>
+      {% endif %}
+      <p class="price">R$ {{ product.price|floatformat:2 }}</p>
+      <p class="installments">{{ product.installment_text }}</p>
+      <p class="pix">ou R$ {{ product.pix_price|floatformat:2 }} via Pix</p>
+      <a class="btn btn-buy w-100" href="{{ product.whatsapp_url }}" target="_blank" rel="noopener">Comprar</a>
+    </div>
+  </article>
+</div>
