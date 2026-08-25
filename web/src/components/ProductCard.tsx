@@ -20,7 +20,12 @@ export function ProductCard({ product }: { product: ProductDTO }) {
       </div>
       <div className="product-body">
         <h3>{product.name}</h3>
-        <p className="price">{money(product.price)}</p>
+        <p className="price">
+          {product.oldPrice != null && product.oldPrice > product.price && (
+            <span className="price-old">{money(product.oldPrice)}</span>
+          )}
+          {money(product.price)}
+        </p>
         <p className="installments">{installmentText(product.price)}</p>
         <div className="product-actions">
           <button

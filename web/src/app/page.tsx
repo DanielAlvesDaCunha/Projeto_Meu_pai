@@ -1,9 +1,9 @@
 import Link from "next/link";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { ProductCard } from "@/components/ProductCard";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
-import { getStoreConfig } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +27,6 @@ type CatWithProducts = {
 type ProductRow = CatWithProducts["products"][number];
 
 export default async function HomePage() {
-  const store = getStoreConfig();
   let categories: CatWithProducts[] = [];
   let featured: ProductRow[] = [];
   let novidades: ProductRow[] = [];
@@ -53,7 +52,7 @@ export default async function HomePage() {
 
       novidades = await prisma.product.findMany({
         where: { available: true },
-        take: 8,
+        take: 4,
         orderBy: [{ createdAt: "desc" }, { order: "asc" }],
       });
     } catch (error) {
@@ -70,43 +69,48 @@ export default async function HomePage() {
   }
 
   return (
-    <>
-      <section className="hero-est">
-        <div className="hero-slide">
-          <div className="hero-copy">
-            <p className="hero-kicker">Grande variedade de</p>
-            <h1>suculentas</h1>
-            <Link className="btn-buy hero-cta" href="#promocoes">
-              Comprar
-            </Link>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="hero-plants"
-            src="https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80"
-            alt={store.storeName}
-          />
-        </div>
-      </section>
+    <div className="template-home">
+      <HeroCarousel />
 
       <section className="services-row">
         <div className="container services-grid">
           <div className="service-card">
-            <div className="service-badge">1</div>
+            <div className="service-badge" aria-hidden>
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path
+                  fill="currentColor"
+                  d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"
+                />
+              </svg>
+            </div>
             <div>
               <h3>Envio individual</h3>
               <p>As plantas são enviadas individualmente e identificadas</p>
             </div>
           </div>
           <div className="service-card">
-            <div className="service-badge">2</div>
+            <div className="service-badge" aria-hidden>
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path
+                  fill="currentColor"
+                  d="M12 1 3 5v6c0 5.6 3.8 10.7 9 12 5.2-1.3 9-6.4 9-12V5l-9-4zm-1 15.3-3.8-3.8 1.4-1.4 2.4 2.4 5.2-5.2 1.4 1.4L11 16.3z"
+                />
+              </svg>
+            </div>
             <div>
               <h3>Site seguro</h3>
               <p>Você só paga depois de confirmar no WhatsApp</p>
             </div>
           </div>
           <div className="service-card">
-            <div className="service-badge">3</div>
+            <div className="service-badge" aria-hidden>
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path
+                  fill="currentColor"
+                  d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9 1.96 2.5H17V9.5h2.5zM18 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"
+                />
+              </svg>
+            </div>
             <div>
               <h3>Enviamos / retirada</h3>
               <p>Receba suas plantas onde estiver!</p>
@@ -175,25 +179,12 @@ export default async function HomePage() {
         <div className="section-title">
           <h2>Novidades</h2>
         </div>
-        <div className="product-row">
-          {novidades.map((p) => (
+        <div className="product-row product-row-4">
+          {novidades.slice(0, 4).map((p) => (
             <ProductCard key={p.id} product={toProductDTO(p)} />
           ))}
         </div>
       </section>
-
-      {categories.map((cat) => (
-        <section key={cat.slug} className="container section" id={cat.slug}>
-          <div className="section-title">
-            <h2>{cat.name}</h2>
-          </div>
-          <div className="product-row">
-            {cat.products.map((p) => (
-              <ProductCard key={p.id} product={toProductDTO(p)} />
-            ))}
-          </div>
-        </section>
-      ))}
-    </>
+    </div>
   );
 }

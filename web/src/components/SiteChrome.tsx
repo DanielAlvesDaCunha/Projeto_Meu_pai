@@ -18,7 +18,12 @@ export async function SiteHeader() {
           <form className="search-box" action="/" method="get" role="search">
             <input type="search" name="q" placeholder="O que você está buscando?" aria-label="Buscar" />
             <button type="submit" aria-label="Buscar">
-              ⌕
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+                <path
+                  fill="currentColor"
+                  d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
             </button>
           </form>
           <Link className="logo" href="/">
@@ -98,6 +103,22 @@ export async function SiteFooter() {
             </a>
             <span>Seg a sáb · horário comercial</span>
             <span>Pagamento combinado no chat (Pix)</span>
+          </div>
+        </div>
+        <div className="container pay-row">
+          <div>
+            <span className="pay-label">Meios de pagamento</span>
+            <div className="pay-icons">
+              <span>Pix</span>
+              <span>Cartão</span>
+              <span>Boleto</span>
+            </div>
+          </div>
+          <div>
+            <span className="pay-label">Envio</span>
+            <div className="pay-icons">
+              <span>Combinado no WhatsApp</span>
+            </div>
           </div>
         </div>
         <div className="footer-copy">

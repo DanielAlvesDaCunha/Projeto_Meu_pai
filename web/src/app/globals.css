@@ -178,13 +178,27 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px solid var(--line);
 }
 
+.hero-carousel {
+  position: relative;
+}
+
 .hero-slide {
   position: relative;
   min-height: min(58vh, 520px);
-  display: grid;
+  display: none;
   place-items: center;
   overflow: hidden;
   padding: 2rem 1rem 5rem;
+  animation: heroFade 0.55s ease;
+}
+
+.hero-slide.is-active {
+  display: grid;
+}
+
+@keyframes heroFade {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
 }
 
 .hero-plants {
@@ -210,6 +224,7 @@ img { max-width: 100%; display: block; }
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: #222;
 }
 
 .hero-copy h1 {
@@ -222,10 +237,77 @@ img { max-width: 100%; display: block; }
   line-height: 1;
 }
 
-.hero-cta { max-width: 180px; margin: 0 auto; }
+.hero-cta {
+  max-width: 180px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
+}
+
+.hero-badges {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.hero-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  border: 0;
+  background: transparent;
+  color: #666;
+  font-size: 2.4rem;
+  line-height: 1;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.hero-nav:hover { opacity: 1; color: #222; }
+.hero-nav-prev { left: 0.35rem; }
+.hero-nav-next { right: 0.35rem; }
+
+.hero-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.85rem;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.hero-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: #999;
+  cursor: pointer;
+}
+
+.hero-dots button.is-active {
+  background: var(--accent);
+}
 
 .services-row {
   border-bottom: 1px solid var(--line);
+  background: var(--bg);
   padding: 1.75rem 0;
 }
 
@@ -252,6 +334,7 @@ img { max-width: 100%; display: block; }
   place-items: center;
   flex-shrink: 0;
   font-weight: 700;
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
 .service-card h3 {
@@ -303,6 +386,12 @@ img { max-width: 100%; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.category-card:hover img,
+.category-card:hover .category-fallback {
+  transform: scale(1.05);
 }
 
 .category-fallback {
@@ -319,6 +408,7 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-shadow: 0 2px 12px rgba(0,0,0,.35);
 }
 
 .product-row {
@@ -343,6 +433,11 @@ img { max-width: 100%; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.product:hover .product-media img {
+  transform: scale(1.03);
 }
 
 .no-photo {
@@ -385,6 +480,15 @@ img { max-width: 100%; display: block; }
   margin: 0.35rem 0 0;
   font-size: 1.2rem;
   font-weight: 700;
+}
+
+.price-old {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: line-through;
+  margin-bottom: 0.1rem;
 }
 
 .installments {
@@ -512,7 +616,44 @@ img { max-width: 100%; display: block; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  padding: 2.5rem 0;
+  padding: 2.5rem 0 1.25rem;
+}
+
+.pay-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 0 0 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.pay-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+
+.pay-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.pay-icons span {
+  display: inline-block;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 4px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.75rem;
+  color: var(--text);
+  margin: 0;
 }
 
 .site-footer strong {
@@ -866,6 +1007,8 @@ img { max-width: 100%; display: block; }
   .head-row { grid-template-columns: 1fr; text-align: center; }
   .search-box { margin: 0 auto; }
   .header-actions { justify-content: center; }
+  .hero-badges { display: none; }
+  .hero-slide { min-height: 420px; }
   .services-grid,
   .category-grid,
   .banner-grid,
