@@ -1,35 +1,64 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
-import { prisma } from "@/lib/prisma";
+import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
 import { getStoreConfig } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
+type CatWithProducts = {
+  id: number;
+  name: string;
+  slug: string;
+  order: number;
+  products: Array<{
+    id: number;
+    name: string;
+    sku: string;
+    description: string;
+    price: { toString(): string } | number;
+    oldPrice: { toString(): string } | number | null;
+    image: string;
+    featured: boolean;
+  }>;
+};
+
+type ProductRow = CatWithProducts["products"][number];
+
 export default async function HomePage() {
   const store = getStoreConfig();
-  const categories = await prisma.category.findMany({
-    orderBy: { order: "asc" },
-    include: {
-      products: {
-        where: { available: true },
+  let categories: CatWithProducts[] = [];
+  let featured: ProductRow[] = [];
+  let novidades: ProductRow[] = [];
+
+  if (hasUsableDatabaseUrl()) {
+    try {
+      categories = await prisma.category.findMany({
+        orderBy: { order: "asc" },
+        include: {
+          products: {
+            where: { available: true },
+            orderBy: [{ order: "asc" }, { name: "asc" }],
+            take: 12,
+          },
+        },
+      });
+
+      featured = await prisma.product.findMany({
+        where: { available: true, featured: true },
+        take: 8,
         orderBy: [{ order: "asc" }, { name: "asc" }],
-        take: 12,
-      },
-    },
-  });
+      });
 
-  const featured = await prisma.product.findMany({
-    where: { available: true, featured: true },
-    take: 8,
-    orderBy: [{ order: "asc" }, { name: "asc" }],
-  });
-
-  const novidades = await prisma.product.findMany({
-    where: { available: true },
-    take: 8,
-    orderBy: [{ createdAt: "desc" }, { order: "asc" }],
-  });
+      novidades = await prisma.product.findMany({
+        where: { available: true },
+        take: 8,
+        orderBy: [{ createdAt: "desc" }, { order: "asc" }],
+      });
+    } catch (error) {
+      console.error("Home catalog query failed:", error);
+    }
+  }
 
   return (
     <>

@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { CartButton, CartDrawer, CartToast } from "@/components/CartUI";
 import { getStoreConfig, whatsappGeneralUrl } from "@/lib/store";
-import { prisma } from "@/lib/prisma";
+import { getNavCategories } from "@/lib/prisma";
 
 export async function SiteHeader() {
   const store = getStoreConfig();
   const wa = whatsappGeneralUrl(store);
-  const categories = await prisma.category.findMany({ orderBy: { order: "asc" } });
+  const categories = await getNavCategories();
 
   return (
     <>
@@ -51,7 +51,7 @@ export async function SiteHeader() {
 export async function SiteFooter() {
   const store = getStoreConfig();
   const wa = whatsappGeneralUrl(store);
-  const categories = await prisma.category.findMany({ orderBy: { order: "asc" } });
+  const categories = await getNavCategories();
   const year = new Date().getFullYear();
 
   return (

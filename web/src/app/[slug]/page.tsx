@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { SortSelect } from "@/components/SortSelect";
-import { prisma } from "@/lib/prisma";
+import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
@@ -16,10 +16,18 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
 
-  const category = await prisma.category.findUnique({ where: { slug } });
+  if (!hasUsableDatabaseUrl()) notFound();
+
+  let category;
+  try {
+    category = await prisma.category.findUnique({ where: { slug } });
+  } catch (error) {
+    console.error("Category lookup failed:", error);
+    notFound();
+  }
   if (!category) notFound();
 
-  const allCategories = await prisma.category.findMany({ orderBy: { order: "asc" } });
+  const allCategories = await getNavCategories();
 
   const where: {
     available: boolean;

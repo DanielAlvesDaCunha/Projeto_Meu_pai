@@ -4,6 +4,8 @@ import { Providers } from "@/components/Providers";
 import { getStoreConfig } from "@/lib/store";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "Paulo Suculentas",
