@@ -1,0 +1,9 @@
+# Dependências / build
+node_modules/
+.next/
+dist/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
