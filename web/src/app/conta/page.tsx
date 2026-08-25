@@ -20,6 +20,17 @@ export default async function ContaPage() {
 
   return (
     <section className="container section">
+      {sessionUser.role === "ADMIN" && (
+        <div className="admin-account-banner">
+          <div>
+            <strong>Painel do lojista</strong>
+            <p>Gerencie anúncios, fotos, estoque e pedidos.</p>
+          </div>
+          <Link className="btn-buy" href="/admin">
+            Abrir painel admin
+          </Link>
+        </div>
+      )}
       <div className="section-title">
         <h1>Minha conta</h1>
       </div>

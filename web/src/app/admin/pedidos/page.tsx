@@ -1,23 +1,19 @@
 import Link from "next/link";
-import { AdminNav } from "@/components/AdminNav";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/session";
 import { money } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminOrdersPage() {
-  await requireAdminSession();
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
     include: { user: true, items: true },
   });
 
   return (
-    <section className="container section admin-page">
-      <AdminNav />
-      <div className="section-title">
-        <h1>Pedidos</h1>
+    <section className="section admin-page">
+      <div className="category-head">
+        <h2>Pedidos</h2>
       </div>
       <div className="admin-table-wrap">
         <table className="admin-table">

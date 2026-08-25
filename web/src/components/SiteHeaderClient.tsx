@@ -83,6 +83,17 @@ export function SiteHeaderClient({
                 </svg>
                 <span>Atendimento</span>
               </a>
+              {user?.role === "ADMIN" ? (
+                <Link className="util-item util-item-admin" href="/admin">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
+                    <path
+                      fill="currentColor"
+                      d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                    />
+                  </svg>
+                  <span>Painel admin</span>
+                </Link>
+              ) : null}
               <Link className="util-item" href={user ? "/conta" : "/entrar"}>
                 <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
                   <path

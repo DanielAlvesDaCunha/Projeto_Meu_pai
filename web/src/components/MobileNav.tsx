@@ -70,8 +70,8 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
           {user ? (
             <>
               {user.role === "ADMIN" && (
-                <Link href="/admin" onClick={onClose}>
-                  Admin
+                <Link href="/admin" onClick={onClose} className="nav-mobile-admin">
+                  Painel administrativo
                 </Link>
               )}
               <Link href="/conta" onClick={onClose}>

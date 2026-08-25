@@ -1,14 +1,10 @@
 import Link from "next/link";
-import { AdminNav } from "@/components/AdminNav";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/session";
 import { money } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminHomePage() {
-  await requireAdminSession();
-
   const [productCount, lowStock, pendingOrders, recentOrders] = await Promise.all([
     prisma.product.count(),
     prisma.product.findMany({
@@ -25,15 +21,30 @@ export default async function AdminHomePage() {
   ]);
 
   return (
-    <section className="container section admin-page">
-      <AdminNav />
-      <div className="section-title">
-        <h1>Painel admin</h1>
+    <section className="section admin-page">
+      <div className="admin-quick-links">
+        <Link className="admin-quick-card" href="/admin/produtos/novo">
+          <strong>+ Novo anúncio</strong>
+          <span>Cadastrar planta com foto e preço</span>
+        </Link>
+        <Link className="admin-quick-card" href="/admin/produtos">
+          <strong>Gerenciar anúncios</strong>
+          <span>Editar fotos, estoque e preços</span>
+        </Link>
+        <Link className="admin-quick-card" href="/admin/pedidos">
+          <strong>Pedidos</strong>
+          <span>{pendingOrders} pendente(s)</span>
+        </Link>
+        <Link className="admin-quick-card" href="/admin/categorias">
+          <strong>Categorias</strong>
+          <span>Suculentas, cactos, kits…</span>
+        </Link>
       </div>
+
       <div className="admin-stats">
         <div className="admin-stat">
           <strong>{productCount}</strong>
-          <span>Produtos</span>
+          <span>Anúncios</span>
         </div>
         <div className="admin-stat">
           <strong>{lowStock.length}</strong>
@@ -61,9 +72,6 @@ export default async function AdminHomePage() {
               ))}
             </ul>
           )}
-          <Link className="btn-buy" href="/admin/produtos/novo" style={{ marginTop: 12 }}>
-            Novo produto
-          </Link>
         </div>
         <div className="checkout-panel">
           <h2>Pedidos recentes</h2>

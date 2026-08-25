@@ -1,20 +1,19 @@
-import { AdminNav } from "@/components/AdminNav";
 import { ProductForm } from "@/components/ProductForm";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminNewProductPage() {
-  await requireAdminSession();
   const categories = await prisma.category.findMany({ orderBy: { order: "asc" } });
 
   return (
-    <section className="container section admin-page">
-      <AdminNav />
-      <div className="section-title">
-        <h1>Novo produto</h1>
+    <section className="section admin-page">
+      <div className="category-head">
+        <h2>Novo anúncio</h2>
       </div>
+      <p className="muted" style={{ marginBottom: "1rem" }}>
+        Preencha nome, preço, estoque e envie a foto da planta.
+      </p>
       <ProductForm categories={categories} />
     </section>
   );

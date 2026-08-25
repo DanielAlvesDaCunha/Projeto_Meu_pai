@@ -127,6 +127,43 @@ export async function deleteCategory(formData: FormData) {
   revalidatePath("/admin/categorias");
 }
 
+export async function updateProductStock(formData: FormData) {
+  await requireAdminSession();
+  const id = Number(formData.get("id"));
+  const stock = Number(formData.get("stock"));
+  if (!id || !Number.isFinite(stock)) return;
+
+  const qty = Math.max(0, Math.floor(stock));
+  await prisma.product.update({
+    where: { id },
+    data: {
+      stock: qty,
+      ...(qty <= 0 ? { available: false } : {}),
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath("/admin/produtos");
+}
+
+export async function toggleProductAvailable(formData: FormData) {
+  await requireAdminSession();
+  const id = Number(formData.get("id"));
+  if (!id) return;
+
+  const product = await prisma.product.findUnique({ where: { id } });
+  if (!product) return;
+
+  await prisma.product.update({
+    where: { id },
+    data: { available: !product.available },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/admin/produtos");
+}
+
 export async function updateOrderStatus(formData: FormData) {
   await requireAdminSession();
   const id = String(formData.get("id") || "");

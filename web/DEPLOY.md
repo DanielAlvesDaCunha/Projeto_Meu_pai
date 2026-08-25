@@ -16,7 +16,8 @@ Sem `DATABASE_URL` na Vercel o site abre, mas **login e admin não funcionam**.
    - `AUTH_SECRET` — string longa aleatória (32+ caracteres)
    - `AUTH_URL` = `https://seu-dominio.vercel.app`
    - `NEXTAUTH_URL` = mesma URL
-   - `ADMIN_EMAIL` / `ADMIN_PASSWORD` — conta admin do seed
+   - `ADMIN_EMAIL` — e-mail do lojista (use o e-mail que ele usa para entrar). Se a conta já existir, o seed **promove para admin sem mudar a senha**.
+   - `ADMIN_PASSWORD` — senha só para criar admin novo (padrão `Admin123!`)
 6. **Redeploy** (Deployments → ⋯ → Redeploy)
 
 O build roda `prisma db push` + `seed` e cria as tabelas + usuário admin.
@@ -35,7 +36,8 @@ Defina:
 
 - `AUTH_SECRET` — string longa aleatória
 - `AUTH_URL` / `NEXTAUTH_URL` — URL pública do site (ex.: `https://seu-app.vercel.app`)
-- `ADMIN_EMAIL` / `ADMIN_PASSWORD` — admin criado no seed
+- `ADMIN_EMAIL` — e-mail do administrador (pode ser o e-mail que seu pai já usa no `/cadastro`)
+- `ADMIN_PASSWORD` — senha inicial se o admin ainda não existir no banco
 
 Login admin: `/entrar` → depois `/admin`
 

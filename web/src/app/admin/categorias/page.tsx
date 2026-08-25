@@ -1,26 +1,22 @@
-import { AdminNav } from "@/components/AdminNav";
 import { CategoryForm } from "@/components/CategoryForm";
 import { deleteCategory } from "@/lib/actions/admin";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminCategoriesPage() {
-  await requireAdminSession();
   const categories = await prisma.category.findMany({
     orderBy: { order: "asc" },
     include: { _count: { select: { products: true } } },
   });
 
   return (
-    <section className="container section admin-page">
-      <AdminNav />
-      <div className="section-title">
-        <h1>Categorias</h1>
+    <section className="section admin-page">
+      <div className="category-head">
+        <h2>Categorias</h2>
       </div>
       <div className="checkout-panel" style={{ marginBottom: "1.5rem" }}>
-        <h2>Nova categoria</h2>
+        <h3>Nova categoria</h3>
         <CategoryForm />
       </div>
       <div className="admin-table-wrap">

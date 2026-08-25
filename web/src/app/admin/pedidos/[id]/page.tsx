@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AdminNav } from "@/components/AdminNav";
 import { updateOrderStatus } from "@/lib/actions/admin";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/session";
 import { money } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +9,6 @@ export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ id: string }> };
 
 export default async function AdminOrderDetailPage({ params }: Props) {
-  await requireAdminSession();
   const { id } = await params;
   const order = await prisma.order.findUnique({
     where: { id },
@@ -20,8 +17,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
   if (!order) notFound();
 
   return (
-    <section className="container section admin-page">
-      <AdminNav />
+    <section className="section admin-page">
       <nav className="breadcrumb-nav">
         <Link href="/admin/pedidos">Pedidos</Link>
         <span>/</span>
@@ -29,7 +25,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       </nav>
       <div className="checkout-grid">
         <div className="checkout-panel">
-          <h1 style={{ fontSize: "1.3rem" }}>Pedido</h1>
+          <h2 style={{ fontSize: "1.3rem" }}>Pedido</h2>
           <p>
             <strong>Cliente:</strong> {order.customerName || order.user.name}
           </p>

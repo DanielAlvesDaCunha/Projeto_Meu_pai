@@ -145,25 +145,35 @@ const PRODUCTS = [
 ];
 
 async function main() {
-  const adminEmail = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com").toLowerCase();
+  const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
   const adminPassword = process.env.ADMIN_PASSWORD || "Admin123!";
   const passwordHash = await bcrypt.hash(adminPassword, 10);
 
-  await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: {
-      name: "Administrador",
-      passwordHash,
-      role: "ADMIN",
-    },
-    create: {
-      name: "Administrador",
-      email: adminEmail,
-      passwordHash,
-      role: "ADMIN",
-      phone: process.env.WHATSAPP_LABEL || "",
-    },
-  });
+  for (const email of adminEmails) {
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) {
+      await prisma.user.update({
+        where: { email },
+        data: { role: "ADMIN" },
+      });
+      continue;
+    }
+
+    await prisma.user.create({
+      data: {
+        name: "Administrador",
+        email,
+        passwordHash,
+        role: "ADMIN",
+        phone: process.env.WHATSAPP_LABEL || "",
+      },
+    });
+  }
+
+  const adminEmail = adminEmails[0] || "admin@paulosuculentas.com";
 
   const cats: Record<string, number> = {};
 
