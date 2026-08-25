@@ -33,6 +33,11 @@ export async function middleware(req: NextRequest) {
       url.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(url);
     }
+    if (role === "ADMIN") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/admin";
+      return NextResponse.redirect(url);
+    }
   }
 
   return NextResponse.next();

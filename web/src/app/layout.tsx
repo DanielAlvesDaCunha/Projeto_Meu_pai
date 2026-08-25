@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { Providers } from "@/components/Providers";
 import { getStoreConfig } from "@/lib/store";
 import "./globals.css";
@@ -27,9 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Providers storeName={store.storeName} whatsappNumber={store.whatsappNumber}>
-          <SiteHeader />
-          <main>{children}</main>
-          <SiteFooter />
+          {children}
         </Providers>
       </body>
     </html>

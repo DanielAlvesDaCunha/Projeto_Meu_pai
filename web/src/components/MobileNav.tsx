@@ -69,19 +69,18 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
         <div className="nav-mobile-foot">
           {user ? (
             <>
-              {user.role === "ADMIN" && (
-                <Link href="/admin" onClick={onClose} className="nav-mobile-admin">
-                  Painel administrativo
+              {user.role !== "ADMIN" && (
+                <Link href="/conta" onClick={onClose}>
+                  Minha conta
                 </Link>
               )}
-              <Link href="/conta" onClick={onClose}>
-                Minha conta
-              </Link>
-              <form action={logoutUser}>
-                <button type="submit" className="nav-mobile-logout">
-                  Sair
-                </button>
-              </form>
+              {user.role !== "ADMIN" && (
+                <form action={logoutUser}>
+                  <button type="submit" className="nav-mobile-logout">
+                    Sair
+                  </button>
+                </form>
+              )}
             </>
           ) : (
             <>

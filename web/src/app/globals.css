@@ -1278,37 +1278,73 @@ body.menu-open {
 
 .admin-page { padding-top: 1rem; }
 
-.admin-shell {
-  background: #f4f6f2;
-  margin: 0 calc(50% - 50vw);
-  width: 100vw;
-  padding-bottom: 2rem;
+.admin-app {
+  min-height: 100vh;
+  background: #eef1eb;
 }
 
-.admin-shell-head {
-  background: linear-gradient(135deg, var(--header-bg) 0%, #3d5a34 100%);
+.admin-topbar {
+  background: #2f4528;
   color: #fff;
-  padding: 1.25rem 0 1.5rem;
-  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.admin-shell-kicker {
-  margin: 0 0 0.25rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+.admin-topbar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+
+.admin-topbar-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.admin-topbar-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
-.admin-shell-title {
-  margin: 0 0 0.35rem;
-  font-size: 1.5rem;
+.admin-topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
 }
 
-.admin-shell-user {
-  margin: 0;
-  font-size: 0.9rem;
+.admin-topbar-user {
+  font-size: 0.85rem;
   opacity: 0.9;
+}
+
+.admin-topbar-link {
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admin-topbar-logout {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-shell {
+  padding: 1.25rem 0 2rem;
 }
 
 .admin-shell-body {
@@ -1369,36 +1405,6 @@ body.menu-open {
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
-}
-
-.util-item-admin span {
-  color: #ffe8a3;
-}
-
-.nav-mobile-admin {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  padding: 0.65rem 0.85rem !important;
-  font-weight: 700;
-}
-
-.admin-account-banner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  background: linear-gradient(135deg, #eef5ea 0%, #f8faf6 100%);
-  border: 1px solid #c8d9bc;
-  border-radius: 10px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.admin-account-banner p {
-  margin: 0.25rem 0 0;
-  color: var(--muted);
-  font-size: 0.9rem;
 }
 
 .link-muted {
