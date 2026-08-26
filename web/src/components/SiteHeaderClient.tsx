@@ -35,40 +35,7 @@ function accountLabel(user: Props["user"]) {
   return "Minha conta";
 }
 
-/** Ícones próprios (outline) — diferentes da referência */
-function IconIg() {
-  return (
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-function IconFb() {
-  return (
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-      <path d="M14 8h2V5h-2a4 4 0 0 0-4 4v2H8v3h2v7h3v-7h2.2l.5-3H13V9a1 1 0 0 1 1-1z" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function IconYt() {
-  return (
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-      <rect x="2.5" y="6" width="19" height="12" rx="3" />
-      <path d="M10 9.5v5l5-2.5-5-2.5z" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-function IconTk() {
-  return (
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-      <path d="M14 4v9.2a3.8 3.8 0 1 1-2.6-3.6" strokeLinecap="round" />
-      <path d="M14 7.2c1.2 1.4 2.8 2.2 4.5 2.4" strokeLinecap="round" />
-    </svg>
-  );
-}
-function IconSupport() {
+/** Ícones de utilitário (outline) */
   return (
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
       <path d="M4 12a8 8 0 0 1 16 0" strokeLinecap="round" />
@@ -137,21 +104,10 @@ export function SiteHeaderClient({
   return (
     <>
       <header className={`head-main${scrolled ? " is-compact" : ""}`}>
-        {/* Faixa 1 — redes */}
+        {/* Faixa 1 — aviso WhatsApp */}
         <div className="head-social-bar head-desktop-only">
-          <div className="head-social-inner">
-            <a href="/contato" aria-label="Instagram">
-              <IconIg />
-            </a>
-            <a href="/contato" aria-label="Facebook">
-              <IconFb />
-            </a>
-            <a href="/contato" aria-label="YouTube">
-              <IconYt />
-            </a>
-            <a href="/contato" aria-label="TikTok">
-              <IconTk />
-            </a>
+          <div className="head-social-inner head-adbar-inner">
+            Pedidos pelo WhatsApp · envio ou retirada combinados na conversa
           </div>
         </div>
 
