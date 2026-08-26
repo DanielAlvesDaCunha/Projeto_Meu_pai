@@ -36,6 +36,7 @@ function accountLabel(user: Props["user"]) {
 }
 
 /** Ícones de utilitário (outline) */
+function IconSupport() {
   return (
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
       <path d="M4 12a8 8 0 0 1 16 0" strokeLinecap="round" />
