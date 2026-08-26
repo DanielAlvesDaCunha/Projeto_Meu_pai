@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { logoutAdmin, logoutUser } from "@/lib/actions/auth";
 
 type NavCategory = { slug: string; name: string };
@@ -15,7 +15,6 @@ type Props = {
 };
 
 const LINKS = [
-  { href: "/", label: "Início" },
   { href: "/promocoes", label: "Promoções" },
   { href: "/novidades", label: "Novidades" },
   { href: "/como-pedir", label: "Como pedir" },
@@ -35,9 +34,15 @@ function accountLabel(user: Props["user"]) {
 }
 
 export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Props) {
+  const [produtosOpen, setProdutosOpen] = useState(false);
+
   useEffect(() => {
     document.body.classList.toggle("menu-open", open);
     return () => document.body.classList.remove("menu-open");
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) setProdutosOpen(false);
   }, [open]);
 
   useEffect(() => {
@@ -67,12 +72,35 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
           <Link href="/" onClick={onClose}>
             Início
           </Link>
-          {categories.map((cat) => (
-            <Link key={cat.slug} href={`/${cat.slug}`} onClick={onClose}>
-              {cat.name}
-            </Link>
-          ))}
-          {LINKS.slice(1).map((link) => (
+
+          <button
+            type="button"
+            className={`nav-mobile-accordion${produtosOpen ? " is-open" : ""}`}
+            aria-expanded={produtosOpen}
+            onClick={() => setProdutosOpen((v) => !v)}
+          >
+            Produtos
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+              <path fill="currentColor" d="M7 10l5 5 5-5z" />
+            </svg>
+          </button>
+          {produtosOpen && (
+            <div className="nav-mobile-sub">
+              {categories.map((cat) => (
+                <Link key={cat.slug} href={`/${cat.slug}`} onClick={onClose}>
+                  {cat.name}
+                </Link>
+              ))}
+              <Link href="/promocoes" onClick={onClose}>
+                Promoções
+              </Link>
+              <Link href="/novidades" onClick={onClose}>
+                Novidades
+              </Link>
+            </div>
+          )}
+
+          {LINKS.map((link) => (
             <Link key={link.href} href={link.href} onClick={onClose}>
               {link.label}
             </Link>
