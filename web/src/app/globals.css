@@ -71,7 +71,7 @@ img { max-width: 100%; display: block; }
 
 .head-social-bar {
   background: #2a3824;
-  max-height: 36px;
+  max-height: 28px;
   opacity: 1;
   overflow: hidden;
   transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
@@ -83,8 +83,8 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
-  padding: 0.35rem 0;
+  gap: 0.85rem;
+  padding: 0.28rem 0;
 }
 
 .head-social-inner a {
@@ -92,6 +92,7 @@ img { max-width: 100%; display: block; }
   opacity: 0.95;
   display: inline-flex;
   line-height: 0;
+  transform: scale(0.9);
 }
 
 .head-social-inner a:hover {
@@ -101,17 +102,17 @@ img { max-width: 100%; display: block; }
 .head-inner {
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
-  padding: 0.7rem 0 0.65rem;
+  padding: 0.45rem 0 0.4rem;
   transition: padding 0.25s ease;
 }
 
 .head-main.is-compact .head-inner {
-  padding: 0.4rem 0 0.35rem;
+  padding: 0.3rem 0 0.25rem;
 }
 
 .head-main.is-compact .logo-mark {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
 }
 
 .head-main.is-compact .logo-tagline {
@@ -123,7 +124,7 @@ img { max-width: 100%; display: block; }
 }
 
 .head-main.is-compact .head-search {
-  min-height: 34px;
+  min-height: 32px;
 }
 
 .head-main.is-compact .util-item span,
@@ -132,47 +133,47 @@ img { max-width: 100%; display: block; }
 }
 
 .head-main.is-compact .head-utilities {
-  gap: 0.95rem;
+  gap: 0.85rem;
 }
 
 .head-main.is-compact .nav-desktop {
-  padding: 0.4rem 1rem 0.5rem;
-  gap: 1.25rem;
+  padding: 0.3rem 1rem 0.4rem;
+  gap: 1.1rem;
 }
 
 .head-main.is-compact .nav-desktop a,
 .head-main.is-compact .nav-produtos-btn {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
 }
 
 .head-top {
   display: grid;
-  grid-template-columns: minmax(120px, 170px) 1fr minmax(180px, 220px);
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0.75rem 1.25rem;
+  gap: 0.65rem 1rem;
 }
 
-/* Logo: círculo em cima, nome embaixo — igual 2ª foto */
+/* Logo ao lado do nome — bem mais baixo */
 .head-logo {
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.45rem;
   color: var(--header-fg);
   justify-self: start;
-  text-align: center;
+  text-align: left;
 }
 
 .logo-stack {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  align-items: center;
+  gap: 0.05rem;
+  align-items: flex-start;
 }
 
 .logo-mark {
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   border-radius: 999px;
   flex-shrink: 0;
   background:
@@ -181,22 +182,22 @@ img { max-width: 100%; display: block; }
     radial-gradient(circle at 68% 58%, #9a7d55 0 11%, transparent 12%),
     radial-gradient(circle at 50% 72%, rgba(255,255,255,0.15) 0 20%, transparent 21%),
     rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(255, 255, 255, 0.45);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .logo-text {
   font-family: var(--font);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   letter-spacing: 0.01em;
-  line-height: 1.1;
+  line-height: 1.05;
   text-transform: none;
   max-width: 10rem;
 }
 
 .logo-tagline {
-  font-size: 0.45rem;
+  font-size: 0.42rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -206,21 +207,21 @@ img { max-width: 100%; display: block; }
 .head-search {
   display: flex;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   background: #f3efe6;
-  max-width: 560px;
+  max-width: 520px;
   width: 100%;
   justify-self: center;
-  min-height: 40px;
+  min-height: 34px;
 }
 
 .head-search input {
   border: 0;
   outline: none;
   flex: 1;
-  padding: 0.55rem 1rem;
-  font-size: 0.86rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
   min-width: 0;
   background: transparent;
   color: var(--text);
@@ -256,9 +257,9 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.2rem;
   color: var(--header-fg);
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
@@ -267,6 +268,12 @@ img { max-width: 100%; display: block; }
   cursor: pointer;
   padding: 0;
   text-decoration: none;
+}
+
+.util-item svg,
+.cart-toggle-utility svg {
+  width: 20px;
+  height: 20px;
 }
 
 .util-item span,
@@ -342,8 +349,8 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  padding: 0.55rem 1rem 0.65rem;
+  gap: 1.25rem;
+  padding: 0.4rem 1rem 0.5rem;
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
 }
@@ -351,7 +358,7 @@ img { max-width: 100%; display: block; }
 .nav-desktop a,
 .nav-produtos-btn {
   color: var(--header-fg);
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 400;
   letter-spacing: 0.01em;
   text-transform: none;
@@ -359,10 +366,10 @@ img { max-width: 100%; display: block; }
   border: 0;
   cursor: pointer;
   font-family: inherit;
-  padding: 0.15rem 0;
+  padding: 0.1rem 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
   position: relative;
 }
 
