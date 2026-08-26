@@ -15,9 +15,9 @@ type Props = {
 };
 
 const LINKS = [
+  { href: "/como-pedir", label: "Como pedir" },
   { href: "/promocoes", label: "Promoções" },
   { href: "/novidades", label: "Novidades" },
-  { href: "/como-pedir", label: "Como pedir" },
   { href: "/contato", label: "Contato" },
 ] as const;
 

@@ -12,18 +12,13 @@ export async function SiteHeader() {
   const user = await getSessionUser();
 
   return (
-    <>
-      <div className="adbar">
-        Pedidos pelo WhatsApp · envio ou retirada combinados na conversa
-      </div>
-      <SiteHeaderClient
-        storeName={store.storeName}
-        storeTagline="SUCULENTAS & CACTOS"
-        whatsappUrl={wa}
-        categories={categories}
-        user={user}
-      />
-    </>
+    <SiteHeaderClient
+      storeName={store.storeName}
+      storeTagline="SUCULENTAS & CACTOS"
+      whatsappUrl={wa}
+      categories={categories}
+      user={user}
+    />
   );
 }
 

@@ -100,11 +100,10 @@ export function CartButton({ variant = "icon" }: { variant?: "icon" | "utility" 
 
   return (
     <button type="button" className={cls} onClick={openDrawer} aria-label="Meu carrinho">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2L21 5H6.2L5.3 2H1v2h2.4l3.6 8.6-.9 1.6c-.4.8.2 1.8 1.1 1.8z"
-        />
+      {/* Cesta (não o carrinho clássico da referência) */}
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M4.5 9.5h15l-1.2 9.2a2 2 0 0 1-2 1.8H7.7a2 2 0 0 1-2-1.8L4.5 9.5z" strokeLinejoin="round" />
+        <path d="M8.5 9.5V7a3.5 3.5 0 0 1 7 0v2.5" strokeLinecap="round" />
       </svg>
       {variant === "utility" && <span>Meu carrinho</span>}
       <span className="cart-badge">{count}</span>
