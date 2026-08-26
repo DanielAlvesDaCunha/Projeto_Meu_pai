@@ -55,9 +55,9 @@ img { max-width: 100%; display: block; }
   z-index: 40;
 }
 
-/* Faixa 1 — redes (mais escura, como na referência) */
+/* Faixa 1 — redes bem escura (como 2ª foto) */
 .head-social-bar {
-  background: color-mix(in srgb, var(--header-bg) 55%, #000);
+  background: #2a3824;
 }
 
 .head-social-inner {
@@ -66,13 +66,13 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
-  padding: 0.45rem 0;
+  gap: 1.15rem;
+  padding: 0.5rem 0;
 }
 
 .head-social-inner a {
-  color: var(--header-fg);
-  opacity: 0.9;
+  color: #fff;
+  opacity: 0.95;
   display: inline-flex;
   line-height: 0;
 }
@@ -84,98 +84,99 @@ img { max-width: 100%; display: block; }
 .head-inner {
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
-  padding: 1rem 0 1.05rem;
+  padding: 1.15rem 0 1.1rem;
 }
 
 .head-top {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(140px, 200px) 1fr minmax(200px, 240px);
   align-items: center;
-  gap: 1rem 1.5rem;
+  gap: 1rem 1.75rem;
 }
 
-/* Logo empilhado (marca em cima do nome), como na referência */
+/* Logo: círculo em cima, nome embaixo — igual 2ª foto */
 .head-logo {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   color: var(--header-fg);
   justify-self: start;
   text-align: center;
-  min-width: 120px;
 }
 
 .logo-stack {
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
+  gap: 0.15rem;
   align-items: center;
 }
 
 .logo-mark {
-  width: 52px;
-  height: 52px;
+  width: 64px;
+  height: 64px;
   border-radius: 999px;
   flex-shrink: 0;
   background:
-    radial-gradient(circle at 50% 36%, #9bb585 0 16%, transparent 17%),
-    radial-gradient(circle at 34% 58%, #c4d2b0 0 12%, transparent 13%),
-    radial-gradient(circle at 66% 58%, #8a6f4e 0 12%, transparent 13%),
-    rgba(255, 255, 255, 0.1);
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
+    radial-gradient(circle at 50% 34%, #b4c79a 0 14%, transparent 15%),
+    radial-gradient(circle at 32% 58%, #d5e0c4 0 11%, transparent 12%),
+    radial-gradient(circle at 68% 58%, #9a7d55 0 11%, transparent 12%),
+    radial-gradient(circle at 50% 72%, rgba(255,255,255,0.15) 0 20%, transparent 21%),
+    rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .logo-text {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 0.95rem;
   letter-spacing: 0.01em;
-  line-height: 1.1;
+  line-height: 1.15;
   text-transform: none;
+  max-width: 11rem;
 }
 
 .logo-tagline {
-  font-size: 0.52rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
 .head-search {
   display: flex;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  background: #fff;
-  max-width: 560px;
+  background: #f3efe6;
+  max-width: 580px;
   width: 100%;
   justify-self: center;
-  min-height: 44px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  min-height: 46px;
 }
 
 .head-search input {
   border: 0;
   outline: none;
   flex: 1;
-  padding: 0.7rem 1.1rem;
-  font-size: 0.9rem;
+  padding: 0.75rem 1.15rem;
+  font-size: 0.92rem;
   min-width: 0;
   background: transparent;
   color: var(--text);
 }
 
 .head-search input::placeholder {
-  color: #a8a59e;
+  color: #9a958c;
 }
 
 .head-search button {
   border: 0;
   background: transparent;
   color: #6b6760;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.05rem;
   cursor: pointer;
   display: inline-flex;
 }
@@ -189,7 +190,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 1.6rem;
+  gap: 1.75rem;
 }
 
 .util-item,
@@ -197,11 +198,11 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   color: var(--header-fg);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
   text-transform: none;
   background: transparent;
   border: 0;
@@ -267,15 +268,15 @@ img { max-width: 100%; display: block; }
 
 .cart-toggle-utility .cart-badge {
   top: -4px;
-  right: 10px;
+  right: 12px;
   background: #1a1a1a;
   color: #fff;
 }
 
-/* Faixa 3 — nav (tom um pouco mais escuro) */
+/* Faixa 3 — mesma cor do header (como 2ª foto), só com linha sutil */
 .head-nav-bar {
-  background: color-mix(in srgb, var(--header-bg) 78%, #000);
-  border-top: 1px solid var(--header-line);
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .nav-desktop {
@@ -283,8 +284,8 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 1.75rem;
-  padding: 0.85rem 1rem;
+  gap: 2rem;
+  padding: 0.95rem 1rem 1.05rem;
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
 }
@@ -292,24 +293,24 @@ img { max-width: 100%; display: block; }
 .nav-desktop a,
 .nav-produtos-btn {
   color: var(--header-fg);
-  font-size: 0.84rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   text-transform: none;
   background: transparent;
   border: 0;
   cursor: pointer;
   font-family: inherit;
-  padding: 0.15rem 0;
+  padding: 0.2rem 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   position: relative;
 }
 
 .nav-desktop a:hover,
 .nav-produtos-btn:hover {
-  opacity: 0.9;
+  opacity: 0.88;
 }
 
 .nav-desktop a.is-active::after,
@@ -318,9 +319,9 @@ img { max-width: 100%; display: block; }
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.35rem;
+  bottom: -0.4rem;
   height: 2px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 2px;
 }
 
@@ -2117,11 +2118,17 @@ body.menu-open {
 
 @media (min-width: 901px) {
   .head-top {
-    grid-template-columns: minmax(180px, 1fr) minmax(280px, 520px) minmax(220px, 1fr);
+    grid-template-columns: minmax(150px, 200px) minmax(320px, 580px) minmax(220px, 260px);
+    justify-content: space-between;
   }
 
   .head-logo {
     justify-self: start;
+  }
+
+  .head-search {
+    justify-self: stretch;
+    max-width: none;
   }
 
   .head-utilities {
