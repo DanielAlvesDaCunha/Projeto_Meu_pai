@@ -71,7 +71,7 @@ img { max-width: 100%; display: block; }
 
 .head-social-bar {
   background: #2a3824;
-  max-height: 48px;
+  max-height: 36px;
   opacity: 1;
   overflow: hidden;
   transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
@@ -83,8 +83,8 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1.15rem;
-  padding: 0.5rem 0;
+  gap: 1rem;
+  padding: 0.35rem 0;
 }
 
 .head-social-inner a {
@@ -101,17 +101,17 @@ img { max-width: 100%; display: block; }
 .head-inner {
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
-  padding: 1.15rem 0 1.1rem;
+  padding: 0.7rem 0 0.65rem;
   transition: padding 0.25s ease;
 }
 
 .head-main.is-compact .head-inner {
-  padding: 0.55rem 0 0.5rem;
+  padding: 0.4rem 0 0.35rem;
 }
 
 .head-main.is-compact .logo-mark {
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
 }
 
 .head-main.is-compact .logo-tagline {
@@ -119,11 +119,11 @@ img { max-width: 100%; display: block; }
 }
 
 .head-main.is-compact .logo-text {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .head-main.is-compact .head-search {
-  min-height: 38px;
+  min-height: 34px;
 }
 
 .head-main.is-compact .util-item span,
@@ -132,24 +132,24 @@ img { max-width: 100%; display: block; }
 }
 
 .head-main.is-compact .head-utilities {
-  gap: 1.1rem;
+  gap: 0.95rem;
 }
 
 .head-main.is-compact .nav-desktop {
-  padding: 0.55rem 1rem 0.65rem;
-  gap: 1.4rem;
+  padding: 0.4rem 1rem 0.5rem;
+  gap: 1.25rem;
 }
 
 .head-main.is-compact .nav-desktop a,
 .head-main.is-compact .nav-produtos-btn {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .head-top {
   display: grid;
-  grid-template-columns: minmax(140px, 200px) 1fr minmax(200px, 240px);
+  grid-template-columns: minmax(120px, 170px) 1fr minmax(180px, 220px);
   align-items: center;
-  gap: 1rem 1.75rem;
+  gap: 0.75rem 1.25rem;
 }
 
 /* Logo: círculo em cima, nome embaixo — igual 2ª foto */
@@ -157,7 +157,7 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.25rem;
   color: var(--header-fg);
   justify-self: start;
   text-align: center;
@@ -166,13 +166,13 @@ img { max-width: 100%; display: block; }
 .logo-stack {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
   align-items: center;
 }
 
 .logo-mark {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   border-radius: 999px;
   flex-shrink: 0;
   background:
@@ -188,17 +188,17 @@ img { max-width: 100%; display: block; }
 .logo-text {
   font-family: var(--font);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   letter-spacing: 0.01em;
-  line-height: 1.15;
+  line-height: 1.1;
   text-transform: none;
-  max-width: 11rem;
+  max-width: 10rem;
 }
 
 .logo-tagline {
-  font-size: 0.5rem;
+  font-size: 0.45rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.8;
 }
@@ -206,21 +206,21 @@ img { max-width: 100%; display: block; }
 .head-search {
   display: flex;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
   background: #f3efe6;
-  max-width: 580px;
+  max-width: 560px;
   width: 100%;
   justify-self: center;
-  min-height: 46px;
+  min-height: 40px;
 }
 
 .head-search input {
   border: 0;
   outline: none;
   flex: 1;
-  padding: 0.75rem 1.15rem;
-  font-size: 0.92rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.86rem;
   min-width: 0;
   background: transparent;
   color: var(--text);
@@ -248,7 +248,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 1.75rem;
+  gap: 1.25rem;
 }
 
 .util-item,
@@ -342,8 +342,8 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
-  padding: 0.95rem 1rem 1.05rem;
+  gap: 1.5rem;
+  padding: 0.55rem 1rem 0.65rem;
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
 }
@@ -351,7 +351,7 @@ img { max-width: 100%; display: block; }
 .nav-desktop a,
 .nav-produtos-btn {
   color: var(--header-fg);
-  font-size: 0.92rem;
+  font-size: 0.84rem;
   font-weight: 400;
   letter-spacing: 0.01em;
   text-transform: none;
@@ -359,10 +359,10 @@ img { max-width: 100%; display: block; }
   border: 0;
   cursor: pointer;
   font-family: inherit;
-  padding: 0.2rem 0;
+  padding: 0.15rem 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.25rem;
   position: relative;
 }
 
