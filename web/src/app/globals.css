@@ -53,11 +53,28 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 40;
+  transition: box-shadow 0.2s ease;
 }
 
-/* Faixa 1 — redes bem escura (como 2ª foto) */
+.head-main.is-compact {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.head-main.is-compact .head-social-bar {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+  pointer-events: none;
+  border: 0;
+}
+
 .head-social-bar {
   background: #2a3824;
+  max-height: 48px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
 }
 
 .head-social-inner {
@@ -85,6 +102,47 @@ img { max-width: 100%; display: block; }
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
   padding: 1.15rem 0 1.1rem;
+  transition: padding 0.25s ease;
+}
+
+.head-main.is-compact .head-inner {
+  padding: 0.55rem 0 0.5rem;
+}
+
+.head-main.is-compact .logo-mark {
+  width: 42px;
+  height: 42px;
+}
+
+.head-main.is-compact .logo-tagline {
+  display: none;
+}
+
+.head-main.is-compact .logo-text {
+  font-size: 0.82rem;
+}
+
+.head-main.is-compact .head-search {
+  min-height: 38px;
+}
+
+.head-main.is-compact .util-item span,
+.head-main.is-compact .cart-toggle-utility span:not(.cart-badge) {
+  display: none;
+}
+
+.head-main.is-compact .head-utilities {
+  gap: 1.1rem;
+}
+
+.head-main.is-compact .nav-desktop {
+  padding: 0.55rem 1rem 0.65rem;
+  gap: 1.4rem;
+}
+
+.head-main.is-compact .nav-desktop a,
+.head-main.is-compact .nav-produtos-btn {
+  font-size: 0.82rem;
 }
 
 .head-top {

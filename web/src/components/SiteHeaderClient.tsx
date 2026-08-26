@@ -104,7 +104,15 @@ export function SiteHeaderClient({
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!produtosOpen) return;
@@ -128,7 +136,7 @@ export function SiteHeaderClient({
 
   return (
     <>
-      <header className="head-main">
+      <header className={`head-main${scrolled ? " is-compact" : ""}`}>
         {/* Faixa 1 — redes */}
         <div className="head-social-bar head-desktop-only">
           <div className="head-social-inner">
