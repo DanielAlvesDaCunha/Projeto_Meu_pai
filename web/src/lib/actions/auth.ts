@@ -112,6 +112,69 @@ export async function loginUser(
   return { ok: true };
 }
 
+/** Login exclusivo do painel — só conta ADMIN. */
+export async function loginAdmin(
+  _prev: AuthFormState,
+  formData: FormData
+): Promise<AuthFormState> {
+  const email = String(formData.get("email") || "")
+    .trim()
+    .toLowerCase();
+  const password = String(formData.get("password") || "");
+  const callbackUrl = String(formData.get("callbackUrl") || "/admin");
+
+  if (!email || !password) {
+    return { error: "Informe e-mail e senha." };
+  }
+
+  if (!hasUsableDatabaseUrl()) {
+    return { error: describeDatabaseUrlIssue() || "Banco de dados indisponível." };
+  }
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user?.passwordHash) {
+    return { error: "E-mail ou senha inválidos." };
+  }
+
+  const ok = await bcrypt.compare(password, user.passwordHash);
+  if (!ok) {
+    return { error: "E-mail ou senha inválidos." };
+  }
+
+  const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+
+  const willBeAdmin = user.role === "ADMIN" || adminEmails.includes(email);
+  if (!willBeAdmin) {
+    return {
+      error:
+        "Esta conta não é de lojista. Peça para colocar este e-mail em ADMIN_EMAIL na Vercel, ou use a conta admin.",
+    };
+  }
+
+  const redirectTo =
+    callbackUrl.startsWith("/admin") && !callbackUrl.startsWith("/admin/entrar")
+      ? callbackUrl
+      : "/admin";
+
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return { error: "E-mail ou senha inválidos." };
+    }
+    throw error;
+  }
+
+  return { ok: true };
+}
+
 export async function logoutUser() {
   await signOut({ redirectTo: "/" });
 }

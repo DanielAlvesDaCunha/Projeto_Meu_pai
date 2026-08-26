@@ -2,12 +2,12 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { loginUser, type AuthFormState } from "@/lib/actions/auth";
+import { loginAdmin, type AuthFormState } from "@/lib/actions/auth";
 
 const initial: AuthFormState = {};
 
 export function AdminLoginForm({ callbackUrl = "/admin" }: { callbackUrl?: string }) {
-  const [state, action, pending] = useActionState(loginUser, initial);
+  const [state, action, pending] = useActionState(loginAdmin, initial);
 
   return (
     <div className="admin-auth-page">

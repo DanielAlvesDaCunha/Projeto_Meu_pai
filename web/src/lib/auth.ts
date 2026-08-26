@@ -2,7 +2,9 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { authConfig } from "@/lib/auth.config";
 import type { Role } from "@prisma/client";
+import "next-auth/jwt";
 
 declare module "next-auth" {
   interface User {
@@ -30,13 +32,8 @@ function authSecret() {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  // Credentials + JWT: no adapter (PrismaAdapter breaks callback on many Vercel setups).
-  session: { strategy: "jwt" },
-  trustHost: true,
+  ...authConfig,
   secret: authSecret(),
-  pages: {
-    signIn: "/entrar",
-  },
   providers: [
     Credentials({
       name: "credentials",
@@ -57,37 +54,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const ok = await bcrypt.compare(password, user.passwordHash);
         if (!ok) return null;
 
+        // Promove automaticamente e-mails listados em ADMIN_EMAIL
+        const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
+          .split(",")
+          .map((e) => e.trim().toLowerCase())
+          .filter(Boolean);
+        let role = user.role;
+        if (adminEmails.includes(user.email) && role !== "ADMIN") {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { role: "ADMIN" },
+          });
+          role = "ADMIN";
+        }
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role,
         };
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-      } else if (token.id) {
-        const dbUser = await prisma.user.findUnique({
-          where: { id: String(token.id) },
-          select: { role: true },
-        });
-        if (dbUser) token.role = dbUser.role;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = String(token.id || "");
-        session.user.role = (token.role as Role) || "CUSTOMER";
-      }
-      return session;
-    },
-  },
 });
 
 export async function requireUser() {

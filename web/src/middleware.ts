@@ -1,58 +1,49 @@
+import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { authConfig } from "@/lib/auth.config";
 
-export async function middleware(req: NextRequest) {
+const { auth } = NextAuth({
+  ...authConfig,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || process.env.SECRET_KEY,
+});
+
+export default auth((req) => {
   const { pathname } = req.nextUrl;
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || process.env.SECRET_KEY,
-  });
-
-  const isLoggedIn = !!token;
-  const role = (token?.role as string) || "CUSTOMER";
+  const isLoggedIn = !!req.auth?.user?.id;
+  const role = req.auth?.user?.role || "CUSTOMER";
 
   if (pathname.startsWith("/admin")) {
     if (pathname === "/admin/entrar" || pathname.startsWith("/admin/entrar/")) {
       if (isLoggedIn && role === "ADMIN") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/admin";
-        url.search = "";
-        return NextResponse.redirect(url);
+        return NextResponse.redirect(new URL("/admin", req.nextUrl));
       }
       return NextResponse.next();
     }
 
     if (!isLoggedIn) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/admin/entrar";
+      const url = new URL("/admin/entrar", req.nextUrl);
       url.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(url);
     }
 
     if (role !== "ADMIN") {
-      const url = req.nextUrl.clone();
-      url.pathname = "/conta";
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL("/conta", req.nextUrl));
     }
   }
 
   if (pathname.startsWith("/conta")) {
     if (!isLoggedIn) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/entrar";
+      const url = new URL("/entrar", req.nextUrl);
       url.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(url);
     }
     if (role === "ADMIN") {
-      const url = req.nextUrl.clone();
-      url.pathname = "/admin";
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL("/admin", req.nextUrl));
     }
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: ["/admin", "/admin/:path*", "/conta", "/conta/:path*"],
