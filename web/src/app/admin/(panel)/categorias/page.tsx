@@ -13,46 +13,44 @@ export default async function AdminCategoriesPage() {
   return (
     <section className="section admin-page">
       <div className="category-head">
-        <h2>Categorias</h2>
+        <h2>Tipos / categorias</h2>
       </div>
+      <p className="muted" style={{ marginBottom: "1rem" }}>
+        Marque “Em breve no estoque” nos tipos que ainda vão entrar na loja.
+      </p>
       <div className="checkout-panel" style={{ marginBottom: "1.5rem" }}>
-        <h3>Nova categoria</h3>
+        <h3>Novo tipo</h3>
         <CategoryForm />
       </div>
-      <div className="admin-table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Slug</th>
-              <th>Ordem</th>
-              <th>Produtos</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((c) => (
-              <tr key={c.id}>
-                <td colSpan={5}>
-                  <CategoryForm
-                    category={{ id: c.id, name: c.name, slug: c.slug, order: c.order }}
-                  />
-                  <div className="muted" style={{ fontSize: "0.8rem", marginTop: 4 }}>
-                    {c._count.products} produto(s)
-                    {c._count.products === 0 && (
-                      <form action={deleteCategory} style={{ display: "inline", marginLeft: 12 }}>
-                        <input type="hidden" name="id" value={c.id} />
-                        <button type="submit" className="link-danger">
-                          Excluir
-                        </button>
-                      </form>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="admin-category-list">
+        {categories.map((c) => (
+          <div key={c.id} className="checkout-panel" style={{ marginBottom: "1rem" }}>
+            <div className="admin-cat-meta">
+              <span>
+                {c._count.products} produto(s)
+                {c.comingSoon ? " · Em breve no estoque" : " · Ativo"}
+              </span>
+              {c._count.products === 0 && (
+                <form action={deleteCategory}>
+                  <input type="hidden" name="id" value={c.id} />
+                  <button type="submit" className="link-danger">
+                    Excluir
+                  </button>
+                </form>
+              )}
+            </div>
+            <CategoryForm
+              category={{
+                id: c.id,
+                name: c.name,
+                slug: c.slug,
+                order: c.order,
+                comingSoon: c.comingSoon,
+                description: c.description,
+              }}
+            />
+          </div>
+        ))}
       </div>
     </section>
   );

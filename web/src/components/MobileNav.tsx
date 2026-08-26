@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { logoutAdmin, logoutUser } from "@/lib/actions/auth";
 
-type NavCategory = { slug: string; name: string };
+type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
 type Props = {
   open: boolean;
@@ -73,13 +73,20 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
             Início
           </Link>
 
+          <Link
+            href="/produtos"
+            className="nav-mobile-link-produtos"
+            onClick={onClose}
+          >
+            Produtos
+          </Link>
           <button
             type="button"
             className={`nav-mobile-accordion${produtosOpen ? " is-open" : ""}`}
             aria-expanded={produtosOpen}
             onClick={() => setProdutosOpen((v) => !v)}
           >
-            Produtos
+            Tipos
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
               <path fill="currentColor" d="M7 10l5 5 5-5z" />
             </svg>
@@ -89,8 +96,12 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
               {categories.map((cat) => (
                 <Link key={cat.slug} href={`/${cat.slug}`} onClick={onClose}>
                   {cat.name}
+                  {cat.comingSoon ? <span className="nav-soon">Em breve</span> : null}
                 </Link>
               ))}
+              <Link href="/suculentas" onClick={onClose}>
+                Suculentas
+              </Link>
               <Link href="/promocoes" onClick={onClose}>
                 Promoções
               </Link>

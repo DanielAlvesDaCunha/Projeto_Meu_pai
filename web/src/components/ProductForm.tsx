@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { saveProduct, type AdminFormState } from "@/lib/actions/admin";
+import { parseGallery } from "@/lib/money";
 
 const initial: AdminFormState = {};
 
@@ -17,6 +18,7 @@ type ProductFormValues = {
   oldPrice?: string;
   stock?: number;
   image?: string;
+  gallery?: string;
   featured?: boolean;
   available?: boolean;
 };
@@ -30,9 +32,13 @@ export function ProductForm({
 }) {
   const [state, action, pending] = useActionState(saveProduct, initial);
   const [image, setImage] = useState(product?.image || "");
+  const [galleryText, setGalleryText] = useState(() => {
+    const extras = parseGallery(product?.gallery || "[]", "").filter((u) => u !== product?.image);
+    return extras.join("\n");
+  });
   const [uploading, setUploading] = useState(false);
 
-  async function onUpload(file: File | null) {
+  async function onUpload(file: File | null, asExtra = false) {
     if (!file) return;
     setUploading(true);
     try {
@@ -41,7 +47,11 @@ export function ProductForm({
       const res = await fetch("/api/admin/upload", { method: "POST", body });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Falha no upload");
-      setImage(data.url);
+      if (asExtra) {
+        setGalleryText((prev) => (prev ? `${prev}\n${data.url}` : data.url));
+      } else {
+        setImage(data.url);
+      }
     } catch (err) {
       alert(err instanceof Error ? err.message : "Erro no upload");
     } finally {
@@ -63,7 +73,7 @@ export function ProductForm({
         <input id="sku" name="sku" defaultValue={product?.sku || ""} required />
       </div>
       <div className="form-field">
-        <label htmlFor="categoryId">Categoria</label>
+        <label htmlFor="categoryId">Tipo (Gibbiflora, Echeveria…)</label>
         <select
           id="categoryId"
           name="categoryId"
@@ -98,7 +108,7 @@ export function ProductForm({
           />
         </div>
         <div className="form-field">
-          <label htmlFor="oldPrice">Preço antigo (promo)</label>
+          <label htmlFor="oldPrice">Preço antigo (promoção / riscado)</label>
           <input
             id="oldPrice"
             name="oldPrice"
@@ -108,7 +118,7 @@ export function ProductForm({
         </div>
       </div>
       <div className="form-field">
-        <label htmlFor="stock">Estoque (quantidade)</label>
+        <label htmlFor="stock">Estoque (0 = Esgotado na vitrine)</label>
         <input
           id="stock"
           name="stock"
@@ -119,26 +129,42 @@ export function ProductForm({
         />
       </div>
       <div className="form-field">
-        <label htmlFor="photo">Foto do anúncio</label>
+        <label htmlFor="photo">Foto principal</label>
         <input
           id="photo"
           type="file"
           accept="image/*"
-          onChange={(e) => onUpload(e.target.files?.[0] || null)}
+          onChange={(e) => onUpload(e.target.files?.[0] || null, false)}
         />
-        {uploading && <p className="muted">Enviando foto…</p>}
         {image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={image} alt="Preview" className="admin-thumb" />
         )}
       </div>
+      <div className="form-field">
+        <label htmlFor="gallery">Fotos extras (uma URL por linha — setas laterais na vitrine)</label>
+        <textarea
+          id="gallery"
+          name="gallery"
+          rows={3}
+          value={galleryText}
+          onChange={(e) => setGalleryText(e.target.value)}
+          placeholder="https://..."
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => onUpload(e.target.files?.[0] || null, true)}
+        />
+        {uploading && <p className="muted">Enviando foto…</p>}
+      </div>
       <label className="check-row">
         <input name="featured" type="checkbox" defaultChecked={product?.featured} />
-        Destaque (Promoções)
+        Promoção na home (lista em /promocoes)
       </label>
       <label className="check-row">
         <input name="available" type="checkbox" defaultChecked={product?.available ?? true} />
-        Disponível para venda
+        Visível na loja (desmarque para ocultar; estoque 0 = Esgotado)
       </label>
       {state.error && <p className="form-error">{state.error}</p>}
       <button type="submit" className="btn-buy" disabled={pending || uploading}>

@@ -12,6 +12,7 @@ type CatWithProducts = {
   name: string;
   slug: string;
   order: number;
+  comingSoon?: boolean;
   products: Array<{
     id: number;
     name: string;
@@ -21,6 +22,7 @@ type CatWithProducts = {
     oldPrice: { toString(): string } | number | null;
     image: string;
     featured: boolean;
+    stock?: number;
   }>;
 };
 
@@ -121,20 +123,27 @@ export default async function HomePage() {
 
       <section className="container section" id="categorias">
         <div className="section-title">
-          <h2>Compre por categoria:</h2>
+          <h2>Compre por tipo:</h2>
         </div>
         <div className="category-grid">
           {categories.map((cat) => {
             const img = cat.products[0]?.image;
             return (
-              <Link key={cat.slug} className="category-card" href={`/${cat.slug}`}>
+              <Link
+                key={cat.slug}
+                className={`category-card${cat.comingSoon ? " is-coming-soon" : ""}`}
+                href={`/${cat.slug}`}
+              >
                 {img ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={img} alt={cat.name} loading="lazy" />
                 ) : (
                   <div className="category-fallback" />
                 )}
-                <span className="category-label">{cat.name}</span>
+                <span className="category-label">
+                  {cat.name}
+                  {cat.comingSoon ? <span className="cat-soon-tag">Em breve</span> : null}
+                </span>
               </Link>
             );
           })}
@@ -159,24 +168,27 @@ export default async function HomePage() {
 
       <section className="banner-trio">
         <div className="banner-grid">
-          {categories.map((cat) => {
-            const img = cat.products[0]?.image;
-            return (
-              <Link key={cat.slug} className="banner-panel" href={`/${cat.slug}`}>
-                {img ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img} alt={cat.name} loading="lazy" />
-                ) : (
-                  <div className="category-fallback" style={{ height: "100%" }} />
-                )}
-                <div className="banner-overlay">
-                  <h3>{cat.name}</h3>
-                  <p>Novidades</p>
-                  <span className="btn-buy btn-sm-banner">Ver mais</span>
-                </div>
-              </Link>
-            );
-          })}
+          {categories
+            .filter((cat) => !cat.comingSoon)
+            .slice(0, 3)
+            .map((cat) => {
+              const img = cat.products[0]?.image;
+              return (
+                <Link key={cat.slug} className="banner-panel" href={`/${cat.slug}`}>
+                  {img ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={img} alt={cat.name} loading="lazy" />
+                  ) : (
+                    <div className="category-fallback" style={{ height: "100%" }} />
+                  )}
+                  <div className="banner-overlay">
+                    <h3>{cat.name}</h3>
+                    <p>Novidades</p>
+                    <span className="btn-buy btn-sm-banner">Ver mais</span>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
       </section>
 

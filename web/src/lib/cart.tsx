@@ -26,6 +26,7 @@ type CartContextValue = {
   pixTotal: number;
   drawerOpen: boolean;
   toast: string;
+  whatsappNumber: string;
   openDrawer: () => void;
   closeDrawer: () => void;
   addItem: (product: Omit<CartItem, "qty">, qty?: number) => void;
@@ -177,6 +178,7 @@ export function CartProvider({
     pixTotal,
     drawerOpen,
     toast,
+    whatsappNumber,
     openDrawer: () => setDrawerOpen(true),
     closeDrawer: () => setDrawerOpen(false),
     addItem,

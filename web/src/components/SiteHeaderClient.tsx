@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { CartButton } from "@/components/CartUI";
 import { MobileNav } from "@/components/MobileNav";
 
-type NavCategory = { slug: string; name: string };
+type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
 type Props = {
   storeName: string;
@@ -190,19 +190,19 @@ export function SiteHeaderClient({
                 Início
               </Link>
 
-              <button
-                type="button"
-                className={`nav-produtos-btn${produtosOpen ? " is-open" : ""}`}
+              <Link
+                href="/produtos"
+                className={`nav-produtos-btn${produtosOpen || pathname === "/produtos" ? " is-open" : ""}${pathname === "/produtos" ? " is-active" : ""}`}
                 aria-expanded={produtosOpen}
                 aria-controls="mega-produtos"
-                onClick={() => setProdutosOpen((v) => !v)}
                 onMouseEnter={() => setProdutosOpen(true)}
+                onClick={() => setProdutosOpen(false)}
               >
                 Produtos
                 <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden>
                   <path fill="currentColor" d="M6.7 9.3 12 14.6l5.3-5.3 1.4 1.4L12 17.4 5.3 10.7z" />
                 </svg>
-              </button>
+              </Link>
 
               {NAV_AFTER.map((link) => (
                 <Link
@@ -224,27 +224,31 @@ export function SiteHeaderClient({
           >
             <div className="mega-menu-inner">
               <div className="mega-col">
-                <strong>Destaques</strong>
+                <strong>Categorias</strong>
+                <Link href="/produtos" onClick={() => setProdutosOpen(false)}>
+                  Todos os anúncios
+                </Link>
+                <Link href="/suculentas" onClick={() => setProdutosOpen(false)}>
+                  Suculentas
+                </Link>
                 <Link href="/novidades" onClick={() => setProdutosOpen(false)}>
                   Novidades e lançamentos
                 </Link>
                 <Link href="/promocoes" onClick={() => setProdutosOpen(false)}>
                   Promoções
                 </Link>
-                <Link href="/pedido" onClick={() => setProdutosOpen(false)}>
-                  Meu pedido
-                </Link>
               </div>
               <div className="mega-col">
-                <strong>Categorias</strong>
+                <strong>Tipos</strong>
                 {categories.map((cat) => (
                   <Link key={cat.slug} href={`/${cat.slug}`} onClick={() => setProdutosOpen(false)}>
                     {cat.name}
+                    {cat.comingSoon ? <span className="nav-soon">Em breve</span> : null}
                   </Link>
                 ))}
               </div>
               <div className="mega-col">
-                <strong>Ajuda</strong>
+                <strong>Pedido</strong>
                 <Link href="/como-pedir" onClick={() => setProdutosOpen(false)}>
                   Como pedir
                 </Link>
@@ -252,7 +256,7 @@ export function SiteHeaderClient({
                   Contato
                 </Link>
                 <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                  WhatsApp
+                  WhatsApp (pagamento)
                 </a>
               </div>
             </div>

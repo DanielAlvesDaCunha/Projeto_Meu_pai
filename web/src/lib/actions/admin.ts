@@ -37,6 +37,12 @@ export async function saveProduct(
   const oldPrice = parseMoney(formData.get("oldPrice"));
   const stock = Number(formData.get("stock") || 0);
   const image = String(formData.get("image") || "").trim();
+  const galleryRaw = String(formData.get("gallery") || "").trim();
+  const galleryUrls = galleryRaw
+    .split(/\n|,/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((url) => url !== image);
   const featured = formData.get("featured") === "on";
   const available = formData.get("available") === "on";
 
@@ -53,6 +59,7 @@ export async function saveProduct(
     oldPrice: oldPrice != null ? new Prisma.Decimal(oldPrice) : null,
     stock: Number.isFinite(stock) ? Math.max(0, Math.floor(stock)) : 0,
     image,
+    gallery: JSON.stringify(galleryUrls),
     featured,
     available,
   };
@@ -93,20 +100,28 @@ export async function saveCategory(
   const idRaw = String(formData.get("id") || "");
   const name = String(formData.get("name") || "").trim();
   const order = Number(formData.get("order") || 0);
+  const description = String(formData.get("description") || "").trim();
+  const comingSoon = formData.get("comingSoon") === "on";
   let slug = String(formData.get("slug") || "").trim() || slugify(name);
 
   if (!name || !slug) return { error: "Nome e slug são obrigatórios." };
+
+  const data = {
+    name,
+    slug,
+    order: Number.isFinite(order) ? order : 0,
+    description,
+    comingSoon,
+  };
 
   try {
     if (idRaw) {
       await prisma.category.update({
         where: { id: Number(idRaw) },
-        data: { name, slug, order: Number.isFinite(order) ? order : 0 },
+        data,
       });
     } else {
-      await prisma.category.create({
-        data: { name, slug, order: Number.isFinite(order) ? order : 0 },
-      });
+      await prisma.category.create({ data });
     }
   } catch {
     return { error: "Não foi possível salvar a categoria (slug duplicado?)." };
@@ -114,6 +129,7 @@ export async function saveCategory(
 
   revalidatePath("/");
   revalidatePath("/admin/categorias");
+  revalidatePath(`/${slug}`);
   return { ok: true };
 }
 

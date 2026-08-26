@@ -1,73 +1,99 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { SortSelect } from "@/components/SortSelect";
 import { DEMO_CATEGORIES, getDemoCatalog } from "@/lib/demoCatalog";
 import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
+import { getStoreConfig, whatsappGeneralUrl } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
+
+const SUCCULENT_SLUGS = new Set([
+  "gibbifloras",
+  "echeverias",
+  "haworthia",
+  "graptopetalum",
+  "sedum",
+  "crassula",
+  "aeonium",
+  "lithops",
+]);
 
 type Props = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ de?: string; ate?: string; ordenar?: string }>;
 };
 
+type CatNav = { slug: string; name: string; comingSoon?: boolean; description?: string };
+
+function applySort<T extends { price: number; name: string; id: number }>(
+  products: T[],
+  sort: string
+): T[] {
+  const list = [...products];
+  if (sort === "menor-preco") list.sort((a, b) => a.price - b.price);
+  if (sort === "maior-preco") list.sort((a, b) => b.price - a.price);
+  if (sort === "a-z" || sort === "nome") list.sort((a, b) => a.name.localeCompare(b.name));
+  if (sort === "z-a") list.sort((a, b) => b.name.localeCompare(a.name));
+  if (sort === "mais-antigo") list.sort((a, b) => a.id - b.id);
+  if (sort === "mais-novo" || sort === "relevancia") list.sort((a, b) => b.id - a.id);
+  return list;
+}
+
 export default async function CategoryPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
 
-  // Sem banco na nuvem → mostra catálogo demo com fotos
+  if (slug === "suculentas") {
+    const qs = new URLSearchParams();
+    if (sp.de) qs.set("de", sp.de);
+    if (sp.ate) qs.set("ate", sp.ate);
+    if (sp.ordenar) qs.set("ordenar", sp.ordenar);
+    const tail = qs.toString();
+    redirect(tail ? `/suculentas?${tail}` : "/suculentas");
+  }
+
+  const store = getStoreConfig();
+  const wa = whatsappGeneralUrl(store);
+
   if (!hasUsableDatabaseUrl()) {
     const demoCat = DEMO_CATEGORIES.find((c) => c.slug === slug);
     if (!demoCat) notFound();
     const all = getDemoCatalog().categories;
-    let products = [...demoCat.products];
-    const sort = sp.ordenar || "relevancia";
-    if (sort === "menor-preco") products.sort((a, b) => a.price - b.price);
-    if (sort === "maior-preco") products.sort((a, b) => b.price - a.price);
-    if (sort === "nome") products.sort((a, b) => a.name.localeCompare(b.name));
+
+    if (demoCat.comingSoon) {
+      return (
+        <ComingSoonView
+          name={demoCat.name}
+          description={demoCat.description || "Em breve no estoque."}
+          wa={wa}
+          allCategories={all}
+          currentSlug={demoCat.slug}
+        />
+      );
+    }
+
+    const sort = sp.ordenar || "mais-novo";
+    let products = applySort(
+      demoCat.products.map((p) => ({ ...p, price: p.price })),
+      sort
+    );
+    const de = sp.de ? Number(String(sp.de).replace(",", ".")) : undefined;
+    const ate = sp.ate ? Number(String(sp.ate).replace(",", ".")) : undefined;
+    if (de != null && !Number.isNaN(de)) products = products.filter((p) => p.price >= de);
+    if (ate != null && !Number.isNaN(ate)) products = products.filter((p) => p.price <= ate);
 
     return (
-      <section className="container category-page">
-        <nav className="breadcrumb-nav" aria-label="breadcrumb">
-          <Link href="/">Início</Link>
-          <span>/</span>
-          <span>{demoCat.name}</span>
-        </nav>
-        <div className="category-layout">
-          <aside>
-            <div className="filter-panel">
-              <details open>
-                <summary>Categorias</summary>
-                <ul className="filter-cats">
-                  {all.map((cat) => (
-                    <li key={cat.slug}>
-                      <Link
-                        href={`/${cat.slug}`}
-                        className={cat.slug === demoCat.slug ? "is-active" : undefined}
-                      >
-                        {cat.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </div>
-          </aside>
-          <div>
-            <div className="category-head">
-              <h1>{demoCat.name}</h1>
-              <SortSelect defaultValue={sort} />
-            </div>
-            <div className="product-row product-row-catalog">
-              {products.map((p) => (
-                <ProductCard key={p.id} product={toProductDTO(p)} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <CatalogView
+        categoryName={demoCat.name}
+        categorySlug={demoCat.slug}
+        description={demoCat.description}
+        allCategories={all}
+        products={products.map((p) => toProductDTO(p))}
+        sort={sort}
+        sp={sp}
+      />
     );
   }
 
@@ -82,13 +108,25 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   const allCategories = await getNavCategories();
 
+  if (category.comingSoon) {
+    return (
+      <ComingSoonView
+        name={category.name}
+        description={category.description || "Em breve no estoque."}
+        wa={wa}
+        allCategories={allCategories}
+        currentSlug={category.slug}
+      />
+    );
+  }
+
   const where: {
-    available: boolean;
     categoryId: number;
+    OR: Array<{ available: boolean } | { stock: { lte: number } }>;
     price?: { gte?: number; lte?: number };
   } = {
-    available: true,
     categoryId: category.id,
+    OR: [{ available: true }, { stock: { lte: 0 } }],
   };
 
   const de = sp.de ? Number(String(sp.de).replace(",", ".")) : undefined;
@@ -96,101 +134,235 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   if (de != null && !Number.isNaN(de)) where.price = { ...(where.price || {}), gte: de };
   if (ate != null && !Number.isNaN(ate)) where.price = { ...(where.price || {}), lte: ate };
 
-  const sort = sp.ordenar || "relevancia";
-  let orderBy: { price?: "asc" | "desc"; name?: "asc"; order?: "asc" }[] = [
-    { order: "asc" },
-    { name: "asc" },
-  ];
+  const sort = sp.ordenar || "mais-novo";
+  let orderBy: { price?: "asc" | "desc"; name?: "asc" | "desc"; id?: "asc" | "desc"; stock?: "desc" }[] =
+    [{ stock: "desc" }, { id: "desc" }];
   if (sort === "menor-preco") orderBy = [{ price: "asc" }, { name: "asc" }];
   if (sort === "maior-preco") orderBy = [{ price: "desc" }, { name: "asc" }];
-  if (sort === "nome") orderBy = [{ name: "asc" }];
+  if (sort === "a-z" || sort === "nome") orderBy = [{ name: "asc" }];
+  if (sort === "z-a") orderBy = [{ name: "desc" }];
+  if (sort === "mais-antigo") orderBy = [{ id: "asc" }];
+  if (sort === "mais-novo" || sort === "relevancia") orderBy = [{ id: "desc" }];
 
   const products = await prisma.product.findMany({ where, orderBy });
 
   const bounds = await prisma.product.aggregate({
-    where: { available: true, categoryId: category.id },
+    where: { categoryId: category.id, OR: [{ available: true }, { stock: { lte: 0 } }] },
     _min: { price: true },
     _max: { price: true },
   });
 
   return (
-    <section className="container category-page">
-      <nav className="breadcrumb-nav" aria-label="breadcrumb">
-        <Link href="/">Início</Link>
-        <span>/</span>
-        <span>{category.name}</span>
-      </nav>
+    <CatalogView
+      categoryName={category.name}
+      categorySlug={category.slug}
+      description={category.description}
+      allCategories={allCategories}
+      products={products.map((p) => toProductDTO(p))}
+      sort={sort}
+      sp={sp}
+      priceHints={{
+        min: bounds._min.price != null ? String(Number(bounds._min.price)) : "0",
+        max: bounds._max.price != null ? String(Number(bounds._max.price)) : "100",
+      }}
+    />
+  );
+}
 
-      <div className="category-layout">
-        <aside>
-          <div className="filter-panel">
-            <details open>
-              <summary>Categorias</summary>
-              <ul className="filter-cats">
-                {allCategories.map((cat) => (
-                  <li key={cat.slug}>
-                    <Link
-                      href={`/${cat.slug}`}
-                      className={cat.slug === category.slug ? "is-active" : undefined}
-                    >
-                      {cat.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </details>
-            <details open>
-              <summary>Preço</summary>
-              <form method="get">
-                {sort !== "relevancia" && <input type="hidden" name="ordenar" value={sort} />}
-                <div className="price-inputs">
-                  <label>
-                    <span className="muted">De</span>
-                    <input
-                      type="number"
-                      name="de"
-                      step="0.01"
-                      min="0"
-                      placeholder={
-                        bounds._min.price != null ? String(Number(bounds._min.price)) : "0"
-                      }
-                      defaultValue={sp.de || ""}
-                    />
-                  </label>
-                  <label>
-                    <span className="muted">Até</span>
-                    <input
-                      type="number"
-                      name="ate"
-                      step="0.01"
-                      min="0"
-                      placeholder={
-                        bounds._max.price != null ? String(Number(bounds._max.price)) : "100"
-                      }
-                      defaultValue={sp.ate || ""}
-                    />
-                  </label>
-                </div>
-                <button type="submit" className="btn-filter">
-                  Aplicar
-                </button>
-              </form>
-            </details>
+function ComingSoonView({
+  name,
+  description,
+  wa,
+  allCategories,
+  currentSlug,
+}: {
+  name: string;
+  description: string;
+  wa: string;
+  allCategories: CatNav[];
+  currentSlug: string;
+}) {
+  const sidebarCats = allCategories.filter((c) => SUCCULENT_SLUGS.has(c.slug));
+  return (
+    <section className="category-page-full">
+      <header className="type-hero">
+        <div className="container type-hero-copy">
+          <p className="coming-soon-kicker">Em breve no estoque</p>
+          <h1>{name}</h1>
+          <p>{description || "Este tipo ainda vai entrar no estoque da loja."}</p>
+          <a className="btn-buy" href={wa} target="_blank" rel="noopener noreferrer" style={{ maxWidth: 260 }}>
+            Avisar no WhatsApp
+          </a>
+        </div>
+      </header>
+      <div className="container category-page">
+        <nav className="breadcrumb-nav" aria-label="breadcrumb">
+          <Link href="/">Início</Link>
+          <span>/</span>
+          <Link href="/suculentas">Suculentas</Link>
+          <span>/</span>
+          <span>{name}</span>
+        </nav>
+        <ul className="filter-cats filter-cats-inline">
+          {sidebarCats.map((cat) => (
+            <li key={cat.slug}>
+              <Link href={`/${cat.slug}`} className={cat.slug === currentSlug ? "is-active" : undefined}>
+                {cat.name}
+                {cat.comingSoon ? " · Em breve" : ""}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function CatalogView({
+  categoryName,
+  categorySlug,
+  description,
+  allCategories,
+  products,
+  sort,
+  sp,
+  priceHints,
+}: {
+  categoryName: string;
+  categorySlug: string;
+  description?: string;
+  allCategories: CatNav[];
+  products: ReturnType<typeof toProductDTO>[];
+  sort: string;
+  sp: { de?: string; ate?: string };
+  priceHints?: { min: string; max: string };
+}) {
+  const isSucculent = SUCCULENT_SLUGS.has(categorySlug);
+  const sidebarCats = isSucculent
+    ? allCategories.filter((c) => SUCCULENT_SLUGS.has(c.slug))
+    : allCategories;
+  const heroImages = products
+    .filter((p) => p.image)
+    .slice(0, 7)
+    .map((p) => p.image);
+  const subtitle =
+    description ||
+    (isSucculent
+      ? `Confira as variedades de ${categoryName} disponíveis na Paulo Suculentas.`
+      : `Anúncios de ${categoryName}. Pedido e pagamento pelo WhatsApp.`);
+
+  return (
+    <section className="category-page-full">
+      <header className="type-hero">
+        {heroImages.length > 0 && (
+          <div className="type-hero-strip" aria-hidden>
+            {heroImages.map((src, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={`${src}-${i}`} src={src} alt="" />
+            ))}
           </div>
-        </aside>
+        )}
+        <div className="container type-hero-copy">
+          <h1>{categoryName}</h1>
+          <p>{subtitle}</p>
+        </div>
+      </header>
 
-        <div>
-          <div className="category-head">
-            <h1>{category.name}</h1>
-            <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
-          </div>
-
-          <div className="product-row product-row-catalog">
-            {products.length === 0 ? (
-              <p className="muted">Nenhum produto nesta categoria.</p>
+      <div className="container category-page">
+        <div className="category-toolbar">
+          <nav className="breadcrumb-nav" aria-label="breadcrumb">
+            <Link href="/">Início</Link>
+            <span>/</span>
+            {isSucculent ? (
+              <>
+                <Link href="/suculentas">Suculentas</Link>
+                <span>/</span>
+              </>
             ) : (
-              products.map((p) => <ProductCard key={p.id} product={toProductDTO(p)} />)
+              <>
+                <Link href="/produtos">Produtos</Link>
+                <span>/</span>
+              </>
             )}
+            <strong>{categoryName}</strong>
+          </nav>
+          <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
+        </div>
+
+        <div className="category-layout">
+          <aside>
+            <div className="filter-panel">
+              <p className="filter-by-label">Filtrar por</p>
+              <details open>
+                <summary>{isSucculent ? "Tipos" : "Categorias"}</summary>
+                <ul className="filter-cats">
+                  {isSucculent && (
+                    <li>
+                      <Link href="/suculentas">Todas as suculentas</Link>
+                    </li>
+                  )}
+                  {!isSucculent && (
+                    <li>
+                      <Link href="/produtos">Todas as categorias</Link>
+                    </li>
+                  )}
+                  {sidebarCats.map((cat) => (
+                    <li key={cat.slug}>
+                      <Link
+                        href={`/${cat.slug}`}
+                        className={cat.slug === categorySlug ? "is-active" : undefined}
+                      >
+                        {cat.name}
+                        {cat.comingSoon ? <span className="cat-soon-tag">Em breve</span> : null}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+              <details open>
+                <summary>Preço</summary>
+                <form method="get" className="price-filter-form">
+                  {sort !== "mais-novo" && <input type="hidden" name="ordenar" value={sort} />}
+                  <div className="price-inputs">
+                    <label>
+                      <span className="muted">De</span>
+                      <input
+                        type="number"
+                        name="de"
+                        step="0.01"
+                        min="0"
+                        placeholder={priceHints?.min || "0"}
+                        defaultValue={sp.de || ""}
+                      />
+                    </label>
+                    <label>
+                      <span className="muted">Até</span>
+                      <input
+                        type="number"
+                        name="ate"
+                        step="0.01"
+                        min="0"
+                        placeholder={priceHints?.max || "100"}
+                        defaultValue={sp.ate || ""}
+                      />
+                    </label>
+                    <button type="submit" className="btn-price-go" aria-label="Aplicar preço">
+                      →
+                    </button>
+                  </div>
+                </form>
+              </details>
+            </div>
+          </aside>
+
+          <div>
+            <div className="product-row product-row-catalog">
+              {products.length === 0 ? (
+                <p className="muted">Nenhum anúncio neste tipo ainda.</p>
+              ) : (
+                products.map((p) => <ProductCard key={p.id} product={p} />)
+              )}
+            </div>
           </div>
         </div>
       </div>

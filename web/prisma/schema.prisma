@@ -91,11 +91,13 @@ model VerificationToken {
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String
-  slug     String    @unique
-  order    Int       @default(0)
-  products Product[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  order       Int       @default(0)
+  comingSoon  Boolean   @default(false)
+  description String    @default("")
+  products    Product[]
 
   @@map("categories")
 }
@@ -110,6 +112,7 @@ model Product {
   price             Decimal     @db.Decimal(10, 2)
   oldPrice          Decimal?    @db.Decimal(10, 2)
   image             String      @default("")
+  gallery           String      @default("[]")
   featured          Boolean     @default(false)
   available         Boolean     @default(true)
   stock             Int         @default(0)

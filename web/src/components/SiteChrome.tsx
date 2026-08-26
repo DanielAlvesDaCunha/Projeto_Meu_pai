@@ -55,6 +55,7 @@ export async function SiteFooter() {
             {categories.map((cat) => (
               <Link key={cat.slug} href={`/${cat.slug}`}>
                 {cat.name}
+                {cat.comingSoon ? " · Em breve" : ""}
               </Link>
             ))}
             <Link href="/promocoes">Promoções</Link>

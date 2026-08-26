@@ -25,7 +25,7 @@ const SLIDES = [
   {
     kicker: "Fotos reais das",
     title: "mudas",
-    cta: { href: "#categorias", label: "Ver categorias" },
+    cta: { href: "/produtos", label: "Ver produtos" },
     image:
       "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1600&q=80",
     alt: "Variedades",

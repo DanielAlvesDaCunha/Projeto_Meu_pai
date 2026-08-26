@@ -29,6 +29,7 @@ export default async function AdminEditProductPage({ params }: Props) {
           oldPrice: product.oldPrice != null ? String(Number(product.oldPrice)) : "",
           stock: product.stock,
           image: product.image,
+          gallery: product.gallery,
           featured: product.featured,
           available: product.available,
         }}

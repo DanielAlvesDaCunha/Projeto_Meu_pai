@@ -4,14 +4,82 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 const CATEGORIES = [
-  { slug: "suculentas", name: "Suculentas", order: 1 },
-  { slug: "cactos", name: "Cactos", order: 2 },
-  { slug: "kits", name: "Kits", order: 3 },
+  {
+    slug: "gibbifloras",
+    name: "Gibbifloras",
+    order: 1,
+    comingSoon: false,
+    description:
+      "Confira as variedades de Suculentas Echeverias Gibbifloras disponíveis na Paulo Suculentas.",
+  },
+  {
+    slug: "echeverias",
+    name: "Echeverias",
+    order: 2,
+    comingSoon: false,
+    description: "Confira as variedades de Echeverias disponíveis na Paulo Suculentas.",
+  },
+  {
+    slug: "haworthia",
+    name: "Haworthia",
+    order: 3,
+    comingSoon: true,
+    description: "Em breve no estoque.",
+  },
+  {
+    slug: "graptopetalum",
+    name: "Graptopetalum",
+    order: 4,
+    comingSoon: true,
+    description: "Em breve no estoque.",
+  },
+  {
+    slug: "sedum",
+    name: "Sedum",
+    order: 5,
+    comingSoon: true,
+    description: "Em breve no estoque.",
+  },
+  {
+    slug: "crassula",
+    name: "Crassula",
+    order: 6,
+    comingSoon: true,
+    description: "Em breve no estoque.",
+  },
+  {
+    slug: "aeonium",
+    name: "Aeonium",
+    order: 7,
+    comingSoon: true,
+    description: "Em breve no estoque.",
+  },
+  {
+    slug: "lithops",
+    name: "Lithops",
+    order: 8,
+    comingSoon: true,
+    description: "Em breve no estoque.",
+  },
+  {
+    slug: "cactos",
+    name: "Cactos",
+    order: 20,
+    comingSoon: false,
+    description: "Cactos para coleção e decoração.",
+  },
+  {
+    slug: "kits",
+    name: "Kits",
+    order: 21,
+    comingSoon: false,
+    description: "Kits variados de plantas.",
+  },
 ];
 
 const PRODUCTS = [
   {
-    category: "suculentas",
+    category: "echeverias",
     name: "Echeveria Raindrops PT 11",
     sku: "ECH-RAIN-11",
     price: "28.00",
@@ -20,20 +88,28 @@ const PRODUCTS = [
     stock: 12,
     image:
       "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1501004318641-b39e64514be8?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
-    category: "suculentas",
-    name: "Graptoveria Lulu PT 9",
-    sku: "GRA-LULU-09",
-    price: "18.00",
-    oldPrice: "22.00",
+    category: "gibbifloras",
+    name: "Gibbiflora Variada PT 9",
+    sku: "GIB-VAR-09",
+    price: "26.00",
+    oldPrice: "30.00",
     featured: true,
     stock: 8,
     image:
       "https://images.unsplash.com/photo-1485955900004-4eecf6f8bb41?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1463936577429-48e3ccee649f?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
-    category: "suculentas",
+    category: "echeverias",
     name: "Echeveria Roman PT 9",
     sku: "ECH-ROM-09",
     price: "16.00",
@@ -42,17 +118,38 @@ const PRODUCTS = [
     stock: 15,
     image:
       "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
-    category: "suculentas",
-    name: "Haworthia Zebra PT 9",
-    sku: "HAW-ZEB-09",
-    price: "24.00",
-    oldPrice: "29.00",
+    category: "gibbifloras",
+    name: "Gibbiflora Colorida PT 11",
+    sku: "GIB-COL-11",
+    price: "29.00",
+    oldPrice: "34.00",
     featured: true,
-    stock: 6,
+    stock: 0,
     image:
       "https://images.unsplash.com/photo-1463936577429-48e3ccee649f?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1485955900004-4eecf6f8bb41?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=900&q=80",
+    ],
+  },
+  {
+    category: "echeverias",
+    name: "Echeveria Lilacina PT 9",
+    sku: "ECH-LIL-09",
+    price: "24.00",
+    oldPrice: null,
+    featured: false,
+    stock: 0,
+    image:
+      "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80&sat=-20",
+    gallery: [
+      "https://images.unsplash.com/photo-1501004318641-b39e64514be8?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
     category: "kits",
@@ -64,39 +161,21 @@ const PRODUCTS = [
     stock: 5,
     image:
       "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
     category: "kits",
-    name: "Sedum Burrito PT 11",
-    sku: "SED-BUR-11",
-    price: "32.00",
-    oldPrice: "38.00",
+    name: "Kit Iniciante PT 9",
+    sku: "KIT-INI-09",
+    price: "49.00",
+    oldPrice: "58.00",
     featured: false,
     stock: 7,
     image:
       "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    category: "kits",
-    name: "Crassula Ovata PT 11",
-    sku: "CRA-OVA-11",
-    price: "35.00",
-    oldPrice: null,
-    featured: false,
-    stock: 4,
-    image:
-      "https://images.unsplash.com/photo-1501004318641-b39e64514be8?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    category: "kits",
-    name: "Aloe Vera Mini PT 9",
-    sku: "ALO-MIN-09",
-    price: "22.00",
-    oldPrice: "26.00",
-    featured: false,
-    stock: 10,
-    image:
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=900&q=80&sat=-30",
+    gallery: [],
   },
   {
     category: "cactos",
@@ -108,6 +187,9 @@ const PRODUCTS = [
     stock: 20,
     image:
       "https://images.unsplash.com/photo-1509937528035-ad76254b0356?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
     category: "cactos",
@@ -119,6 +201,9 @@ const PRODUCTS = [
     stock: 9,
     image:
       "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1509937528035-ad76254b0356?auto=format&fit=crop&w=900&q=80",
+    ],
   },
   {
     category: "cactos",
@@ -130,6 +215,7 @@ const PRODUCTS = [
     stock: 3,
     image:
       "https://images.unsplash.com/photo-1459411552884-841db9b3aa2f?auto=format&fit=crop&w=900&q=80&sat=-40",
+    gallery: [],
   },
   {
     category: "cactos",
@@ -141,8 +227,30 @@ const PRODUCTS = [
     stock: 11,
     image:
       "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80&sat=-50",
+    gallery: [],
   },
 ];
+
+function guessCategorySlug(name: string, sku: string) {
+  const key = `${name} ${sku}`.toLowerCase();
+  if (key.includes("gibbi") || key.includes("gib-")) return "gibbifloras";
+  if (key.includes("echeveria") || key.includes("ech-rain") || key.includes("ech-rom")) {
+    return "echeverias";
+  }
+  if (key.includes("kit") || key.includes("kit-")) return "kits";
+  if (
+    key.includes("cacto") ||
+    key.includes("opuntia") ||
+    key.includes("mammillaria") ||
+    key.includes("echinocactus") ||
+    key.startsWith("cac-") ||
+    key.startsWith("opu-") ||
+    key.startsWith("mam-")
+  ) {
+    return "cactos";
+  }
+  return "gibbifloras";
+}
 
 async function main() {
   const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
@@ -174,20 +282,54 @@ async function main() {
   }
 
   const adminEmail = adminEmails[0] || "admin@paulosuculentas.com";
-
   const cats: Record<string, number> = {};
 
   for (const cat of CATEGORIES) {
     const row = await prisma.category.upsert({
       where: { slug: cat.slug },
-      update: { name: cat.name, order: cat.order },
+      update: {
+        name: cat.name,
+        order: cat.order,
+        comingSoon: cat.comingSoon,
+        description: cat.description,
+      },
       create: cat,
     });
     cats[cat.slug] = row.id;
   }
 
-  await prisma.product.deleteMany({ where: { category: { slug: "gibbifloras" } } });
-  await prisma.category.deleteMany({ where: { slug: "gibbifloras" } });
+  // Migrar produtos da categoria genérica "suculentas" e remover depois
+  const legacy = await prisma.category.findUnique({ where: { slug: "suculentas" } });
+  if (legacy) {
+    const legacyProducts = await prisma.product.findMany({ where: { categoryId: legacy.id } });
+    for (const p of legacyProducts) {
+      const slug = guessCategorySlug(p.name, p.sku);
+      await prisma.product.update({
+        where: { id: p.id },
+        data: { categoryId: cats[slug] || cats.gibbifloras },
+      });
+    }
+    await prisma.category.delete({ where: { id: legacy.id } });
+  }
+
+  // Reclassificar SKUs conhecidos do seed antigo
+  const remaps: Array<{ sku: string; category: string }> = [
+    { sku: "ECH-RAIN-11", category: "echeverias" },
+    { sku: "ECH-ROM-09", category: "echeverias" },
+    { sku: "GRA-LULU-09", category: "gibbifloras" },
+    { sku: "HAW-ZEB-09", category: "gibbifloras" },
+    { sku: "SED-BUR-11", category: "kits" },
+    { sku: "CRA-OVA-11", category: "kits" },
+    { sku: "ALO-MIN-09", category: "kits" },
+  ];
+  for (const row of remaps) {
+    const target = cats[row.category];
+    if (!target) continue;
+    await prisma.product.updateMany({
+      where: { sku: row.sku },
+      data: { categoryId: target },
+    });
+  }
 
   let created = 0;
   for (const item of PRODUCTS) {
@@ -196,7 +338,15 @@ async function main() {
       await prisma.product.update({
         where: { sku: item.sku },
         data: {
-          stock: existing.stock > 0 ? existing.stock : item.stock,
+          categoryId: cats[item.category],
+          name: item.name,
+          stock: item.stock,
+          featured: item.featured,
+          available: true,
+          oldPrice: item.oldPrice ? new Prisma.Decimal(item.oldPrice) : null,
+          price: new Prisma.Decimal(item.price),
+          image: item.image,
+          gallery: JSON.stringify(item.gallery || []),
         },
       });
       continue;
@@ -213,10 +363,17 @@ async function main() {
         available: true,
         stock: item.stock,
         image: item.image,
+        gallery: JSON.stringify(item.gallery || []),
       },
     });
     created += 1;
   }
+
+  // Esgotados continuam visíveis na vitrine (estoque 0)
+  await prisma.product.updateMany({
+    where: { stock: { lte: 0 } },
+    data: { available: true },
+  });
 
   console.log(`Seed ok. Novos produtos: ${created}. Admin: ${adminEmail}`);
 }
