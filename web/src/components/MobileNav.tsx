@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { logoutAdmin, logoutUser } from "@/lib/actions/auth";
+import { categoryHref, FUTURE_TYPE_LABEL, SUCCULENT_TYPE_SLUGS } from "@/lib/catalog";
 
 type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
@@ -35,6 +36,9 @@ function accountLabel(user: Props["user"]) {
 
 export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Props) {
   const [produtosOpen, setProdutosOpen] = useState(false);
+  const typeCategories = categories.filter(
+    (cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas"
+  );
 
   useEffect(() => {
     document.body.classList.toggle("menu-open", open);
@@ -93,15 +97,21 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
           </button>
           {produtosOpen && (
             <div className="nav-mobile-sub">
-              {categories.map((cat) => (
-                <Link key={cat.slug} href={`/${cat.slug}`} onClick={onClose}>
-                  {cat.name}
-                  {cat.comingSoon ? <span className="nav-soon">Em breve</span> : null}
-                </Link>
-              ))}
-              <Link href="/suculentas" onClick={onClose}>
+              <Link href={categoryHref("suculentas")} onClick={onClose}>
                 Suculentas
               </Link>
+              <Link href={categoryHref("cactos")} onClick={onClose}>
+                Cactos
+              </Link>
+              <Link href={categoryHref("kits")} onClick={onClose}>
+                Kits
+              </Link>
+              {typeCategories.map((cat) => (
+                <Link key={cat.slug} href={categoryHref(cat.slug)} onClick={onClose}>
+                  {cat.name}
+                  {cat.comingSoon ? <span className="nav-soon">{FUTURE_TYPE_LABEL}</span> : null}
+                </Link>
+              ))}
               <Link href="/promocoes" onClick={onClose}>
                 Promoções
               </Link>

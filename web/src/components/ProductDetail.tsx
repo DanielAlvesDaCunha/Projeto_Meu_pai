@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { categoryHref } from "@/lib/catalog";
 import { useCart } from "@/lib/cart";
 import { discountPercent, installmentText, money, type ProductDTO } from "@/lib/money";
 
@@ -70,7 +71,7 @@ export function ProductDetail({ product, categoryName }: Props) {
 
       <div className="product-detail-info">
         {categoryName && product.categorySlug ? (
-          <Link className="product-detail-category" href={`/${product.categorySlug}`}>
+          <Link className="product-detail-category" href={categoryHref(product.categorySlug)}>
             {categoryName}
           </Link>
         ) : null}

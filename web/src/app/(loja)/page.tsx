@@ -2,6 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { StoreProductCard } from "@/components/StoreProductCard";
+import {
+  categoryHref,
+  MAIN_CAROUSEL_LABELS,
+  MAIN_CAROUSEL_SLUGS,
+  type MainCarouselSlug,
+} from "@/lib/catalog";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { getHeroSlides } from "@/lib/hero";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
@@ -82,6 +88,26 @@ export default async function HomePage({ searchParams }: HomeProps) {
     novidades = demo.novidades;
   }
 
+  const categoryBySlug = new Map(categories.map((cat) => [cat.slug, cat]));
+
+  function carouselImage(slug: MainCarouselSlug) {
+    if (slug === "suculentas") {
+      return (
+        categoryBySlug.get("gibbifloras")?.products[0]?.image ||
+        categoryBySlug.get("echeverias")?.products[0]?.image ||
+        ""
+      );
+    }
+    return categoryBySlug.get(slug)?.products[0]?.image || "";
+  }
+
+  const carouselTiles = MAIN_CAROUSEL_SLUGS.map((slug) => ({
+    slug,
+    name: MAIN_CAROUSEL_LABELS[slug],
+    href: categoryHref(slug),
+    image: carouselImage(slug),
+  }));
+
   return (
     <div className="template-home">
       <HeroCarousel slides={heroSlides} />
@@ -137,28 +163,18 @@ export default async function HomePage({ searchParams }: HomeProps) {
         <div className="section-title">
           <h2>Compre por tipo:</h2>
         </div>
-        <div className="category-grid">
-          {categories.map((cat) => {
-            const img = cat.products[0]?.image;
-            return (
-              <Link
-                key={cat.slug}
-                className={`category-card${cat.comingSoon ? " is-coming-soon" : ""}`}
-                href={`/${cat.slug}`}
-              >
-                {img ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img} alt={cat.name} loading="lazy" />
-                ) : (
-                  <div className="category-fallback" />
-                )}
-                <span className="category-label">
-                  {cat.name}
-                  {cat.comingSoon ? <span className="cat-soon-tag">Em breve</span> : null}
-                </span>
-              </Link>
-            );
-          })}
+        <div className="category-grid category-grid-main">
+          {carouselTiles.map((tile) => (
+            <Link key={tile.slug} className="category-card" href={tile.href}>
+              {tile.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={tile.image} alt={tile.name} loading="lazy" />
+              ) : (
+                <div className="category-fallback" />
+              )}
+              <span className="category-label">{tile.name}</span>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -180,27 +196,21 @@ export default async function HomePage({ searchParams }: HomeProps) {
 
       <section className="banner-trio">
         <div className="banner-grid">
-          {categories
-            .filter((cat) => !cat.comingSoon)
-            .slice(0, 3)
-            .map((cat) => {
-              const img = cat.products[0]?.image;
-              return (
-                <Link key={cat.slug} className="banner-panel" href={`/${cat.slug}`}>
-                  {img ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={img} alt={cat.name} loading="lazy" />
-                  ) : (
-                    <div className="category-fallback" style={{ height: "100%" }} />
-                  )}
-                  <div className="banner-overlay">
-                    <h3>{cat.name}</h3>
-                    <p>Novidades</p>
-                    <span className="btn-buy btn-sm-banner">Ver mais</span>
-                  </div>
-                </Link>
-              );
-            })}
+          {carouselTiles.map((tile) => (
+            <Link key={tile.slug} className="banner-panel" href={tile.href}>
+              {tile.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={tile.image} alt={tile.name} loading="lazy" />
+              ) : (
+                <div className="category-fallback" style={{ height: "100%" }} />
+              )}
+              <div className="banner-overlay">
+                <h3>{tile.name}</h3>
+                <p>Ver anúncios</p>
+                <span className="btn-buy btn-sm-banner">Ver mais</span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 

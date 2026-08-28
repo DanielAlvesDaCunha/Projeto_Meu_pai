@@ -41,14 +41,17 @@ export function hasUsableDatabaseUrl() {
   return describeDatabaseUrlIssue() === null;
 }
 
+import { normalizeNavCategories } from "@/lib/catalog";
+
 export async function getNavCategories() {
   if (!hasUsableDatabaseUrl()) {
-    return FALLBACK_CATEGORIES;
+    return normalizeNavCategories(FALLBACK_CATEGORIES);
   }
   try {
-    return await prisma.category.findMany({ orderBy: { order: "asc" } });
+    const rows = await prisma.category.findMany({ orderBy: { order: "asc" } });
+    return normalizeNavCategories(rows);
   } catch (error) {
     console.error("getNavCategories failed:", error);
-    return FALLBACK_CATEGORIES;
+    return normalizeNavCategories(FALLBACK_CATEGORIES);
   }
 }

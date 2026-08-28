@@ -2,7 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { StoreProductCard } from "@/components/StoreProductCard";
 import { SortSelect } from "@/components/SortSelect";
-import { buildProductTextSearch, matchesProductSearch, normalizeSearchQuery } from "@/lib/catalog";
+import {
+  buildProductTextSearch,
+  categoryHref,
+  FUTURE_TYPE_LABEL,
+  matchesProductSearch,
+  normalizeSearchQuery,
+  SUCCULENT_TYPE_SLUGS,
+} from "@/lib/catalog";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
@@ -31,6 +38,9 @@ export default async function ProdutosPage({ searchParams }: Props) {
   const categories = hasUsableDatabaseUrl()
     ? await getNavCategories()
     : getDemoCatalog().categories;
+  const typeCategories = categories.filter(
+    (cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas"
+  );
 
   let products: ReturnType<typeof toProductDTO>[] = [];
   let usedDatabase = false;
@@ -109,13 +119,13 @@ export default async function ProdutosPage({ searchParams }: Props) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/suculentas">Suculentas</Link>
+                  <Link href={categoryHref("suculentas")}>Suculentas</Link>
                 </li>
-                {categories.map((cat) => (
+                {typeCategories.map((cat) => (
                   <li key={cat.slug}>
-                    <Link href={`/${cat.slug}`}>
+                    <Link href={categoryHref(cat.slug)}>
                       {cat.name}
-                      {cat.comingSoon ? <span className="cat-soon-tag">Em breve</span> : null}
+                      {cat.comingSoon ? <span className="cat-soon-tag">{FUTURE_TYPE_LABEL}</span> : null}
                     </Link>
                   </li>
                 ))}

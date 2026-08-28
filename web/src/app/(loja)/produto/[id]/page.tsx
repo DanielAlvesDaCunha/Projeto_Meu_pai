@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/ProductDetail";
+import { categoryHref } from "@/lib/catalog";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
@@ -33,7 +34,7 @@ export default async function ProductPage({ params }: Props) {
               {product.category ? (
                 <>
                   <span>/</span>
-                  <Link href={`/${product.category.slug}`}>{product.category.name}</Link>
+                  <Link href={categoryHref(product.category.slug)}>{product.category.name}</Link>
                 </>
               ) : null}
               <span>/</span>

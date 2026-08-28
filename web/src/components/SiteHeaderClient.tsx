@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  categoryHref,
+  FUTURE_TYPE_LABEL,
+  SUCCULENT_TYPE_SLUGS,
+} from "@/lib/catalog";
 import { useEffect, useRef, useState } from "react";
 import { CartButton } from "@/components/CartUI";
 import { MobileNav } from "@/components/MobileNav";
@@ -70,6 +75,7 @@ export function SiteHeaderClient({
   user,
 }: Props) {
   const pathname = usePathname();
+  const typeCategories = categories.filter((cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas");
   const [menuOpen, setMenuOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -228,11 +234,17 @@ export function SiteHeaderClient({
                 <Link href="/produtos" onClick={() => setProdutosOpen(false)}>
                   Todos os anúncios
                 </Link>
-                <Link href="/suculentas" onClick={() => setProdutosOpen(false)}>
+                <Link href={categoryHref("suculentas")} onClick={() => setProdutosOpen(false)}>
                   Suculentas
                 </Link>
+                <Link href={categoryHref("cactos")} onClick={() => setProdutosOpen(false)}>
+                  Cactos
+                </Link>
+                <Link href={categoryHref("kits")} onClick={() => setProdutosOpen(false)}>
+                  Kits
+                </Link>
                 <Link href="/novidades" onClick={() => setProdutosOpen(false)}>
-                  Novidades e lançamentos
+                  Novidades
                 </Link>
                 <Link href="/promocoes" onClick={() => setProdutosOpen(false)}>
                   Promoções
@@ -240,10 +252,10 @@ export function SiteHeaderClient({
               </div>
               <div className="mega-col">
                 <strong>Tipos</strong>
-                {categories.map((cat) => (
-                  <Link key={cat.slug} href={`/${cat.slug}`} onClick={() => setProdutosOpen(false)}>
+                {typeCategories.map((cat) => (
+                  <Link key={cat.slug} href={categoryHref(cat.slug)} onClick={() => setProdutosOpen(false)}>
                     {cat.name}
-                    {cat.comingSoon ? <span className="nav-soon">Em breve</span> : null}
+                    {cat.comingSoon ? <span className="nav-soon">{FUTURE_TYPE_LABEL}</span> : null}
                   </Link>
                 ))}
               </div>

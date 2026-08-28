@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { categoryHref, FUTURE_TYPE_LABEL } from "@/lib/catalog";
 import { CartDrawer, CartToast } from "@/components/CartUI";
 import { SiteHeaderClient } from "@/components/SiteHeaderClient";
 import { getStoreConfig, whatsappGeneralUrl } from "@/lib/store";
@@ -53,9 +54,9 @@ export async function SiteFooter() {
           <div>
             <strong>Departamentos</strong>
             {categories.map((cat) => (
-              <Link key={cat.slug} href={`/${cat.slug}`}>
+              <Link key={cat.slug} href={categoryHref(cat.slug)}>
                 {cat.name}
-                {cat.comingSoon ? " · Em breve" : ""}
+                {cat.comingSoon ? ` · ${FUTURE_TYPE_LABEL}` : ""}
               </Link>
             ))}
             <Link href="/promocoes">Promoções</Link>
