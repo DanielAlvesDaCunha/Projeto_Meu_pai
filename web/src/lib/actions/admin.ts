@@ -78,8 +78,7 @@ export async function saveProduct(
     return { error: "Não foi possível salvar. Verifique se o SKU já existe." };
   }
 
-  revalidatePath("/");
-  revalidatePath("/admin/produtos");
+  revalidateCatalogPaths();
   redirect("/admin/produtos");
 }
 
@@ -143,6 +142,25 @@ export async function deleteCategory(formData: FormData) {
   revalidatePath("/admin/categorias");
 }
 
+function revalidateCatalogPaths() {
+  revalidatePath("/");
+  revalidatePath("/produtos");
+  revalidatePath("/promocoes");
+  revalidatePath("/novidades");
+  revalidatePath("/suculentas");
+  revalidatePath("/admin");
+  revalidatePath("/admin/produtos");
+}
+
+function parseGalleryInput(raw: string, mainImage = "") {
+  const urls = raw
+    .split(/\n|,/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((url) => url !== mainImage);
+  return JSON.stringify(urls.slice(0, 3));
+}
+
 export async function updateProductStock(formData: FormData) {
   await requireAdminSession();
   const id = Number(formData.get("id"));
@@ -154,13 +172,77 @@ export async function updateProductStock(formData: FormData) {
     where: { id },
     data: {
       stock: qty,
-      ...(qty <= 0 ? { available: false } : {}),
+      available: qty > 0,
     },
   });
 
-  revalidatePath("/");
-  revalidatePath("/admin");
-  revalidatePath("/admin/produtos");
+  revalidateCatalogPaths();
+}
+
+export async function adjustProductStock(formData: FormData) {
+  await requireAdminSession();
+  const id = Number(formData.get("id"));
+  const delta = Number(formData.get("delta"));
+  if (!id || !Number.isFinite(delta)) return;
+
+  const product = await prisma.product.findUnique({ where: { id } });
+  if (!product) return;
+
+  const qty = Math.max(0, product.stock + Math.trunc(delta));
+  await prisma.product.update({
+    where: { id },
+    data: {
+      stock: qty,
+      available: qty > 0,
+    },
+  });
+
+  revalidateCatalogPaths();
+}
+
+export async function quickSaveProduct(
+  _prev: AdminFormState,
+  formData: FormData
+): Promise<AdminFormState> {
+  await requireAdminSession();
+
+  const id = Number(formData.get("id"));
+  const name = String(formData.get("name") || "").trim();
+  const price = parseMoney(formData.get("price"));
+  const oldPrice = parseMoney(formData.get("oldPrice"));
+  const stock = Number(formData.get("stock") || 0);
+  const image = String(formData.get("image") || "").trim();
+  const galleryRaw = String(formData.get("gallery") || "").trim();
+  const featured = formData.get("featured") === "on" || formData.get("featured") === "true";
+  const available = formData.get("available") === "on" || formData.get("available") === "true";
+
+  if (!id || !name || price == null) {
+    return { error: "Preencha nome e preço." };
+  }
+
+  const qty = Number.isFinite(stock) ? Math.max(0, Math.floor(stock)) : 0;
+
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: {
+        name,
+        price: new Prisma.Decimal(price),
+        oldPrice: oldPrice != null ? new Prisma.Decimal(oldPrice) : null,
+        stock: qty,
+        image,
+        gallery: parseGalleryInput(galleryRaw, image),
+        featured,
+        available: available && qty > 0,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return { error: "Não foi possível salvar o anúncio." };
+  }
+
+  revalidateCatalogPaths();
+  return { ok: true };
 }
 
 export async function toggleProductAvailable(formData: FormData) {

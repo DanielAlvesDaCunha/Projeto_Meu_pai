@@ -23,13 +23,13 @@ const LINKS = [
 
 function accountHref(user: Props["user"]) {
   if (!user) return "/entrar";
-  if (user.role === "ADMIN") return "/admin";
+  if (user.role === "ADMIN") return "/?editar=1";
   return "/conta";
 }
 
 function accountLabel(user: Props["user"]) {
   if (!user) return "Entrar";
-  if (user.role === "ADMIN") return "Gerenciar loja";
+  if (user.role === "ADMIN") return "Editar loja";
   return "Minha conta";
 }
 

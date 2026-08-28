@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { PhotoGalleryEditor } from "@/components/admin/PhotoGalleryEditor";
 import { saveProduct, type AdminFormState } from "@/lib/actions/admin";
 import { parseGallery } from "@/lib/money";
 
@@ -31,38 +32,18 @@ export function ProductForm({
   product?: ProductFormValues;
 }) {
   const [state, action, pending] = useActionState(saveProduct, initial);
-  const [image, setImage] = useState(product?.image || "");
-  const [galleryText, setGalleryText] = useState(() => {
-    const extras = parseGallery(product?.gallery || "[]", "").filter((u) => u !== product?.image);
-    return extras.join("\n");
-  });
-  const [uploading, setUploading] = useState(false);
+  const [images, setImages] = useState(() =>
+    parseGallery(product?.gallery || "[]", product?.image || "").slice(0, 4)
+  );
 
-  async function onUpload(file: File | null, asExtra = false) {
-    if (!file) return;
-    setUploading(true);
-    try {
-      const body = new FormData();
-      body.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Falha no upload");
-      if (asExtra) {
-        setGalleryText((prev) => (prev ? `${prev}\n${data.url}` : data.url));
-      } else {
-        setImage(data.url);
-      }
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Erro no upload");
-    } finally {
-      setUploading(false);
-    }
-  }
+  const mainImage = images[0] || "";
+  const galleryText = images.slice(1).join("\n");
 
   return (
     <form action={action} className="admin-form">
       {product?.id != null && <input type="hidden" name="id" value={product.id} />}
-      <input type="hidden" name="image" value={image} />
+      <input type="hidden" name="image" value={mainImage} />
+      <input type="hidden" name="gallery" value={galleryText} />
 
       <div className="form-field">
         <label htmlFor="name">Nome</label>
@@ -129,34 +110,8 @@ export function ProductForm({
         />
       </div>
       <div className="form-field">
-        <label htmlFor="photo">Foto principal</label>
-        <input
-          id="photo"
-          type="file"
-          accept="image/*"
-          onChange={(e) => onUpload(e.target.files?.[0] || null, false)}
-        />
-        {image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt="Preview" className="admin-thumb" />
-        )}
-      </div>
-      <div className="form-field">
-        <label htmlFor="gallery">Fotos extras (uma URL por linha — setas laterais na vitrine)</label>
-        <textarea
-          id="gallery"
-          name="gallery"
-          rows={3}
-          value={galleryText}
-          onChange={(e) => setGalleryText(e.target.value)}
-          placeholder="https://..."
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => onUpload(e.target.files?.[0] || null, true)}
-        />
-        {uploading && <p className="muted">Enviando foto…</p>}
+        <label>Fotos do anúncio</label>
+        <PhotoGalleryEditor images={images} onChange={setImages} disabled={pending} />
       </div>
       <label className="check-row">
         <input name="featured" type="checkbox" defaultChecked={product?.featured} />
@@ -167,7 +122,7 @@ export function ProductForm({
         Visível na loja (desmarque para ocultar; estoque 0 = Esgotado)
       </label>
       {state.error && <p className="form-error">{state.error}</p>}
-      <button type="submit" className="btn-buy" disabled={pending || uploading}>
+      <button type="submit" className="btn-buy" disabled={pending}>
         {pending ? "Salvando…" : "Salvar produto"}
       </button>
     </form>

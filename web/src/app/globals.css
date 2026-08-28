@@ -2279,12 +2279,17 @@ body.menu-open {
   align-items: center;
 }
 
+.stock-quick form {
+  margin: 0;
+}
+
 .stock-quick input {
   width: 4.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 0.35rem 0.45rem;
   font: inherit;
+  text-align: center;
 }
 
 .stock-quick button {
@@ -2292,9 +2297,14 @@ body.menu-open {
   background: #fff;
   border-radius: 4px;
   padding: 0.35rem 0.55rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  min-width: 2rem;
+}
+
+.stock-quick-save {
+  font-size: 0.75rem !important;
 }
 
 .link-muted {
@@ -2734,5 +2744,312 @@ body.menu-open {
   .type-hero-strip img {
     width: 56px;
     height: 56px;
+  }
+}
+
+/* --- Modo edição visual (admin na loja) --- */
+.admin-edit-toolbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background: rgba(44, 42, 38, 0.96);
+  color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.admin-edit-toolbar.is-active {
+  background: rgba(74, 97, 64, 0.98);
+}
+
+.admin-edit-toolbar-inner {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+  padding: 0.85rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-edit-toolbar-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.admin-edit-toolbar-copy strong {
+  font-size: 0.95rem;
+}
+
+.admin-edit-toolbar-copy span {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.admin-edit-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.btn-edit-toggle,
+.btn-edit-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-edit-toggle {
+  border: 0;
+  background: #fff;
+  color: var(--accent-dark);
+}
+
+.btn-edit-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  background: transparent;
+}
+
+.editable-product-wrap {
+  position: relative;
+}
+
+.editable-product-wrap .product {
+  outline: 2px dashed rgba(107, 127, 90, 0.55);
+  outline-offset: 4px;
+}
+
+.editable-product-overlay {
+  position: absolute;
+  inset: auto 0.65rem 0.65rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  z-index: 2;
+}
+
+.editable-product-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #fff;
+}
+
+.editable-product-stock,
+.editable-product-price {
+  background: rgba(44, 42, 38, 0.82);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+}
+
+.btn-edit-card {
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+}
+
+.product-edit-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.product-edit-modal {
+  width: min(1080px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+.product-edit-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.product-edit-kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.product-edit-head h2 {
+  margin: 0.2rem 0 0;
+  font-size: 1.35rem;
+}
+
+.product-edit-close {
+  border: 0;
+  background: transparent;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.product-edit-body {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+
+.product-edit-preview h3,
+.product-edit-form label {
+  margin-top: 0;
+}
+
+.product-edit-preview .product {
+  max-width: 320px;
+}
+
+.product-edit-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.stock-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  padding: 0.35rem;
+}
+
+.stock-stepper button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stock-stepper strong {
+  min-width: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.photo-gallery-editor {
+  margin-top: 0.5rem;
+}
+
+.photo-gallery-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.photo-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.photo-slot {
+  position: relative;
+  min-height: 140px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+.photo-slot img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.photo-slot-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.photo-slot-empty input {
+  display: none;
+}
+
+.photo-slot-actions {
+  position: absolute;
+  inset: auto 0.5rem 0.5rem;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.photo-slot-actions button,
+.photo-slot-badge {
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body:has(.admin-edit-toolbar) {
+  padding-bottom: 5.5rem;
+}
+
+@media (max-width: 900px) {
+  .product-edit-body {
+    grid-template-columns: 1fr;
+  }
+
+  .product-edit-preview .product {
+    max-width: none;
+  }
+
+  .admin-edit-toolbar-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-edit-toolbar-actions {
+    width: 100%;
+  }
+
+  .btn-edit-toggle,
+  .btn-edit-secondary {
+    flex: 1;
   }
 }
