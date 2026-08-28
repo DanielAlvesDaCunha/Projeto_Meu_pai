@@ -13,10 +13,12 @@ export function SortSelect({
   defaultValue,
   de,
   ate,
+  q,
 }: {
   defaultValue: string;
   de?: string;
   ate?: string;
+  q?: string;
 }) {
   const value = OPTIONS.some((o) => o.value === defaultValue) ? defaultValue : "mais-novo";
 
@@ -24,6 +26,7 @@ export function SortSelect({
     <form className="sort-form sort-form-pill" method="get">
       {de ? <input type="hidden" name="de" value={de} /> : null}
       {ate ? <input type="hidden" name="ate" value={ate} /> : null}
+      {q ? <input type="hidden" name="q" value={q} /> : null}
       <label htmlFor="ordenar" className="sr-only">
         Ordenar
       </label>

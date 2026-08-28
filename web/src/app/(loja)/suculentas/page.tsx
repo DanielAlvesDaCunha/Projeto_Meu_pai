@@ -22,7 +22,7 @@ const SUCCULENT_SLUGS = new Set([
 /** Visíveis na vitrine: ativos + esgotados (estoque 0). Ocultos só pelo admin. */
 const CATALOG_VISIBLE = {
   OR: [{ available: true }, { stock: { lte: 0 } }],
-} as const;
+};
 
 type Props = {
   searchParams: Promise<{ de?: string; ate?: string; ordenar?: string }>;

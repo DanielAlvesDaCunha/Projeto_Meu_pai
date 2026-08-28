@@ -77,6 +77,42 @@ const CATEGORIES = [
   },
 ];
 
+const HERO_SLIDES = [
+  {
+    kicker: "Grande variedade de",
+    title: "suculentas",
+    ctaHref: "/promocoes",
+    ctaLabel: "Comprar",
+    image:
+      "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
+    alt: "Suculentas",
+    badges: true,
+    order: 1,
+  },
+  {
+    kicker: "Pedido fácil pelo",
+    title: "WhatsApp",
+    ctaHref: "/como-pedir",
+    ctaLabel: "Como pedir",
+    image:
+      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1600&q=80",
+    alt: "Mudas",
+    badges: false,
+    order: 2,
+  },
+  {
+    kicker: "Fotos reais das",
+    title: "mudas",
+    ctaHref: "/produtos",
+    ctaLabel: "Ver produtos",
+    image:
+      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1600&q=80",
+    alt: "Variedades",
+    badges: false,
+    order: 3,
+  },
+];
+
 const PRODUCTS = [
   {
     category: "echeverias",
@@ -374,6 +410,20 @@ async function main() {
     where: { stock: { lte: 0 } },
     data: { available: true },
   });
+
+  for (const slide of HERO_SLIDES) {
+    const existing = await prisma.heroSlide.findFirst({
+      where: { title: slide.title, kicker: slide.kicker },
+    });
+    if (existing) {
+      await prisma.heroSlide.update({
+        where: { id: existing.id },
+        data: slide,
+      });
+    } else {
+      await prisma.heroSlide.create({ data: slide });
+    }
+  }
 
   console.log(`Seed ok. Novos produtos: ${created}. Admin: ${adminEmail}`);
 }

@@ -2,57 +2,32 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import type { HeroSlideDTO } from "@/lib/hero";
 
-const SLIDES = [
-  {
-    kicker: "Grande variedade de",
-    title: "suculentas",
-    cta: { href: "/promocoes", label: "Comprar" },
-    image:
-      "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
-    alt: "Suculentas",
-    badges: true,
-  },
-  {
-    kicker: "Pedido fácil pelo",
-    title: "WhatsApp",
-    cta: { href: "/como-pedir", label: "Como pedir" },
-    image:
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1600&q=80",
-    alt: "Mudas",
-    badges: false,
-  },
-  {
-    kicker: "Fotos reais das",
-    title: "mudas",
-    cta: { href: "/produtos", label: "Ver produtos" },
-    image:
-      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1600&q=80",
-    alt: "Variedades",
-    badges: false,
-  },
-] as const;
-
-export function HeroCarousel() {
+export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
   const [index, setIndex] = useState(0);
+  const items = slides.length ? slides : [];
 
   useEffect(() => {
+    if (items.length <= 1) return;
     const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length);
+      setIndex((i) => (i + 1) % items.length);
     }, 5500);
     return () => window.clearInterval(id);
-  }, []);
+  }, [items.length]);
+
+  if (!items.length) return null;
 
   const go = (dir: -1 | 1) => {
-    setIndex((i) => (i + dir + SLIDES.length) % SLIDES.length);
+    setIndex((i) => (i + dir + items.length) % items.length);
   };
 
   return (
     <section className="hero-est" aria-roledescription="carousel" aria-label="Destaques">
       <div className="hero-carousel">
-        {SLIDES.map((slide, i) => (
+        {items.map((slide, i) => (
           <div
-            key={slide.title}
+            key={`${slide.id}-${slide.title}`}
             className={`hero-slide${i === index ? " is-active" : ""}`}
             aria-hidden={i !== index}
           >
@@ -78,26 +53,29 @@ export function HeroCarousel() {
           </div>
         ))}
 
-        <button type="button" className="hero-nav hero-nav-prev" onClick={() => go(-1)} aria-label="Anterior">
-          ‹
-        </button>
-        <button type="button" className="hero-nav hero-nav-next" onClick={() => go(1)} aria-label="Próximo">
-          ›
-        </button>
-
-        <div className="hero-dots" role="tablist" aria-label="Slides">
-          {SLIDES.map((slide, i) => (
-            <button
-              key={slide.title}
-              type="button"
-              role="tab"
-              aria-selected={i === index}
-              className={i === index ? "is-active" : undefined}
-              onClick={() => setIndex(i)}
-              aria-label={`Slide ${i + 1}`}
-            />
-          ))}
-        </div>
+        {items.length > 1 ? (
+          <>
+            <button type="button" className="hero-nav hero-nav-prev" onClick={() => go(-1)} aria-label="Anterior">
+              ‹
+            </button>
+            <button type="button" className="hero-nav hero-nav-next" onClick={() => go(1)} aria-label="Próximo">
+              ›
+            </button>
+            <div className="hero-dots" role="tablist" aria-label="Slides">
+              {items.map((slide, i) => (
+                <button
+                  key={`dot-${slide.id}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === index}
+                  className={i === index ? "is-active" : undefined}
+                  onClick={() => setIndex(i)}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
     </section>
   );

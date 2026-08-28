@@ -102,6 +102,23 @@ model Category {
   @@map("categories")
 }
 
+model HeroSlide {
+  id        Int      @id @default(autoincrement())
+  kicker    String   @default("")
+  title     String
+  ctaHref   String   @default("/produtos")
+  ctaLabel  String   @default("Ver produtos")
+  image     String   @default("")
+  alt       String   @default("")
+  badges    Boolean  @default(false)
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("hero_slides")
+}
+
 model Product {
   id                Int         @id @default(autoincrement())
   categoryId        Int

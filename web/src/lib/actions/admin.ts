@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdminSession, slugify } from "@/lib/session";
+import { applyPaidOrderStock } from "@/lib/actions/orders";
 
 export type AdminFormState = {
   error?: string;
@@ -150,6 +151,7 @@ function revalidateCatalogPaths() {
   revalidatePath("/suculentas");
   revalidatePath("/admin");
   revalidatePath("/admin/produtos");
+  revalidatePath("/admin/banners");
 }
 
 function parseGalleryInput(raw: string, mainImage = "") {
@@ -268,6 +270,10 @@ export async function updateOrderStatus(formData: FormData) {
   const status = String(formData.get("status") || "");
   if (!id || !["PENDING", "PAID", "SHIPPED", "CANCELLED"].includes(status)) return;
 
+  if (status === "PAID" || status === "SHIPPED") {
+    await applyPaidOrderStock(id);
+  }
+
   await prisma.order.update({
     where: { id },
     data: {
@@ -280,6 +286,80 @@ export async function updateOrderStatus(formData: FormData) {
             : undefined,
     },
   });
+
+  revalidateCatalogPaths();
   revalidatePath("/admin/pedidos");
   revalidatePath(`/admin/pedidos/${id}`);
+}
+
+export async function saveHeroSlide(
+  _prev: AdminFormState,
+  formData: FormData
+): Promise<AdminFormState> {
+  await requireAdminSession();
+
+  const idRaw = String(formData.get("id") || "");
+  const kicker = String(formData.get("kicker") || "").trim();
+  const title = String(formData.get("title") || "").trim();
+  const ctaHref = String(formData.get("ctaHref") || "/produtos").trim() || "/produtos";
+  const ctaLabel = String(formData.get("ctaLabel") || "Ver produtos").trim() || "Ver produtos";
+  const image = String(formData.get("image") || "").trim();
+  const alt = String(formData.get("alt") || "").trim() || title;
+  const order = Number(formData.get("order") || 0);
+  const badges = formData.get("badges") === "on";
+  const active = formData.get("active") === "on";
+
+  if (!title) return { error: "Informe o título do banner." };
+  if (!image) return { error: "Envie uma imagem para o banner." };
+
+  const data = {
+    kicker,
+    title,
+    ctaHref,
+    ctaLabel,
+    image,
+    alt,
+    order: Number.isFinite(order) ? order : 0,
+    badges,
+    active,
+  };
+
+  try {
+    if (idRaw) {
+      await prisma.heroSlide.update({ where: { id: Number(idRaw) }, data });
+    } else {
+      await prisma.heroSlide.create({ data });
+    }
+  } catch (error) {
+    console.error(error);
+    return { error: "Não foi possível salvar o banner." };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/banners");
+  if (idRaw) revalidatePath(`/admin/banners/${idRaw}`);
+  return { ok: true };
+}
+
+export async function deleteHeroSlide(formData: FormData) {
+  await requireAdminSession();
+  const id = Number(formData.get("id"));
+  if (!id) return;
+  await prisma.heroSlide.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin/banners");
+}
+
+export async function toggleHeroSlideActive(formData: FormData) {
+  await requireAdminSession();
+  const id = Number(formData.get("id"));
+  if (!id) return;
+  const slide = await prisma.heroSlide.findUnique({ where: { id } });
+  if (!slide) return;
+  await prisma.heroSlide.update({
+    where: { id },
+    data: { active: !slide.active },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin/banners");
 }

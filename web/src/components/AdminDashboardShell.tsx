@@ -7,6 +7,7 @@ const NAV: NavItem[] = [
   { href: "/admin", label: "Resumo", icon: "◫" },
   { href: "/admin/produtos", label: "Anúncios", icon: "▦" },
   { href: "/admin/produtos/novo", label: "Novo anúncio", icon: "+" },
+  { href: "/admin/banners", label: "Banners", icon: "▣" },
   { href: "/admin/categorias", label: "Categorias", icon: "☰" },
   { href: "/admin/pedidos", label: "Pedidos", icon: "◎" },
 ];

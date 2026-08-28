@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { StoreProductCard } from "@/components/StoreProductCard";
 import { SortSelect } from "@/components/SortSelect";
+import { buildProductTextSearch, matchesProductSearch, normalizeSearchQuery } from "@/lib/catalog";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
@@ -8,7 +10,7 @@ import { toProductDTO } from "@/lib/money";
 export const dynamic = "force-dynamic";
 
 type Props = {
-  searchParams: Promise<{ de?: string; ate?: string; ordenar?: string }>;
+  searchParams: Promise<{ de?: string; ate?: string; ordenar?: string; q?: string }>;
 };
 
 function applySort<T extends { price: number; name: string; id: number }>(products: T[], sort: string) {
@@ -25,25 +27,32 @@ function applySort<T extends { price: number; name: string; id: number }>(produc
 export default async function ProdutosPage({ searchParams }: Props) {
   const sp = await searchParams;
   const sort = sp.ordenar || "mais-novo";
+  const query = normalizeSearchQuery(sp.q);
   const categories = hasUsableDatabaseUrl()
     ? await getNavCategories()
     : getDemoCatalog().categories;
 
   let products: ReturnType<typeof toProductDTO>[] = [];
+  let usedDatabase = false;
 
   if (hasUsableDatabaseUrl()) {
     try {
+      const textSearch = buildProductTextSearch(query);
       const where: {
-        OR: Array<{ available: boolean } | { stock: { lte: number } }>;
-        price?: { gte?: number; lte?: number };
+        AND: Array<
+          | { OR: Array<{ available: boolean } | { stock: { lte: number } }> }
+          | { price?: { gte?: number; lte?: number } }
+          | NonNullable<ReturnType<typeof buildProductTextSearch>>
+        >;
       } = {
-        OR: [{ available: true }, { stock: { lte: 0 } }],
+        AND: [{ OR: [{ available: true }, { stock: { lte: 0 } }] }],
       };
 
       const de = sp.de ? Number(String(sp.de).replace(",", ".")) : undefined;
       const ate = sp.ate ? Number(String(sp.ate).replace(",", ".")) : undefined;
-      if (de != null && !Number.isNaN(de)) where.price = { ...(where.price || {}), gte: de };
-      if (ate != null && !Number.isNaN(ate)) where.price = { ...(where.price || {}), lte: ate };
+      if (de != null && !Number.isNaN(de)) where.AND.push({ price: { gte: de } });
+      if (ate != null && !Number.isNaN(ate)) where.AND.push({ price: { lte: ate } });
+      if (textSearch) where.AND.push(textSearch);
 
       let orderBy: { price?: "asc" | "desc"; name?: "asc" | "desc"; id?: "asc" | "desc" }[] = [
         { id: "desc" },
@@ -60,15 +69,17 @@ export default async function ProdutosPage({ searchParams }: Props) {
         include: { category: { select: { slug: true } } },
       });
       products = rows.map((p) => toProductDTO(p));
+      usedDatabase = true;
     } catch (error) {
       console.error("Produtos query failed:", error);
     }
   }
 
-  if (!products.length) {
+  if (!usedDatabase) {
     let demo = getDemoCatalog().novidades.map((p) => toProductDTO(p));
     const de = sp.de ? Number(String(sp.de).replace(",", ".")) : undefined;
     const ate = sp.ate ? Number(String(sp.ate).replace(",", ".")) : undefined;
+    if (query) demo = demo.filter((p) => matchesProductSearch(p, query));
     if (de != null && !Number.isNaN(de)) demo = demo.filter((p) => p.price >= de);
     if (ate != null && !Number.isNaN(ate)) demo = demo.filter((p) => p.price <= ate);
     products = applySort(demo, sort);
@@ -82,7 +93,7 @@ export default async function ProdutosPage({ searchParams }: Props) {
           <span>/</span>
           <strong>Produtos</strong>
         </nav>
-        <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
+        <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} q={query || undefined} />
       </div>
 
       <div className="category-layout">
@@ -114,6 +125,7 @@ export default async function ProdutosPage({ searchParams }: Props) {
               <summary>Preço</summary>
               <form method="get" className="price-filter-form">
                 {sort !== "mais-novo" && <input type="hidden" name="ordenar" value={sort} />}
+                {query ? <input type="hidden" name="q" value={query} /> : null}
                 <div className="price-inputs">
                   <label>
                     <span className="muted">De</span>
@@ -134,7 +146,7 @@ export default async function ProdutosPage({ searchParams }: Props) {
 
         <div>
           <div className="category-head">
-            <h1>Todos os produtos</h1>
+            <h1>{query ? `Resultados para “${query}”` : "Todos os produtos"}</h1>
             <p className="muted" style={{ margin: 0 }}>
               {products.length} anúncio(s) · pedido pelo WhatsApp
             </p>

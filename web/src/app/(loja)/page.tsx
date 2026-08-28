@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { StoreProductCard } from "@/components/StoreProductCard";
 import { getDemoCatalog } from "@/lib/demoCatalog";
+import { getHeroSlides } from "@/lib/hero";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
 
@@ -28,7 +30,17 @@ type CatWithProducts = {
 
 type ProductRow = CatWithProducts["products"][number];
 
-export default async function HomePage() {
+type HomeProps = {
+  searchParams: Promise<{ q?: string }>;
+};
+
+export default async function HomePage({ searchParams }: HomeProps) {
+  const sp = await searchParams;
+  if (sp.q?.trim()) {
+    redirect(`/produtos?q=${encodeURIComponent(sp.q.trim())}`);
+  }
+
+  const heroSlides = await getHeroSlides();
   let categories: CatWithProducts[] = [];
   let featured: ProductRow[] = [];
   let novidades: ProductRow[] = [];
@@ -72,7 +84,7 @@ export default async function HomePage() {
 
   return (
     <div className="template-home">
-      <HeroCarousel />
+      <HeroCarousel slides={heroSlides} />
 
       <section className="services-row">
         <div className="container services-grid">

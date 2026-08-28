@@ -135,7 +135,7 @@ export function SiteHeaderClient({
               </span>
             </Link>
 
-            <form className="head-search head-desktop-only" action="/" method="get" role="search">
+            <form className="head-search head-desktop-only" action="/produtos" method="get" role="search">
               <input
                 type="search"
                 name="q"
@@ -166,7 +166,7 @@ export function SiteHeaderClient({
 
           <form
             className="head-search head-search-mobile head-mobile-only"
-            action="/"
+            action="/produtos"
             method="get"
             role="search"
           >
