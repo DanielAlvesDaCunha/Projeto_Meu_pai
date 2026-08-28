@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ProductCard } from "@/components/ProductCard";
+import { StoreProductCard } from "@/components/StoreProductCard";
 import { SortSelect } from "@/components/SortSelect";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
@@ -143,7 +143,7 @@ export default async function ProdutosPage({ searchParams }: Props) {
             {products.length === 0 ? (
               <p className="muted">Nenhum anúncio cadastrado ainda.</p>
             ) : (
-              products.map((p) => <ProductCard key={p.id} product={p} />)
+              products.map((p) => <StoreProductCard key={p.id} product={p} />)
             )}
           </div>
         </div>

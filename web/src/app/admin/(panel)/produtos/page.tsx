@@ -23,7 +23,8 @@ export default async function AdminProductsPage() {
         </Link>
       </div>
       <p className="muted" style={{ marginBottom: "1rem" }}>
-        Edite fotos, preços e estoque. Clique no nome para editar o anúncio completo.
+        Use os botões + e − para mudar o estoque rápido. Para editar vendo o site, vá na loja e clique em
+        &quot;Editar site&quot;.
       </p>
       <div className="admin-table-wrap">
         <table className="admin-table">

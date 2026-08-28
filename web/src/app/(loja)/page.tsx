@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { HeroCarousel } from "@/components/HeroCarousel";
-import { ProductCard } from "@/components/ProductCard";
+import { StoreProductCard } from "@/components/StoreProductCard";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
@@ -161,7 +161,7 @@ export default async function HomePage() {
         </div>
         <div className="product-row product-row-4">
           {featured.slice(0, 4).map((p) => (
-            <ProductCard key={p.id} product={toProductDTO(p)} />
+            <StoreProductCard key={p.id} product={toProductDTO(p)} />
           ))}
         </div>
       </section>
@@ -203,7 +203,7 @@ export default async function HomePage() {
         </div>
         <div className="product-row product-row-4">
           {novidades.slice(0, 4).map((p) => (
-            <ProductCard key={p.id} product={toProductDTO(p)} />
+            <StoreProductCard key={p.id} product={toProductDTO(p)} />
           ))}
         </div>
       </section>

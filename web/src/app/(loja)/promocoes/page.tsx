@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ProductCard } from "@/components/ProductCard";
+import { StoreProductCard } from "@/components/StoreProductCard";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
@@ -45,7 +45,7 @@ export default async function PromocoesPage() {
       </div>
       <div className="product-row product-row-catalog">
         {products.map((p) => (
-          <ProductCard key={p.id} product={toProductDTO(p)} />
+          <StoreProductCard key={p.id} product={toProductDTO(p)} />
         ))}
       </div>
     </section>
