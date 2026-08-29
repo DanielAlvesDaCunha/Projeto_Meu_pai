@@ -3000,48 +3000,84 @@ body.menu-open {
 
 .account-menu-pop {
   position: absolute;
-  top: calc(100% + 0.55rem);
+  top: calc(100% + 0.65rem);
   right: 0;
-  min-width: 180px;
+  width: min(280px, calc(100vw - 1.5rem));
   background: #fff;
   color: var(--text);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
-  padding: 0.4rem;
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
   z-index: 50;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-menu-head {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  padding: 0.95rem 1.1rem;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
 }
 
-.account-menu-pop a,
+.account-menu-head strong {
+  font-size: 0.98rem;
+}
+
+.account-menu-head span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.account-menu-body {
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem 0;
+}
+
+.account-menu-body a {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: var(--text);
+  font-size: 0.94rem;
+  font-weight: 600;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+}
+
+.account-menu-body a:hover {
+  background: var(--bg-soft);
+}
+
+.account-menu-foot {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 0.25rem 0;
+}
+
 .account-menu-logout {
   display: block;
   width: 100%;
   text-align: left;
   border: 0;
   background: transparent;
-  color: var(--text);
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.7rem 0.85rem;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.account-menu-pop a:hover,
-.account-menu-logout:hover {
-  background: var(--bg-soft);
-}
-
-.account-menu-logout {
   color: #8a3b3b;
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 700;
+  padding: 0.95rem 1.1rem;
+  cursor: pointer;
 }
 
-.account-menu-pop form {
+.account-menu-logout:hover {
+  background: #f7ecec;
+}
+
+.account-menu-foot form {
   margin: 0;
 }
 

@@ -13,6 +13,7 @@ export function AccountMenu({ user }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const isAdmin = user?.role === "ADMIN";
   const isLoggedIn = !!user;
+  const firstName = (user?.name || "").trim().split(/\s+/)[0] || "Conta";
 
   useEffect(() => {
     if (!open) return;
@@ -53,27 +54,31 @@ export function AccountMenu({ user }: Props) {
       </button>
       {open ? (
         <div className="account-menu-pop" role="menu">
-          <Link
-            href="/conta"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-          >
-            Editar dados
-          </Link>
-          {isAdmin ? (
-            <Link href="/admin" role="menuitem" onClick={() => setOpen(false)}>
-              Painel da loja
+          <div className="account-menu-head">
+            <strong>Olá, {firstName}</strong>
+            <span>{isAdmin ? "Conta do lojista" : "Sua conta"}</span>
+          </div>
+          <div className="account-menu-body">
+            <Link href="/conta" role="menuitem" onClick={() => setOpen(false)}>
+              Editar dados
             </Link>
-          ) : (
-            <Link href="/conta/pedidos" role="menuitem" onClick={() => setOpen(false)}>
-              Meus pedidos
-            </Link>
-          )}
-          <form action={isAdmin ? logoutAdmin : logoutUser}>
-            <button type="submit" role="menuitem" className="account-menu-logout">
-              Sair
-            </button>
-          </form>
+            {isAdmin ? (
+              <Link href="/admin" role="menuitem" onClick={() => setOpen(false)}>
+                Painel da loja
+              </Link>
+            ) : (
+              <Link href="/conta/pedidos" role="menuitem" onClick={() => setOpen(false)}>
+                Meus pedidos
+              </Link>
+            )}
+          </div>
+          <div className="account-menu-foot">
+            <form action={isAdmin ? logoutAdmin : logoutUser}>
+              <button type="submit" role="menuitem" className="account-menu-logout">
+                Sair
+              </button>
+            </form>
+          </div>
         </div>
       ) : null}
     </div>
