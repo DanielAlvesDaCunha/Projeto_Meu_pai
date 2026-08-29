@@ -37,9 +37,6 @@ export default auth((req) => {
       url.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(url);
     }
-    if (role === "ADMIN") {
-      return NextResponse.redirect(new URL("/admin", req.nextUrl));
-    }
   }
 
   return NextResponse.next();

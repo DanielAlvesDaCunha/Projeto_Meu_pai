@@ -24,13 +24,12 @@ const LINKS = [
 
 function accountHref(user: Props["user"]) {
   if (!user) return "/entrar";
-  if (user.role === "ADMIN") return "/?editar=1";
   return "/conta";
 }
 
 function accountLabel(user: Props["user"]) {
   if (!user) return "Entrar";
-  if (user.role === "ADMIN") return "Editar loja";
+  if (user.role === "ADMIN") return "Ver sua conta";
   return "Minha conta";
 }
 
@@ -132,6 +131,9 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
             <>
               <Link href={accountHref(user)} onClick={onClose}>
                 {accountLabel(user)}
+              </Link>
+              <Link href={user.role === "ADMIN" ? "/admin" : "/conta/pedidos"} onClick={onClose}>
+                {user.role === "ADMIN" ? "Painel da loja" : "Meus pedidos"}
               </Link>
               {user.role === "ADMIN" ? (
                 <form action={logoutAdmin}>

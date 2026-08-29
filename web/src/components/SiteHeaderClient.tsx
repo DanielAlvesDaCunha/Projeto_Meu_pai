@@ -9,8 +9,8 @@ import {
 } from "@/lib/catalog";
 import { useEffect, useRef, useState } from "react";
 import { CartButton } from "@/components/CartUI";
+import { AccountMenu } from "@/components/AccountMenu";
 import { MobileNav } from "@/components/MobileNav";
-import { logoutAdmin } from "@/lib/actions/auth";
 
 type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
@@ -29,18 +29,6 @@ const NAV_AFTER = [
   { href: "/contato", label: "Contato" },
 ] as const;
 
-function accountHref(user: Props["user"]) {
-  if (!user) return "/entrar";
-  if (user.role === "ADMIN") return "/?editar=1";
-  return "/conta";
-}
-
-function accountLabel(user: Props["user"]) {
-  if (!user) return "Entrar";
-  if (user.role === "ADMIN") return "Editar loja";
-  return "Minha conta";
-}
-
 /** Ícones de utilitário (outline) */
 function IconSupport() {
   return (
@@ -48,14 +36,6 @@ function IconSupport() {
       <path d="M4 12a8 8 0 0 1 16 0" strokeLinecap="round" />
       <path d="M4 12v2.5A2.5 2.5 0 0 0 6.5 17H8v-5H4zm16 0v2.5A2.5 2.5 0 0 1 17.5 17H16v-5h4z" />
       <path d="M12 19h1.5a2 2 0 0 0 2-2v-.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-function IconAccount() {
-  return (
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-      <circle cx="12" cy="8" r="3.2" />
-      <path d="M5 19.2c1.6-3.2 4-4.7 7-4.7s5.4 1.5 7 4.7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -159,17 +139,7 @@ export function SiteHeaderClient({
                 <IconSupport />
                 <span>Atendimento</span>
               </a>
-              <Link className="util-item" href={accountHref(user)}>
-                <IconAccount />
-                <span>{accountLabel(user)}</span>
-              </Link>
-              {user?.role === "ADMIN" ? (
-                <form action={logoutAdmin} className="util-logout-form">
-                  <button type="submit" className="util-item util-logout">
-                    <span>Sair</span>
-                  </button>
-                </form>
-              ) : null}
+              <AccountMenu user={user} />
               <CartButton variant="utility" />
             </div>
 

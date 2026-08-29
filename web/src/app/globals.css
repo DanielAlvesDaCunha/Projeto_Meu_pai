@@ -2982,6 +2982,61 @@ body.menu-open {
   padding: 0;
 }
 
+.account-menu {
+  position: relative;
+}
+
+.account-menu-trigger {
+  font: inherit;
+}
+
+.account-menu-pop {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  min-width: 180px;
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  padding: 0.4rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.account-menu-pop a,
+.account-menu-logout {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.account-menu-pop a:hover,
+.account-menu-logout:hover {
+  background: var(--bg-soft);
+}
+
+.account-menu-logout {
+  color: #8a3b3b;
+}
+
+.account-menu-pop form {
+  margin: 0;
+}
+
 .editable-product-wrap {
   position: relative;
 }
