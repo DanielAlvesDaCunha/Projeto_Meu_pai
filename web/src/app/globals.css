@@ -3219,6 +3219,17 @@ body.menu-open {
   padding: 0 1.25rem 1.25rem;
 }
 
+.product-edit-actions .btn-edit-secondary {
+  color: var(--text);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+}
+
+.product-edit-actions .btn-buy {
+  width: auto;
+  min-width: 10rem;
+}
+
 .photo-gallery-error {
   margin-top: 0.75rem;
 }
@@ -3336,7 +3347,8 @@ body.product-edit-open .wa-float {
 }
 
 @media (max-width: 900px) {
-  .product-edit-backdrop {
+  .product-edit-backdrop,
+  .product-edit-backdrop.is-phone {
     padding: 0;
     align-items: stretch;
     justify-content: stretch;
@@ -3439,4 +3451,52 @@ body.product-edit-open .wa-float {
   .btn-edit-secondary {
     flex: 1;
   }
+}
+
+.product-edit-backdrop.is-phone {
+  padding: 0;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.product-edit-backdrop.is-phone .product-edit-modal {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.product-edit-backdrop.is-phone .product-edit-head {
+  padding: max(0.85rem, env(safe-area-inset-top)) 1rem 0.85rem;
+}
+
+.product-edit-backdrop.is-phone .product-edit-body {
+  grid-template-columns: 1fr;
+  grid-template-areas: "form" "preview";
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.product-edit-backdrop.is-phone .product-edit-form .admin-grid-2 {
+  grid-template-columns: 1fr;
+}
+
+.product-edit-backdrop.is-phone .product-edit-actions {
+  margin: 0;
+  padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  justify-content: stretch;
+}
+
+.product-edit-backdrop.is-phone .product-edit-actions .btn-edit-secondary,
+.product-edit-backdrop.is-phone .product-edit-actions .btn-buy {
+  flex: 1;
+  width: auto;
+  min-height: 3rem;
 }

@@ -27,6 +27,7 @@ export function ProductEditModal({ product, open, onClose }: Props) {
   const [available, setAvailable] = useState((product.stock ?? 0) > 0);
   const [images, setImages] = useState(product.images.length ? product.images : product.image ? [product.image] : []);
   const [stockPending, setStockPending] = useState(false);
+  const [isPhone, setIsPhone] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -49,9 +50,14 @@ export function ProductEditModal({ product, open, onClose }: Props) {
       if (event.key === "Escape") onClose();
     };
     document.body.classList.add("product-edit-open");
+    const media = window.matchMedia("(max-width: 900px)");
+    const syncPhone = () => setIsPhone(media.matches);
+    syncPhone();
+    media.addEventListener("change", syncPhone);
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.classList.remove("product-edit-open");
+      media.removeEventListener("change", syncPhone);
       window.removeEventListener("keydown", onKey);
     };
   }, [open, onClose]);
@@ -88,7 +94,7 @@ export function ProductEditModal({ product, open, onClose }: Props) {
   }
 
   return (
-    <div className="product-edit-backdrop" onClick={onClose}>
+    <div className={`product-edit-backdrop${isPhone ? " is-phone" : ""}`} onClick={onClose}>
       <div
         className="product-edit-modal"
         role="dialog"
@@ -198,7 +204,7 @@ export function ProductEditModal({ product, open, onClose }: Props) {
           </form>
 
           <section className="product-edit-preview">
-            <details className="product-edit-preview-toggle">
+            <details className="product-edit-preview-toggle" open={!isPhone}>
               <summary>Ver como fica na loja</summary>
               <div className="product-edit-preview-card">
                 <ProductCard product={preview} />
