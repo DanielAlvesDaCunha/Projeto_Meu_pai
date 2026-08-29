@@ -48,8 +48,12 @@ export function ProductEditModal({ product, open, onClose }: Props) {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
+    document.body.classList.add("product-edit-open");
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.classList.remove("product-edit-open");
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -103,12 +107,7 @@ export function ProductEditModal({ product, open, onClose }: Props) {
         </header>
 
         <div className="product-edit-body">
-          <section className="product-edit-preview">
-            <h3>Como aparece na loja</h3>
-            <ProductCard product={preview} />
-          </section>
-
-          <form action={action} className="product-edit-form">
+          <form id="product-edit-form" action={action} className="product-edit-form">
             <input type="hidden" name="id" value={product.id} />
             <input type="hidden" name="image" value={mainImage} />
             <input type="hidden" name="gallery" value={galleryText} />
@@ -196,16 +195,24 @@ export function ProductEditModal({ product, open, onClose }: Props) {
             </label>
 
             {state.error && <p className="form-error">{state.error}</p>}
-
-            <div className="product-edit-actions">
-              <button type="button" className="btn-edit-secondary" onClick={onClose}>
-                Cancelar
-              </button>
-              <button type="submit" className="btn-buy" disabled={pending || stockPending}>
-                {pending ? "Salvando…" : "Salvar anúncio"}
-              </button>
-            </div>
           </form>
+
+          <section className="product-edit-preview">
+            <details className="product-edit-preview-toggle">
+              <summary>Ver como fica na loja</summary>
+              <div className="product-edit-preview-card">
+                <ProductCard product={preview} />
+              </div>
+            </details>
+          </section>
+        </div>
+        <div className="product-edit-actions">
+          <button type="button" className="btn-edit-secondary" onClick={onClose}>
+            Cancelar
+          </button>
+          <button type="submit" form="product-edit-form" className="btn-buy" disabled={pending || stockPending}>
+            {pending ? "Salvando…" : "Salvar anúncio"}
+          </button>
         </div>
       </div>
     </div>
