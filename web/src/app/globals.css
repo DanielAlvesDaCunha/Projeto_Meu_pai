@@ -258,9 +258,9 @@ img { max-width: 100%; display: block; }
 
 .head-utilities {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
-  gap: 1.25rem;
+  gap: 1.35rem;
 }
 
 .util-item,
@@ -268,28 +268,36 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 52px;
   color: var(--header-fg);
-  font-size: 0.62rem;
-  font-weight: 400;
+  font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
   background: transparent;
   border: 0;
   cursor: pointer;
-  padding: 0;
+  padding: 0.15rem 0.1rem;
   text-decoration: none;
+  line-height: 1.15;
 }
 
 .util-item svg,
 .cart-toggle-utility svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .util-item span,
 .cart-toggle-utility span:not(.cart-badge) {
   white-space: nowrap;
+}
+
+.account-menu-trigger span {
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .menu-toggle {
