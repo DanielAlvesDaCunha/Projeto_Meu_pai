@@ -88,8 +88,8 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STORE_NAME = os.getenv("STORE_NAME", "Paulo Suculentas")
-WHATSAPP_NUMBER = os.getenv("WHATSAPP_NUMBER", "5511999999999")
-WHATSAPP_LABEL = os.getenv("WHATSAPP_LABEL", "(11) 99999-9999")
+WHATSAPP_NUMBER = os.getenv("WHATSAPP_NUMBER", "5521988162338")
+WHATSAPP_LABEL = os.getenv("WHATSAPP_LABEL", "(21) 98816-2338")
 
 # whatsapp (atual) | stripe (futuro — ver catalog/payments.py)
 PAYMENT_PROVIDER = os.getenv("PAYMENT_PROVIDER", "whatsapp").lower()

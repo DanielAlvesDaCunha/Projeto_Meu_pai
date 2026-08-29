@@ -46,7 +46,7 @@ function parsePhone(phone?: string) {
       number: digits.slice(2),
     };
   }
-  return { area_code: "21", number: digits || "970151689" };
+  return { area_code: "21", number: digits || "988162338" };
 }
 
 export async function createPagarmePixPayment(input: CreatePixInput): Promise<CreatePixResult> {

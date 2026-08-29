@@ -27,9 +27,9 @@ docker compose up -d
 Em `dotenv_files/.env`:
 
 ```
-WHATSAPP_NUMBER=5511999999999
-WHATSAPP_LABEL=(11) 99999-9999
-STORE_NAME=Cantinho das Suculentas
+WHATSAPP_NUMBER=5521988162338
+WHATSAPP_LABEL=(21) 98816-2338
+STORE_NAME=Paulo Suculentas
 ```
 
 ## Fotos e produtos
