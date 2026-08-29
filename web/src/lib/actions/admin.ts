@@ -129,6 +129,7 @@ export async function saveCategory(
 
   revalidatePath("/");
   revalidatePath("/admin/categorias");
+  revalidatePath(`/produtos/${slug}`);
   revalidatePath(`/${slug}`);
   return { ok: true };
 }

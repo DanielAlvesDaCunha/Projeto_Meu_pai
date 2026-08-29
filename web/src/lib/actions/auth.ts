@@ -180,7 +180,7 @@ export async function logoutUser() {
 }
 
 export async function logoutAdmin() {
-  await signOut({ redirectTo: "/admin/entrar" });
+  await signOut({ redirectTo: "/" });
 }
 
 export async function updateProfile(

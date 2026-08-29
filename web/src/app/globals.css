@@ -2955,6 +2955,33 @@ body.menu-open {
   background: transparent;
 }
 
+.btn-edit-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgba(255, 200, 200, 0.55);
+  color: #ffe8e8;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.util-logout-form {
+  margin: 0;
+}
+
+.util-logout {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
 .editable-product-wrap {
   position: relative;
 }

@@ -50,7 +50,7 @@ export function CategoryForm({
       </div>
       <label className="check-row">
         <input name="comingSoon" type="checkbox" defaultChecked={category?.comingSoon} />
-        Em breve no estoque (ainda não vende neste tipo)
+        Em breve (atualização futura — ainda não vende neste tipo)
       </label>
       {state.error && <p className="form-error">{state.error}</p>}
       {state.ok && <p className="form-ok">Salvo!</p>}

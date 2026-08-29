@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { logoutAdmin } from "@/lib/actions/auth";
 import { useAdminEdit } from "@/components/admin/AdminEditContext";
 
 export function AdminEditToolbar() {
@@ -29,6 +30,11 @@ export function AdminEditToolbar() {
           <Link href="/admin" className="btn-edit-secondary" onClick={() => setEditMode(false)}>
             Painel
           </Link>
+          <form action={logoutAdmin}>
+            <button type="submit" className="btn-edit-logout">
+              Sair da conta
+            </button>
+          </form>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { CartButton } from "@/components/CartUI";
 import { MobileNav } from "@/components/MobileNav";
+import { logoutAdmin } from "@/lib/actions/auth";
 
 type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
@@ -162,6 +163,13 @@ export function SiteHeaderClient({
                 <IconAccount />
                 <span>{accountLabel(user)}</span>
               </Link>
+              {user?.role === "ADMIN" ? (
+                <form action={logoutAdmin} className="util-logout-form">
+                  <button type="submit" className="util-item util-logout">
+                    <span>Sair</span>
+                  </button>
+                </form>
+              ) : null}
               <CartButton variant="utility" />
             </div>
 
