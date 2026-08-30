@@ -54,21 +54,17 @@ export function toHeroSlideDTO(slide: {
   alt: string;
   badges: boolean;
 }): HeroSlideDTO {
+  const kicker = slide.kicker.trim();
   return {
     id: slide.id,
-    kicker: slide.kicker,
+    kicker,
     title: slide.title,
     cta: { href: slide.ctaHref, label: slide.ctaLabel },
     image: slide.image,
     alt: slide.alt || slide.title,
     badges: slide.badges,
-    photoBanner: false,
+    photoBanner: !kicker,
   };
-}
-
-function isOldCatalogHero(slide: HeroSlideDTO) {
-  const title = slide.title.toLowerCase();
-  return title === "suculentas" || title.includes("todas as suculentas");
 }
 
 function withSafeHeroImage(slide: HeroSlideDTO): HeroSlideDTO {
@@ -78,37 +74,20 @@ function withSafeHeroImage(slide: HeroSlideDTO): HeroSlideDTO {
   return slide;
 }
 
-function assembleHeroSlides(slides: HeroSlideDTO[], catalog = CATALOG_HERO_SLIDE): HeroSlideDTO[] {
-  const rest = slides
-    .filter((slide) => !isOldCatalogHero(slide) && !slide.photoBanner)
-    .slice(0, 2)
-    .map(withSafeHeroImage);
-  return [withSafeHeroImage(catalog), ...rest];
-}
-
 export async function getHeroSlides(): Promise<HeroSlideDTO[]> {
-  const catalog = { ...CATALOG_HERO_SLIDE };
-
   if (hasUsableDatabaseUrl()) {
     try {
-      const [rows, photo] = await Promise.all([
-        prisma.heroSlide.findMany({
-          where: { active: true },
-          orderBy: [{ order: "asc" }, { id: "asc" }],
-        }),
-        prisma.product.findFirst({
-          where: { available: true, image: { not: "" } },
-          orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-          select: { image: true },
-        }),
-      ]);
-      if (photo?.image) catalog.image = photo.image;
-      if (!rows.length) return assembleHeroSlides(DEFAULT_HERO_SLIDES, catalog);
-      return assembleHeroSlides(rows.map(toHeroSlideDTO), catalog);
+      const rows = await prisma.heroSlide.findMany({
+        where: { active: true },
+        orderBy: [{ order: "asc" }, { id: "asc" }],
+      });
+      if (rows.length) {
+        return rows.map((row) => withSafeHeroImage(toHeroSlideDTO(row)));
+      }
     } catch (error) {
       console.error("Hero slides query failed:", error);
     }
   }
 
-  return assembleHeroSlides(DEFAULT_HERO_SLIDES, catalog);
+  return DEFAULT_HERO_SLIDES.map(withSafeHeroImage);
 }

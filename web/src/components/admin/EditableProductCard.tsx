@@ -69,7 +69,17 @@ export function EditableProductCard({ product }: { product: ProductDTO }) {
           </button>
         </div>
       </div>
-      <ProductEditModal product={product} open={open} onClose={() => setOpen(false)} />
+      {open ? (
+        <ProductEditModal
+          key={product.id}
+          product={product}
+          open
+          onClose={() => {
+            setOpen(false);
+            router.refresh();
+          }}
+        />
+      ) : null}
     </>
   );
 }

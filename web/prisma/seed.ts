@@ -324,10 +324,8 @@ async function main() {
     const row = await prisma.category.upsert({
       where: { slug: cat.slug },
       update: {
-        name: cat.name,
         order: cat.order,
         comingSoon: cat.comingSoon,
-        description: cat.description,
       },
       create: cat,
     });
@@ -371,20 +369,6 @@ async function main() {
   for (const item of PRODUCTS) {
     const existing = await prisma.product.findUnique({ where: { sku: item.sku } });
     if (existing) {
-      await prisma.product.update({
-        where: { sku: item.sku },
-        data: {
-          categoryId: cats[item.category],
-          name: item.name,
-          stock: item.stock,
-          featured: item.featured,
-          available: true,
-          oldPrice: item.oldPrice ? new Prisma.Decimal(item.oldPrice) : null,
-          price: new Prisma.Decimal(item.price),
-          image: item.image,
-          gallery: JSON.stringify(item.gallery || []),
-        },
-      });
       continue;
     }
     await prisma.product.create({
@@ -411,16 +395,9 @@ async function main() {
     data: { available: true },
   });
 
-  for (const slide of HERO_SLIDES) {
-    const existing = await prisma.heroSlide.findFirst({
-      where: { order: slide.order },
-    });
-    if (existing) {
-      await prisma.heroSlide.update({
-        where: { id: existing.id },
-        data: slide,
-      });
-    } else {
+  const slideCount = await prisma.heroSlide.count();
+  if (slideCount === 0) {
+    for (const slide of HERO_SLIDES) {
       await prisma.heroSlide.create({ data: slide });
     }
   }

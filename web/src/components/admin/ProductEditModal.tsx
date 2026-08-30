@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import {
   imagesToGalleryText,
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function ProductEditModal({ product, open, onClose }: Props) {
+  const router = useRouter();
   const [state, action, pending] = useActionState(quickSaveProduct, initial);
   const [name, setName] = useState(product.name);
   const [price, setPrice] = useState(String(product.price));
@@ -41,8 +43,10 @@ export function ProductEditModal({ product, open, onClose }: Props) {
   }, [open, product]);
 
   useEffect(() => {
-    if (state.ok) onClose();
-  }, [state.ok, onClose]);
+    if (!state.ok) return;
+    onClose();
+    router.refresh();
+  }, [state.ok, onClose, router]);
 
   useEffect(() => {
     if (!open) return;

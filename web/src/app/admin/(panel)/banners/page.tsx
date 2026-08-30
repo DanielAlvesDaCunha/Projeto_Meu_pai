@@ -21,7 +21,8 @@ export default async function AdminBannersPage() {
         </Link>
       </div>
       <p className="muted" style={{ marginBottom: "1rem" }}>
-        Edite o carrossel grande da página inicial. Use fotos reais das plantas sempre que possível.
+        O que você salvar aqui é o carrossel grande da página inicial. A ordem menor aparece primeiro.
+        Depois de salvar, abra a home para ver a foto nova.
       </p>
 
       <div className="admin-table-wrap">

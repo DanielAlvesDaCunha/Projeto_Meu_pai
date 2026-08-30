@@ -60,15 +60,7 @@ export function SiteHeaderClient({
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     if (!produtosOpen) return;
@@ -95,8 +87,10 @@ export function SiteHeaderClient({
     if (!(header instanceof HTMLElement)) return;
 
     const syncHeaderHeight = () => {
-      if (header.classList.contains("is-compact")) return;
-      document.documentElement.style.setProperty("--header-h", `${Math.round(header.getBoundingClientRect().height)}px`);
+      document.documentElement.style.setProperty(
+        "--header-h",
+        `${Math.round(header.getBoundingClientRect().height)}px`
+      );
     };
 
     syncHeaderHeight();
@@ -111,7 +105,7 @@ export function SiteHeaderClient({
 
   return (
     <>
-      <header className={`head-main${scrolled ? " is-compact" : ""}`}>
+      <header className="head-main">
         {/* Faixa 1 — aviso WhatsApp */}
         <div className="head-social-bar head-desktop-only">
           <div className="head-social-inner head-adbar-inner">

@@ -210,9 +210,12 @@ export async function deleteCategory(formData: FormData) {
 }
 
 function revalidateCatalogPaths() {
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/produtos");
   revalidatePath("/produtos", "layout");
+  revalidatePath("/produtos/[slug]", "page");
+  revalidatePath("/produto/[id]", "page");
   revalidatePath("/promocoes");
   revalidatePath("/novidades");
   revalidatePath("/lancamentos");
@@ -404,8 +407,7 @@ export async function saveHeroSlide(
     return { error: "Não foi possível salvar o banner." };
   }
 
-  revalidatePath("/");
-  revalidatePath("/admin/banners");
+  revalidateCatalogPaths();
   if (idRaw) revalidatePath(`/admin/banners/${idRaw}`);
   return { ok: true };
 }
@@ -415,8 +417,7 @@ export async function deleteHeroSlide(formData: FormData) {
   const id = Number(formData.get("id"));
   if (!id) return;
   await prisma.heroSlide.delete({ where: { id } });
-  revalidatePath("/");
-  revalidatePath("/admin/banners");
+  revalidateCatalogPaths();
 }
 
 export async function toggleHeroSlideActive(formData: FormData) {
@@ -429,6 +430,5 @@ export async function toggleHeroSlideActive(formData: FormData) {
     where: { id },
     data: { active: !slide.active },
   });
-  revalidatePath("/");
-  revalidatePath("/admin/banners");
+  revalidateCatalogPaths();
 }
