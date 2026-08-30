@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { categoryHref, FUTURE_TYPE_LABEL } from "@/lib/catalog";
+import { categoryHref, FUTURE_TYPE_LABEL, shopTypeNav } from "@/lib/catalog";
 import { CartDrawer, CartToast } from "@/components/CartUI";
 import { SiteHeaderClient } from "@/components/SiteHeaderClient";
 import { getStoreConfig, whatsappGeneralUrl } from "@/lib/store";
@@ -26,7 +26,7 @@ export async function SiteHeader() {
 export async function SiteFooter() {
   const store = getStoreConfig();
   const wa = whatsappGeneralUrl(store);
-  const categories = await getNavCategories();
+  const categories = shopTypeNav(await getNavCategories());
   const year = new Date().getFullYear();
 
   return (
