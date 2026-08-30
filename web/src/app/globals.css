@@ -1000,14 +1000,6 @@ body.menu-open {
   overflow: visible;
 }
 
-.carousel-arrow.is-prev {
-  left: 0;
-}
-
-.carousel-arrow.is-next {
-  right: 0;
-}
-
 .carousel-arrow:hover {
   color: var(--accent-dark);
 }
