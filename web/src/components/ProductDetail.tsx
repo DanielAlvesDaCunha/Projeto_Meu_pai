@@ -50,6 +50,26 @@ export function ProductDetail({ product, categoryName }: Props) {
           ) : (
             <div className="no-photo">Sem foto</div>
           )}
+          {images.length > 1 ? (
+            <>
+              <button
+                type="button"
+                className="gallery-side is-prev"
+                onClick={() => setPhotoIndex((i) => (i - 1 + images.length) % images.length)}
+                aria-label="Foto anterior"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="gallery-side is-next"
+                onClick={() => setPhotoIndex((i) => (i + 1) % images.length)}
+                aria-label="Próxima foto"
+              >
+                ›
+              </button>
+            </>
+          ) : null}
         </div>
         {images.length > 1 ? (
           <div className="product-detail-thumbs">

@@ -54,13 +54,7 @@ export function ProductCard({
 
   return (
     <Wrap className={`product${outOfStock ? " is-soldout" : ""}${onPromo && !outOfStock ? " is-promo" : ""}`}>
-      <div className={`product-gallery${hasGallery && !preview ? " has-sides" : ""}`}>
-        {hasGallery && !preview ? (
-          <button type="button" className="gallery-side is-prev" onClick={prevPhoto} aria-label="Foto anterior">
-            ‹
-          </button>
-        ) : null}
-
+      <div className="product-gallery">
         <div className="product-media">
           {onPromo && !outOfStock && <span className="badge-promo">Promoção</span>}
           {off != null && !outOfStock && <span className="badge-off">{off}% OFF</span>}
@@ -82,6 +76,16 @@ export function ProductCard({
               )}
             </Link>
           )}
+          {hasGallery && !preview ? (
+            <>
+              <button type="button" className="gallery-side is-prev" onClick={prevPhoto} aria-label="Foto anterior">
+                ‹
+              </button>
+              <button type="button" className="gallery-side is-next" onClick={nextPhoto} aria-label="Próxima foto">
+                ›
+              </button>
+            </>
+          ) : null}
           {hasGallery ? (
             <span className="gallery-dots" aria-hidden>
               {images.map((_, i) => (
@@ -90,12 +94,6 @@ export function ProductCard({
             </span>
           ) : null}
         </div>
-
-        {hasGallery && !preview ? (
-          <button type="button" className="gallery-side is-next" onClick={nextPhoto} aria-label="Próxima foto">
-            ›
-          </button>
-        ) : null}
       </div>
 
       <div className="product-body">
