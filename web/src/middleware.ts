@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
 import { authConfig } from "@/lib/auth.config";
+import { isProductionVercelAppHost, SITE_ORIGIN } from "@/lib/site";
 
 const { auth } = NextAuth({
   ...authConfig,
@@ -8,6 +9,12 @@ const { auth } = NextAuth({
 });
 
 export default auth((req) => {
+  const host = req.headers.get("host") || "";
+  if (isProductionVercelAppHost(host)) {
+    const dest = new URL(req.nextUrl.pathname + req.nextUrl.search, SITE_ORIGIN);
+    return NextResponse.redirect(dest, 308);
+  }
+
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth?.user?.id;
   const role = req.auth?.user?.role || "CUSTOMER";
@@ -43,5 +50,7 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*", "/conta", "/conta/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

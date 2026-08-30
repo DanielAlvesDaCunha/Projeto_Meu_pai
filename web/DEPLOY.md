@@ -14,7 +14,7 @@ Sem `DATABASE_URL` na Vercel o site abre, mas **login e admin não funcionam**.
    - **Não** pode conter `suculentas_psql` (isso é só Docker local)
 5. Adicione também (se ainda não tiver):
    - `AUTH_SECRET` — string longa aleatória (32+ caracteres)
-   - `AUTH_URL` = `https://seu-dominio.vercel.app`
+   - `AUTH_URL` = `https://www.paulosuculentas.com.br`
    - `NEXTAUTH_URL` = mesma URL
    - `ADMIN_EMAIL` — e-mail do lojista (use o e-mail que ele usa para entrar). Se a conta já existir, o seed **promove para admin sem mudar a senha**.
    - `ADMIN_PASSWORD` — senha só para criar admin novo (padrão `Admin123!`)
@@ -35,7 +35,7 @@ Login local: http://127.0.0.1:43127/entrar
 Defina:
 
 - `AUTH_SECRET` — string longa aleatória
-- `AUTH_URL` / `NEXTAUTH_URL` — URL pública do site (ex.: `https://seu-app.vercel.app`)
+- `AUTH_URL` / `NEXTAUTH_URL` — URL pública do site (`https://www.paulosuculentas.com.br`)
 - `ADMIN_EMAIL` — e-mail do administrador (pode ser o e-mail que seu pai já usa no `/cadastro`)
 - `ADMIN_PASSWORD` — senha inicial se o admin ainda não existir no banco
 

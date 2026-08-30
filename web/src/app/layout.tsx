@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/Providers";
+import { SITE_ORIGIN } from "@/lib/site";
 import { getStoreConfig } from "@/lib/store";
 import "./globals.css";
 
@@ -12,11 +13,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: "Paulo Suculentas",
     template: "%s | Paulo Suculentas",
   },
   description: "Cultivo e vendas de suculentas. Pedido pelo WhatsApp.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
