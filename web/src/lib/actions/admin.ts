@@ -97,6 +97,11 @@ export async function deleteProduct(formData: FormData) {
   return { ok: true };
 }
 
+/** Form action da tabela admin — Next exige retorno void. */
+export async function deleteProductForm(formData: FormData): Promise<void> {
+  await deleteProduct(formData);
+}
+
 export async function listAdminCategories() {
   await requireAdminSession();
   return prisma.category.findMany({

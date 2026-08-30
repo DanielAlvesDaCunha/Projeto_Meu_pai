@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { StockQuickEdit } from "@/components/StockQuickEdit";
-import { deleteProduct, toggleProductAvailable } from "@/lib/actions/admin";
+import { deleteProductForm, toggleProductAvailable } from "@/lib/actions/admin";
 import { prisma } from "@/lib/prisma";
 import { requireAdminSession } from "@/lib/session";
 import { money } from "@/lib/money";
@@ -73,7 +73,7 @@ export default async function AdminProductsPage() {
                 <td>
                   <div className="admin-row-actions">
                     <Link href={`/admin/produtos/${p.id}`}>Editar</Link>
-                    <form action={deleteProduct}>
+                    <form action={deleteProductForm}>
                       <input type="hidden" name="id" value={p.id} />
                       <button type="submit" className="link-danger">
                         Excluir
