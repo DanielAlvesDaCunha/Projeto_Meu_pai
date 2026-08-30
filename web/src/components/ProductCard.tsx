@@ -5,7 +5,13 @@ import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { discountPercent, installmentText, money, type ProductDTO } from "@/lib/money";
 
-export function ProductCard({ product }: { product: ProductDTO }) {
+export function ProductCard({
+  product,
+  preview = false,
+}: {
+  product: ProductDTO;
+  preview?: boolean;
+}) {
   const { addItem, whatsappNumber } = useCart();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
@@ -44,10 +50,12 @@ export function ProductCard({ product }: { product: ProductDTO }) {
     setSent(true);
   }
 
+  const Wrap = preview ? "div" : "article";
+
   return (
-    <article className={`product${outOfStock ? " is-soldout" : ""}${onPromo && !outOfStock ? " is-promo" : ""}`}>
-      <div className={`product-gallery${hasGallery ? " has-sides" : ""}`}>
-        {hasGallery ? (
+    <Wrap className={`product${outOfStock ? " is-soldout" : ""}${onPromo && !outOfStock ? " is-promo" : ""}`}>
+      <div className={`product-gallery${hasGallery && !preview ? " has-sides" : ""}`}>
+        {hasGallery && !preview ? (
           <button type="button" className="gallery-side is-prev" onClick={prevPhoto} aria-label="Foto anterior">
             ‹
           </button>
@@ -57,14 +65,23 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           {onPromo && !outOfStock && <span className="badge-promo">Promoção</span>}
           {off != null && !outOfStock && <span className="badge-off">{off}% OFF</span>}
           {outOfStock && <span className="badge-soldout">Esgotado</span>}
-          <Link href={`/produto/${product.id}`} className="product-media-link">
-            {current ? (
+          {preview ? (
+            current ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={current} alt={product.name} loading="lazy" />
+              <img src={current} alt="" />
             ) : (
               <div className="no-photo">Sem foto</div>
-            )}
-          </Link>
+            )
+          ) : (
+            <Link href={`/produto/${product.id}`} className="product-media-link">
+              {current ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={current} alt={product.name} loading="lazy" />
+              ) : (
+                <div className="no-photo">Sem foto</div>
+              )}
+            </Link>
+          )}
           {hasGallery ? (
             <span className="gallery-dots" aria-hidden>
               {images.map((_, i) => (
@@ -74,7 +91,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           ) : null}
         </div>
 
-        {hasGallery ? (
+        {hasGallery && !preview ? (
           <button type="button" className="gallery-side is-next" onClick={nextPhoto} aria-label="Próxima foto">
             ›
           </button>
@@ -83,7 +100,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 
       <div className="product-body">
         <h3>
-          <Link href={`/produto/${product.id}`}>{product.name}</Link>
+          {preview ? product.name : <Link href={`/produto/${product.id}`}>{product.name}</Link>}
         </h3>
         <p className="price">
           {product.oldPrice != null && product.oldPrice > product.price && (
@@ -92,6 +109,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           {money(product.price)}
         </p>
         {!outOfStock && <p className="installments">{installmentText(product.price)}</p>}
+        {preview ? null : (
         <div className="product-actions">
           {outOfStock ? (
             <form className="notify-form" onSubmit={onNotify}>
@@ -133,7 +151,8 @@ export function ProductCard({ product }: { product: ProductDTO }) {
             </button>
           )}
         </div>
+        )}
       </div>
-    </article>
+    </Wrap>
   );
 }

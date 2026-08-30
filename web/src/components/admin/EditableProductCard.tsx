@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAdminEdit } from "@/components/admin/AdminEditContext";
 import { ProductEditModal } from "@/components/admin/ProductEditModal";
 import { ProductCard } from "@/components/ProductCard";
-import { money, type ProductDTO } from "@/lib/money";
+import type { ProductDTO } from "@/lib/money";
 
 const DEMO_ID_START = 9000;
 
@@ -21,14 +21,18 @@ export function EditableProductCard({ product }: { product: ProductDTO }) {
   return (
     <>
       <div className="editable-product-wrap">
-        <ProductCard product={product} />
-        <div className="editable-product-overlay">
-          <div className="editable-product-meta">
-            <span className="editable-product-stock">
-              Estoque: <strong>{stock}</strong>
-            </span>
-            <span className="editable-product-price">{money(product.price)}</span>
-          </div>
+        <button
+          type="button"
+          className="editable-product-hit"
+          onClick={() => setOpen(true)}
+          aria-label={`Editar ${product.name}`}
+        >
+          <ProductCard product={product} preview />
+        </button>
+        <div className="editable-product-bar">
+          <span>
+            Estoque <strong>{stock}</strong>
+          </span>
           <button type="button" className="btn-edit-card" onClick={() => setOpen(true)}>
             Editar anúncio
           </button>
