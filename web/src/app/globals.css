@@ -1004,6 +1004,19 @@ body.menu-open {
   color: var(--accent-dark);
 }
 
+.carousel-arrow:focus,
+.gallery-side:focus,
+.hero-nav:focus {
+  outline: none;
+}
+
+.carousel-arrow:focus-visible,
+.gallery-side:focus-visible,
+.hero-nav:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .category-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
