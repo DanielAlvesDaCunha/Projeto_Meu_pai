@@ -86,10 +86,70 @@ export async function saveProduct(
 export async function deleteProduct(formData: FormData) {
   await requireAdminSession();
   const id = Number(formData.get("id"));
-  if (!id) return;
-  await prisma.product.delete({ where: { id } });
-  revalidatePath("/");
-  revalidatePath("/admin/produtos");
+  if (!id) return { error: "Anúncio inválido." };
+  try {
+    await prisma.product.delete({ where: { id } });
+  } catch (error) {
+    console.error(error);
+    return { error: "Não foi possível excluir este anúncio." };
+  }
+  revalidateCatalogPaths();
+  return { ok: true };
+}
+
+export async function listAdminCategories() {
+  await requireAdminSession();
+  return prisma.category.findMany({
+    orderBy: { order: "asc" },
+    select: { id: true, name: true, slug: true, comingSoon: true },
+  });
+}
+
+export async function quickCreateProduct(
+  _prev: AdminFormState,
+  formData: FormData
+): Promise<AdminFormState> {
+  await requireAdminSession();
+
+  const name = String(formData.get("name") || "").trim();
+  const price = parseMoney(formData.get("price"));
+  const oldPrice = parseMoney(formData.get("oldPrice"));
+  const stock = Number(formData.get("stock") || 0);
+  const image = String(formData.get("image") || "").trim();
+  const galleryRaw = String(formData.get("gallery") || "").trim();
+  const featured = formData.get("featured") === "on" || formData.get("featured") === "true";
+  const categoryId = Number(formData.get("categoryId"));
+
+  if (!name || price == null || !categoryId) {
+    return { error: "Preencha nome, preço e o tipo da planta." };
+  }
+
+  const qty = Number.isFinite(stock) ? Math.max(0, Math.floor(stock)) : 0;
+  const sku = `${slugify(name).slice(0, 18) || "anuncio"}-${Date.now().toString(36)}`.toUpperCase();
+
+  try {
+    await prisma.product.create({
+      data: {
+        name,
+        sku,
+        description: "Planta selecionada. Pedido pelo WhatsApp.",
+        categoryId,
+        price: new Prisma.Decimal(price),
+        oldPrice: oldPrice != null ? new Prisma.Decimal(oldPrice) : null,
+        stock: qty,
+        image,
+        gallery: parseGalleryInput(galleryRaw, image),
+        featured,
+        available: qty > 0,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return { error: "Não foi possível criar o anúncio. Tente de novo." };
+  }
+
+  revalidateCatalogPaths();
+  return { ok: true };
 }
 
 export async function saveCategory(

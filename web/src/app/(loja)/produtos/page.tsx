@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { StoreProductCard } from "@/components/StoreProductCard";
+import { StoreProductGrid } from "@/components/StoreProductGrid";
 import { SortSelect } from "@/components/SortSelect";
 import {
   buildProductTextSearch,
@@ -161,13 +161,11 @@ export default async function ProdutosPage({ searchParams }: Props) {
               {products.length} anúncio(s) · pedido pelo WhatsApp
             </p>
           </div>
-          <div className="product-row product-row-catalog">
-            {products.length === 0 ? (
-              <p className="muted">Nenhum anúncio cadastrado ainda.</p>
-            ) : (
-              products.map((p) => <StoreProductCard key={p.id} product={p} />)
-            )}
-          </div>
+          <StoreProductGrid
+            className="product-row product-row-catalog"
+            products={products}
+            emptyText="Nenhum anúncio cadastrado ainda."
+          />
         </div>
       </div>
     </section>

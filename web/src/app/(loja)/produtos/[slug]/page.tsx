@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { StoreProductCard } from "@/components/StoreProductCard";
+import { StoreProductGrid } from "@/components/StoreProductGrid";
 import { SortSelect } from "@/components/SortSelect";
 import {
   categoryHref,
@@ -167,6 +167,7 @@ export default async function ProductCategoryPage({ params, searchParams }: Prop
       products={products.map((p) => toProductDTO(p))}
       sort={sort}
       sp={sp}
+      defaultCategoryId={category.id}
       priceHints={{
         min: bounds._min.price != null ? String(Number(bounds._min.price)) : "0",
         max: bounds._max.price != null ? String(Number(bounds._max.price)) : "100",
@@ -323,13 +324,11 @@ async function SuculentasCatalog({ sp }: { sp: { de?: string; ate?: string; orde
             <p className="muted" style={{ margin: "0 0 1rem" }}>
               {products.length} anúncio(s) · esgotados aparecem com aviso por e-mail
             </p>
-            <div className="product-row product-row-catalog">
-              {products.length === 0 ? (
-                <p className="muted">Nenhum anúncio de suculenta ainda.</p>
-              ) : (
-                products.map((p) => <StoreProductCard key={p.id} product={p} />)
-              )}
-            </div>
+            <StoreProductGrid
+              className="product-row product-row-catalog"
+              products={products}
+              emptyText="Nenhum anúncio de suculenta ainda."
+            />
           </div>
         </div>
       </div>
@@ -400,6 +399,7 @@ function CatalogView({
   sort,
   sp,
   priceHints,
+  defaultCategoryId,
 }: {
   categoryName: string;
   categorySlug: string;
@@ -409,6 +409,7 @@ function CatalogView({
   sort: string;
   sp: { de?: string; ate?: string };
   priceHints?: { min: string; max: string };
+  defaultCategoryId?: number;
 }) {
   const isSucculent = SUCCULENT_SUBTYPE_SLUGS.has(categorySlug);
   const sidebarCats = isSucculent
@@ -526,13 +527,12 @@ function CatalogView({
           </aside>
 
           <div>
-            <div className="product-row product-row-catalog">
-              {products.length === 0 ? (
-                <p className="muted">Nenhum anúncio neste tipo ainda.</p>
-              ) : (
-                products.map((p) => <StoreProductCard key={p.id} product={p} />)
-              )}
-            </div>
+            <StoreProductGrid
+              className="product-row product-row-catalog"
+              products={products}
+              emptyText="Nenhum anúncio neste tipo ainda."
+              defaultCategoryId={defaultCategoryId}
+            />
           </div>
         </div>
       </div>

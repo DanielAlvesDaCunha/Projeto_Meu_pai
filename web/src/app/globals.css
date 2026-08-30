@@ -3088,6 +3088,7 @@ body.menu-open {
 }
 
 .editable-product-wrap {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -3118,9 +3119,8 @@ body.menu-open {
   grid-template-columns: 1fr;
 }
 
-.editable-product-hit .product-media {
-  border-radius: 10px;
-  overflow: hidden;
+.editable-product-hit .badge-promo {
+  display: none;
 }
 
 .editable-product-bar {
@@ -3147,6 +3147,68 @@ body.menu-open {
   padding: 0.65rem 1rem;
   cursor: pointer;
   flex: 0 0 auto;
+}
+
+.editable-product-delete {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 4;
+  width: 2.15rem;
+  height: 2.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #7a3b3b;
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.editable-product-delete:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.add-listing-tile {
+  min-height: 22rem;
+  border: 2px dashed rgba(107, 127, 90, 0.7);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 1.5rem 1rem;
+  cursor: pointer;
+  color: var(--accent-dark);
+  text-align: center;
+  font: inherit;
+}
+
+.add-listing-plus {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.add-listing-tile strong {
+  font-size: 1.05rem;
+}
+
+.add-listing-tile span:last-child {
+  font-size: 0.85rem;
+  color: var(--muted);
+  max-width: 14rem;
 }
 
 .product-edit-backdrop {

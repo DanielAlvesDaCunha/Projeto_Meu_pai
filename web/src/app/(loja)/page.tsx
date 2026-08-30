@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { HeroCarousel } from "@/components/HeroCarousel";
-import { StoreProductCard } from "@/components/StoreProductCard";
+import { StoreProductGrid } from "@/components/StoreProductGrid";
 import {
   categoryHref,
   MAIN_CAROUSEL_LABELS,
@@ -187,11 +187,11 @@ export default async function HomePage({ searchParams }: HomeProps) {
             Ver todas
           </Link>
         </div>
-        <div className="product-row product-row-4">
-          {featured.slice(0, 4).map((p) => (
-            <StoreProductCard key={p.id} product={toProductDTO(p)} />
-          ))}
-        </div>
+        <StoreProductGrid
+          className="product-row product-row-4"
+          products={featured.slice(0, 4).map((p) => toProductDTO(p))}
+          defaultFeatured
+        />
       </section>
 
       <section className="banner-trio">
@@ -223,11 +223,10 @@ export default async function HomePage({ searchParams }: HomeProps) {
             Ver todas
           </Link>
         </div>
-        <div className="product-row product-row-4">
-          {novidades.slice(0, 4).map((p) => (
-            <StoreProductCard key={p.id} product={toProductDTO(p)} />
-          ))}
-        </div>
+        <StoreProductGrid
+          className="product-row product-row-4"
+          products={novidades.slice(0, 4).map((p) => toProductDTO(p))}
+        />
       </section>
     </div>
   );

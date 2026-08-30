@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { StoreProductCard } from "@/components/StoreProductCard";
+import { StoreProductGrid } from "@/components/StoreProductGrid";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 import { toProductDTO } from "@/lib/money";
@@ -44,11 +44,11 @@ export default async function NovidadesPage() {
       <div className="category-head">
         <h1>Novidades</h1>
       </div>
-      <div className="product-row product-row-catalog">
-        {products.map((p) => (
-          <StoreProductCard key={p.id} product={toProductDTO(p)} />
-        ))}
-      </div>
+      <StoreProductGrid
+        className="product-row product-row-catalog"
+        products={products.map((p) => toProductDTO(p))}
+        emptyText="Nenhum anúncio cadastrado ainda."
+      />
     </section>
   );
 }
