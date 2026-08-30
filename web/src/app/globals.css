@@ -10,6 +10,7 @@
   --header-bg: #4a6140;
   --header-fg: #fff;
   --header-line: rgba(255, 255, 255, 0.14);
+  --header-h: 10.75rem;
   --wa: #25d366;
   --adbar: #6b7f5a;
   --font: "Montserrat", "Segoe UI", sans-serif;
@@ -628,6 +629,55 @@ body.menu-open {
 .hero-est {
   background: var(--bg-soft);
   border-bottom: 1px solid var(--line);
+}
+
+.home-first-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header-h));
+  min-height: calc(100dvh - var(--header-h));
+}
+
+.home-first-screen .hero-est {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 14rem;
+  border-bottom: 0;
+}
+
+.home-first-screen .hero-carousel {
+  flex: 1 1 auto;
+  position: relative;
+  min-height: 0;
+}
+
+.home-first-screen .hero-slide,
+.home-first-screen .hero-slide.is-photo {
+  min-height: 0;
+}
+
+.home-first-screen .hero-slide.is-active {
+  position: absolute;
+  inset: 0;
+  height: auto;
+}
+
+.home-first-screen .hero-slide {
+  padding: 1.6rem 1rem 3.25rem;
+}
+
+.home-first-screen .hero-slide.is-photo {
+  padding: 0;
+}
+
+.home-first-screen .hero-copy {
+  margin-bottom: 0;
+}
+
+.home-first-screen .services-row {
+  flex: 0 0 auto;
+  padding: 1.15rem 0 1.3rem;
 }
 
 .hero-carousel {
@@ -2920,6 +2970,14 @@ body.menu-open {
 @media (max-width: 900px) {
   .hero-badges { display: none; }
   .hero-slide { min-height: 460px; }
+  .home-first-screen .hero-slide,
+  .home-first-screen .hero-slide.is-photo {
+    min-height: 0;
+  }
+  .home-first-screen {
+    min-height: calc(100vh - var(--header-h));
+    min-height: calc(100dvh - var(--header-h));
+  }
   .services-grid,
   .category-grid,
   .banner-grid,
@@ -2930,6 +2988,29 @@ body.menu-open {
   .category-layout,
   .produtos-hub {
     grid-template-columns: 1fr 1fr;
+  }
+  .home-first-screen .services-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+  .home-first-screen .service-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.4rem;
+    padding: 0.15rem;
+  }
+  .home-first-screen .service-badge {
+    width: 46px;
+    height: 46px;
+  }
+  .home-first-screen .service-card h3 {
+    font-size: 0.78rem;
+  }
+  .home-first-screen .service-card p {
+    font-size: 0.78rem;
+  }
+  .home-first-screen .services-row {
+    padding: 0.85rem 0 1rem;
   }
   .product-row,
   .product-row-catalog {
@@ -2984,6 +3065,10 @@ body.menu-open {
   .checkout-grid,
   .category-layout {
     grid-template-columns: 1fr;
+  }
+
+  .home-first-screen .services-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .produtos-hub {

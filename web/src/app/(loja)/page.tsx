@@ -84,6 +84,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
 
   return (
     <div className="template-home">
+      <div className="home-first-screen">
       <HeroCarousel slides={heroSlides} />
 
       <section className="services-row">
@@ -132,6 +133,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
           </div>
         </div>
       </section>
+      </div>
 
       <section className="container section" id="lancamentos">
         <div className="section-title is-display">
