@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 import {
   categoryHref,
   FUTURE_TYPE_LABEL,
+  MAIN_CAROUSEL_LABELS,
+  MAIN_CAROUSEL_SLUGS,
   SUCCULENT_TYPE_SLUGS,
+  isMainCarouselSlug,
 } from "@/lib/catalog";
 import { useEffect, useRef, useState } from "react";
 import { CartButton } from "@/components/CartUI";
@@ -56,7 +59,9 @@ export function SiteHeaderClient({
   user,
 }: Props) {
   const pathname = usePathname();
-  const typeCategories = categories.filter((cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas");
+  const typeCategories = categories.filter(
+    (cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas" && !isMainCarouselSlug(cat.slug)
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -212,15 +217,11 @@ export function SiteHeaderClient({
                 <Link href="/produtos" onClick={() => setProdutosOpen(false)}>
                   Todos os anúncios
                 </Link>
-                <Link href={categoryHref("suculentas")} onClick={() => setProdutosOpen(false)}>
-                  Suculentas
-                </Link>
-                <Link href={categoryHref("cactos")} onClick={() => setProdutosOpen(false)}>
-                  Cactos
-                </Link>
-                <Link href={categoryHref("kits")} onClick={() => setProdutosOpen(false)}>
-                  Kits
-                </Link>
+                {MAIN_CAROUSEL_SLUGS.map((slug) => (
+                  <Link key={slug} href={categoryHref(slug)} onClick={() => setProdutosOpen(false)}>
+                    {MAIN_CAROUSEL_LABELS[slug]}
+                  </Link>
+                ))}
                 <Link href="/novidades" onClick={() => setProdutosOpen(false)}>
                   Novidades
                 </Link>

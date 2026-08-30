@@ -8,7 +8,7 @@ import {
   FUTURE_TYPE_LABEL,
   matchesProductSearch,
   normalizeSearchQuery,
-  SUCCULENT_TYPE_SLUGS,
+  shopTypeNav,
 } from "@/lib/catalog";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { getNavCategories, hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
@@ -38,9 +38,7 @@ export default async function ProdutosPage({ searchParams }: Props) {
   const categories = hasUsableDatabaseUrl()
     ? await getNavCategories()
     : getDemoCatalog().categories;
-  const typeCategories = categories.filter(
-    (cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas"
-  );
+  const typeCategories = shopTypeNav(categories);
 
   let products: ReturnType<typeof toProductDTO>[] = [];
   let usedDatabase = false;
@@ -117,9 +115,6 @@ export default async function ProdutosPage({ searchParams }: Props) {
                   <Link href="/produtos" className="is-active">
                     Todos os anúncios
                   </Link>
-                </li>
-                <li>
-                  <Link href={categoryHref("suculentas")}>Suculentas</Link>
                 </li>
                 {typeCategories.map((cat) => (
                   <li key={cat.slug}>

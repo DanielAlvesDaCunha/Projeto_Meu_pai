@@ -5,6 +5,7 @@ import { SortSelect } from "@/components/SortSelect";
 import {
   categoryHref,
   FUTURE_TYPE_LABEL,
+  shopTypeNav,
   SUCCULENT_TYPE_SLUGS,
 } from "@/lib/catalog";
 import { DEMO_CATEGORIES, getDemoCatalog } from "@/lib/demoCatalog";
@@ -233,9 +234,7 @@ async function SuculentasCatalog({ sp }: { sp: { de?: string; ate?: string; orde
     products = applySort(flat.map((p) => toProductDTO(p)), sort);
   }
 
-  const sidebarTypes = succulentTypes.length
-    ? succulentTypes
-    : allCategories.filter((c) => c.slug === "gibbifloras" || c.slug === "echeverias");
+  const sidebarTypes = shopTypeNav(allCategories);
 
   const heroImages = products
     .filter((p) => p.image)
@@ -349,7 +348,7 @@ function ComingSoonView({
   allCategories: CatNav[];
   currentSlug: string;
 }) {
-  const sidebarCats = allCategories.filter((c) => SUCCULENT_SUBTYPE_SLUGS.has(c.slug));
+  const sidebarCats = shopTypeNav(allCategories);
   return (
     <section className="category-page-full">
       <header className="type-hero">
@@ -412,9 +411,7 @@ function CatalogView({
   defaultCategoryId?: number;
 }) {
   const isSucculent = SUCCULENT_SUBTYPE_SLUGS.has(categorySlug);
-  const sidebarCats = isSucculent
-    ? allCategories.filter((c) => SUCCULENT_SUBTYPE_SLUGS.has(c.slug))
-    : allCategories.filter((c) => c.slug === "cactos" || c.slug === "kits" || !SUCCULENT_SUBTYPE_SLUGS.has(c.slug));
+  const sidebarCats = shopTypeNav(allCategories);
   const heroImages = products
     .filter((p) => p.image)
     .slice(0, 7)
@@ -465,7 +462,7 @@ function CatalogView({
             <div className="filter-panel">
               <p className="filter-by-label">Filtrar por</p>
               <details open>
-                <summary>{isSucculent ? "Tipos" : "Categorias"}</summary>
+                <summary>Tipos</summary>
                 <ul className="filter-cats">
                   <li>
                     <Link href="/produtos">Todos os anúncios</Link>

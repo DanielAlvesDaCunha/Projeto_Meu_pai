@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { logoutAdmin, logoutUser } from "@/lib/actions/auth";
-import { categoryHref, FUTURE_TYPE_LABEL, SUCCULENT_TYPE_SLUGS } from "@/lib/catalog";
+import { categoryHref, FUTURE_TYPE_LABEL, MAIN_CAROUSEL_LABELS, MAIN_CAROUSEL_SLUGS, SUCCULENT_TYPE_SLUGS, isMainCarouselSlug } from "@/lib/catalog";
 
 type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
@@ -36,7 +36,7 @@ function accountLabel(user: Props["user"]) {
 export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Props) {
   const [produtosOpen, setProdutosOpen] = useState(false);
   const typeCategories = categories.filter(
-    (cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas"
+    (cat) => SUCCULENT_TYPE_SLUGS.has(cat.slug) && cat.slug !== "suculentas" && !isMainCarouselSlug(cat.slug)
   );
 
   useEffect(() => {
@@ -96,15 +96,14 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
           </button>
           {produtosOpen && (
             <div className="nav-mobile-sub">
-              <Link href={categoryHref("suculentas")} onClick={onClose}>
-                Suculentas
+              <Link href="/produtos" onClick={onClose}>
+                Todos os anúncios
               </Link>
-              <Link href={categoryHref("cactos")} onClick={onClose}>
-                Cactos
-              </Link>
-              <Link href={categoryHref("kits")} onClick={onClose}>
-                Kits
-              </Link>
+              {MAIN_CAROUSEL_SLUGS.map((slug) => (
+                <Link key={slug} href={categoryHref(slug)} onClick={onClose}>
+                  {MAIN_CAROUSEL_LABELS[slug]}
+                </Link>
+              ))}
               {typeCategories.map((cat) => (
                 <Link key={cat.slug} href={categoryHref(cat.slug)} onClick={onClose}>
                   {cat.name}

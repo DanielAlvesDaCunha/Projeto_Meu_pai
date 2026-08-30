@@ -91,13 +91,6 @@ export default async function HomePage({ searchParams }: HomeProps) {
   const categoryBySlug = new Map(categories.map((cat) => [cat.slug, cat]));
 
   function carouselImage(slug: MainCarouselSlug) {
-    if (slug === "suculentas") {
-      return (
-        categoryBySlug.get("gibbifloras")?.products[0]?.image ||
-        categoryBySlug.get("echeverias")?.products[0]?.image ||
-        ""
-      );
-    }
     return categoryBySlug.get(slug)?.products[0]?.image || "";
   }
 

@@ -207,6 +207,7 @@ export async function deleteCategory(formData: FormData) {
 function revalidateCatalogPaths() {
   revalidatePath("/");
   revalidatePath("/produtos");
+  revalidatePath("/produtos", "layout");
   revalidatePath("/promocoes");
   revalidatePath("/novidades");
   revalidatePath("/suculentas");
