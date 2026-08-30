@@ -16,8 +16,7 @@ export const CATALOG_HERO_SLIDE: HeroSlideDTO = {
   kicker: "",
   title: "Todas as suculentas e cactos",
   cta: { href: "/produtos", label: "Ver catálogo" },
-  image:
-    "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
+  image: "/hero-suculentas.svg",
   alt: "Todas as suculentas e cactos",
   badges: false,
   photoBanner: true,
@@ -30,8 +29,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlideDTO[] = [
     kicker: "Pedido fácil pelo",
     title: "WhatsApp",
     cta: { href: "/como-pedir", label: "Como pedir" },
-    image:
-      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1600&q=80",
+    image: "/hero-suculentas.svg",
     alt: "Mudas",
     badges: false,
   },
@@ -40,8 +38,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlideDTO[] = [
     kicker: "Fotos reais das",
     title: "mudas",
     cta: { href: "/produtos", label: "Ver produtos" },
-    image:
-      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1600&q=80",
+    image: "/hero-suculentas.svg",
     alt: "Variedades",
     badges: false,
   },
@@ -74,23 +71,44 @@ function isOldCatalogHero(slide: HeroSlideDTO) {
   return title === "suculentas" || title.includes("todas as suculentas");
 }
 
-function assembleHeroSlides(slides: HeroSlideDTO[]): HeroSlideDTO[] {
-  const rest = slides.filter((slide) => !isOldCatalogHero(slide) && !slide.photoBanner).slice(0, 2);
-  return [CATALOG_HERO_SLIDE, ...rest];
+function withSafeHeroImage(slide: HeroSlideDTO): HeroSlideDTO {
+  if (!slide.image || slide.image.includes("images.unsplash.com")) {
+    return { ...slide, image: "/hero-suculentas.svg" };
+  }
+  return slide;
+}
+
+function assembleHeroSlides(slides: HeroSlideDTO[], catalog = CATALOG_HERO_SLIDE): HeroSlideDTO[] {
+  const rest = slides
+    .filter((slide) => !isOldCatalogHero(slide) && !slide.photoBanner)
+    .slice(0, 2)
+    .map(withSafeHeroImage);
+  return [withSafeHeroImage(catalog), ...rest];
 }
 
 export async function getHeroSlides(): Promise<HeroSlideDTO[]> {
-  if (!hasUsableDatabaseUrl()) return assembleHeroSlides(DEFAULT_HERO_SLIDES);
+  const catalog = { ...CATALOG_HERO_SLIDE };
 
-  try {
-    const rows = await prisma.heroSlide.findMany({
-      where: { active: true },
-      orderBy: [{ order: "asc" }, { id: "asc" }],
-    });
-    if (!rows.length) return assembleHeroSlides(DEFAULT_HERO_SLIDES);
-    return assembleHeroSlides(rows.map(toHeroSlideDTO));
-  } catch (error) {
-    console.error("Hero slides query failed:", error);
-    return assembleHeroSlides(DEFAULT_HERO_SLIDES);
+  if (hasUsableDatabaseUrl()) {
+    try {
+      const [rows, photo] = await Promise.all([
+        prisma.heroSlide.findMany({
+          where: { active: true },
+          orderBy: [{ order: "asc" }, { id: "asc" }],
+        }),
+        prisma.product.findFirst({
+          where: { available: true, image: { not: "" } },
+          orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+          select: { image: true },
+        }),
+      ]);
+      if (photo?.image) catalog.image = photo.image;
+      if (!rows.length) return assembleHeroSlides(DEFAULT_HERO_SLIDES, catalog);
+      return assembleHeroSlides(rows.map(toHeroSlideDTO), catalog);
+    } catch (error) {
+      console.error("Hero slides query failed:", error);
+    }
   }
+
+  return assembleHeroSlides(DEFAULT_HERO_SLIDES, catalog);
 }

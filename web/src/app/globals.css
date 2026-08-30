@@ -724,13 +724,13 @@ body.menu-open {
 
 .hero-photo-label {
   color: #fff;
-  font-size: clamp(2rem, 5.2vw, 3.4rem);
+  font-size: clamp(1.7rem, 4.4vw, 2.8rem);
   font-weight: 800;
   letter-spacing: 0.02em;
   text-align: center;
-  line-height: 1.15;
+  line-height: 1.2;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
-  max-width: 16ch;
+  max-width: 14em;
 }
 
 .hero-photo-link:hover .hero-photo-label {
@@ -936,13 +936,17 @@ body.menu-open {
 }
 
 .product-carousel {
-  position: relative;
-  padding: 0 2.7rem;
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr) 2.1rem;
+  align-items: start;
+  column-gap: 0.2rem;
+  padding: 0;
 }
 
 .product-carousel-scroller {
   overflow-x: auto;
   scrollbar-width: none;
+  min-width: 0;
 }
 
 .product-carousel-scroller::-webkit-scrollbar {
@@ -961,11 +965,10 @@ body.menu-open {
 }
 
 .carousel-arrow {
-  position: absolute;
-  top: 28%;
-  z-index: 3;
-  width: 2.4rem;
-  height: 2.8rem;
+  position: static;
+  z-index: 1;
+  width: 2.1rem;
+  height: min(280px, 70vw);
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -980,8 +983,14 @@ body.menu-open {
 }
 
 .carousel-arrow .chevron-icon {
-  width: 1.55rem;
-  height: 1.55rem;
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.carousel-arrow.is-prev,
+.carousel-arrow.is-next {
+  left: auto;
+  right: auto;
 }
 
 .chevron-icon {
@@ -1119,11 +1128,11 @@ body.menu-open {
 }
 
 .gallery-side.is-prev {
-  left: 0.1rem;
+  left: 0.4rem;
 }
 
 .gallery-side.is-next {
-  right: 0.1rem;
+  right: 0.4rem;
 }
 
 .gallery-side:hover {
@@ -2938,7 +2947,11 @@ body.menu-open {
     line-height: 1.35;
   }
   .product-carousel {
-    padding: 0 2.15rem;
+    display: block;
+    padding: 0;
+  }
+  .carousel-arrow {
+    display: none;
   }
   .product-gallery.has-sides {
     grid-template-columns: 1fr;
