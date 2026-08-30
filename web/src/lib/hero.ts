@@ -8,19 +8,23 @@ export type HeroSlideDTO = {
   image: string;
   alt: string;
   badges: boolean;
+  photoBanner?: boolean;
+};
+
+export const CATALOG_HERO_SLIDE: HeroSlideDTO = {
+  id: -1,
+  kicker: "",
+  title: "Todas as suculentas e cactos",
+  cta: { href: "/produtos", label: "Ver catálogo" },
+  image:
+    "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
+  alt: "Todas as suculentas e cactos",
+  badges: false,
+  photoBanner: true,
 };
 
 export const DEFAULT_HERO_SLIDES: HeroSlideDTO[] = [
-  {
-    id: 0,
-    kicker: "Grande variedade de",
-    title: "suculentas",
-    cta: { href: "/promocoes", label: "Comprar" },
-    image:
-      "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
-    alt: "Suculentas",
-    badges: true,
-  },
+  CATALOG_HERO_SLIDE,
   {
     id: 1,
     kicker: "Pedido fácil pelo",
@@ -61,21 +65,32 @@ export function toHeroSlideDTO(slide: {
     image: slide.image,
     alt: slide.alt || slide.title,
     badges: slide.badges,
+    photoBanner: false,
   };
 }
 
+function isOldCatalogHero(slide: HeroSlideDTO) {
+  const title = slide.title.toLowerCase();
+  return title === "suculentas" || title.includes("todas as suculentas");
+}
+
+function assembleHeroSlides(slides: HeroSlideDTO[]): HeroSlideDTO[] {
+  const rest = slides.filter((slide) => !isOldCatalogHero(slide) && !slide.photoBanner).slice(0, 2);
+  return [CATALOG_HERO_SLIDE, ...rest];
+}
+
 export async function getHeroSlides(): Promise<HeroSlideDTO[]> {
-  if (!hasUsableDatabaseUrl()) return DEFAULT_HERO_SLIDES;
+  if (!hasUsableDatabaseUrl()) return assembleHeroSlides(DEFAULT_HERO_SLIDES);
 
   try {
     const rows = await prisma.heroSlide.findMany({
       where: { active: true },
       orderBy: [{ order: "asc" }, { id: "asc" }],
     });
-    if (!rows.length) return DEFAULT_HERO_SLIDES;
-    return rows.map(toHeroSlideDTO);
+    if (!rows.length) return assembleHeroSlides(DEFAULT_HERO_SLIDES);
+    return assembleHeroSlides(rows.map(toHeroSlideDTO));
   } catch (error) {
     console.error("Hero slides query failed:", error);
-    return DEFAULT_HERO_SLIDES;
+    return assembleHeroSlides(DEFAULT_HERO_SLIDES);
   }
 }

@@ -79,14 +79,14 @@ const CATEGORIES = [
 
 const HERO_SLIDES = [
   {
-    kicker: "Grande variedade de",
-    title: "suculentas",
-    ctaHref: "/promocoes",
-    ctaLabel: "Comprar",
+    kicker: "",
+    title: "Todas as suculentas e cactos",
+    ctaHref: "/produtos",
+    ctaLabel: "Ver catálogo",
     image:
       "https://images.unsplash.com/photo-1459156212016-c8128e64e80f?auto=format&fit=crop&w=1600&q=80",
-    alt: "Suculentas",
-    badges: true,
+    alt: "Todas as suculentas e cactos",
+    badges: false,
     order: 1,
   },
   {
@@ -413,7 +413,7 @@ async function main() {
 
   for (const slide of HERO_SLIDES) {
     const existing = await prisma.heroSlide.findFirst({
-      where: { title: slide.title, kicker: slide.kicker },
+      where: { order: slide.order },
     });
     if (existing) {
       await prisma.heroSlide.update({

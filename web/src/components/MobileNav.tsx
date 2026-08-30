@@ -84,7 +84,7 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
             aria-expanded={produtosOpen}
             onClick={() => setProdutosOpen((v) => !v)}
           >
-            Tipos
+            Catálogo
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
               <path fill="currentColor" d="M7 10l5 5 5-5z" />
             </svg>
@@ -93,6 +93,12 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
             <div className="nav-mobile-sub">
               <Link href="/produtos" onClick={onClose}>
                 Catálogo completo
+              </Link>
+              <Link href="/lancamentos" onClick={onClose}>
+                Lançamentos
+              </Link>
+              <Link href="/destaques" onClick={onClose}>
+                Destaques
               </Link>
               {MAIN_CAROUSEL_SLUGS.map((slug) => (
                 <Link key={slug} href={categoryHref(slug)} onClick={onClose}>

@@ -133,35 +133,6 @@ export default async function HomePage({ searchParams }: HomeProps) {
         </div>
       </section>
 
-      <section className="container section" id="categorias">
-        <div className="section-title">
-          <h2>Compre por tipo:</h2>
-        </div>
-        <div className="category-grid category-grid-main">
-          {carouselTiles.map((tile) => (
-            <Link key={tile.slug} className="category-card" href={tile.href}>
-              {tile.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={tile.image} alt={tile.name} loading="lazy" />
-              ) : (
-                <div className="category-fallback" />
-              )}
-              <span className="category-label">{tile.name}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="catalog-cta">
-        <div className="container catalog-cta-inner">
-          <h2>Todas as suculentas e cactos</h2>
-          <p>O catálogo completo da loja em um só lugar, com gibbifloras, echeverias e cactos.</p>
-          <Link href="/produtos" className="btn-buy catalog-cta-btn">
-            Clique aqui para ver todas as suculentas e cactos
-          </Link>
-        </div>
-      </section>
-
       <section className="container section" id="lancamentos">
         <div className="section-title is-display">
           <h2>
@@ -174,6 +145,22 @@ export default async function HomePage({ searchParams }: HomeProps) {
         <ProductCarousel
           products={lancamentos}
           emptyText="Nenhum lançamento nos últimos 30 dias."
+        />
+      </section>
+
+      <section className="container section" id="destaques">
+        <div className="section-title is-display">
+          <h2>
+            <Link href="/destaques">Destaques</Link>
+          </h2>
+          <Link className="section-more" href="/destaques">
+            Ver todas
+          </Link>
+        </div>
+        <ProductCarousel
+          products={destaques}
+          emptyText="Nenhum destaque no momento."
+          defaultFeatured
         />
       </section>
 
@@ -195,22 +182,6 @@ export default async function HomePage({ searchParams }: HomeProps) {
             </Link>
           ))}
         </div>
-      </section>
-
-      <section className="container section" id="destaques">
-        <div className="section-title is-display">
-          <h2>
-            <Link href="/destaques">Destaques</Link>
-          </h2>
-          <Link className="section-more" href="/destaques">
-            Ver todas
-          </Link>
-        </div>
-        <ProductCarousel
-          products={destaques}
-          emptyText="Nenhum destaque no momento."
-          defaultFeatured
-        />
       </section>
     </div>
   );

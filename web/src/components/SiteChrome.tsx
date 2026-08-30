@@ -66,6 +66,8 @@ export async function SiteFooter() {
           </div>
           <div>
             <strong>Navegação</strong>
+            <Link href="/quem-somos">Quem somos</Link>
+            <Link href="/servicos">Serviços</Link>
             <Link href="/como-pedir">Como pedir</Link>
             <Link href="/contato">Contato</Link>
             <Link href="/pedido">Meu pedido</Link>

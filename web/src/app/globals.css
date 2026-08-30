@@ -691,6 +691,46 @@ body.menu-open {
   z-index: 3;
 }
 
+.hero-slide.is-photo {
+  padding: 0;
+  min-height: min(62vh, 560px);
+}
+
+.hero-slide.is-photo .hero-plants {
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.hero-photo-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, rgba(20, 24, 16, 0.22), rgba(20, 24, 16, 0.5));
+  text-decoration: none;
+  padding: 2rem 1.25rem;
+}
+
+.hero-photo-label {
+  color: #fff;
+  font-size: clamp(1.7rem, 4.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-align: center;
+  line-height: 1.15;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  max-width: 16ch;
+}
+
+.hero-photo-link:hover .hero-photo-label {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 .hero-badges {
   position: absolute;
   left: 1.25rem;
@@ -750,6 +790,19 @@ body.menu-open {
 
 .hero-dots button.is-active {
   background: var(--accent);
+}
+
+.hero-carousel:has(.hero-slide.is-photo.is-active) .hero-nav {
+  color: #fff;
+  opacity: 0.9;
+}
+
+.hero-carousel:has(.hero-slide.is-photo.is-active) .hero-dots button {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.hero-carousel:has(.hero-slide.is-photo.is-active) .hero-dots button.is-active {
+  background: #fff;
 }
 
 .services-row {

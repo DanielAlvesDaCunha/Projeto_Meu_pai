@@ -213,17 +213,17 @@ export function SiteHeaderClient({
                 <Link href="/produtos" onClick={() => setProdutosOpen(false)}>
                   Catálogo completo
                 </Link>
-                {MAIN_CAROUSEL_SLUGS.map((slug) => (
-                  <Link key={slug} href={categoryHref(slug)} onClick={() => setProdutosOpen(false)}>
-                    {MAIN_CAROUSEL_LABELS[slug]}
-                  </Link>
-                ))}
                 <Link href="/lancamentos" onClick={() => setProdutosOpen(false)}>
                   Lançamentos
                 </Link>
                 <Link href="/destaques" onClick={() => setProdutosOpen(false)}>
                   Destaques
                 </Link>
+                {MAIN_CAROUSEL_SLUGS.map((slug) => (
+                  <Link key={slug} href={categoryHref(slug)} onClick={() => setProdutosOpen(false)}>
+                    {MAIN_CAROUSEL_LABELS[slug]}
+                  </Link>
+                ))}
                 <Link href="/promocoes" onClick={() => setProdutosOpen(false)}>
                   Promoções
                 </Link>

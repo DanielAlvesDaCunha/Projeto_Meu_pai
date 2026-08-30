@@ -48,8 +48,8 @@ export function lancamentosSince(from = new Date()) {
 }
 
 export const PRIMARY_NAV = [
-  { href: "/lancamentos", label: "Lançamentos" },
-  { href: "/destaques", label: "Destaques" },
+  { href: "/quem-somos", label: "Quem somos" },
+  { href: "/servicos", label: "Serviços" },
   { href: "/como-pedir", label: "Como pedir" },
   { href: "/contato", label: "Contato" },
 ] as const;

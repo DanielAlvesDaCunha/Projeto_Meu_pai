@@ -28,28 +28,36 @@ export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
         {items.map((slide, i) => (
           <div
             key={`${slide.id}-${slide.title}`}
-            className={`hero-slide${i === index ? " is-active" : ""}`}
+            className={`hero-slide${i === index ? " is-active" : ""}${slide.photoBanner ? " is-photo" : ""}`}
             aria-hidden={i !== index}
           >
-            <div className="hero-copy">
-              <p className="hero-kicker">{slide.kicker}</p>
-              <h1>{slide.title}</h1>
-              <Link className="btn-buy hero-cta" href={slide.cta.href}>
-                {slide.cta.label}
-              </Link>
-            </div>
-            {slide.badges && (
-              <div className="hero-badges">
-                <div>
-                  <strong>Melhor qualidade</strong>
-                </div>
-                <div>
-                  <strong>Melhor preço</strong>
-                </div>
-              </div>
-            )}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="hero-plants" src={slide.image} alt={slide.alt} />
+            {slide.photoBanner ? (
+              <Link className="hero-photo-link" href={slide.cta.href}>
+                <span className="hero-photo-label">{slide.title}</span>
+              </Link>
+            ) : (
+              <>
+                <div className="hero-copy">
+                  <p className="hero-kicker">{slide.kicker}</p>
+                  <h1>{slide.title}</h1>
+                  <Link className="btn-buy hero-cta" href={slide.cta.href}>
+                    {slide.cta.label}
+                  </Link>
+                </div>
+                {slide.badges && (
+                  <div className="hero-badges">
+                    <div>
+                      <strong>Melhor qualidade</strong>
+                    </div>
+                    <div>
+                      <strong>Melhor preço</strong>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ))}
 
