@@ -38,6 +38,22 @@ export const ALL_CATEGORY_SLUGS = new Set([
 
 export const FUTURE_TYPE_LABEL = "Em breve";
 
+/** Anúncios novos ficam em Lançamentos por este prazo. */
+export const LANCAMENTOS_DAYS = 30;
+
+export function lancamentosSince(from = new Date()) {
+  const date = new Date(from);
+  date.setDate(date.getDate() - LANCAMENTOS_DAYS);
+  return date;
+}
+
+export const PRIMARY_NAV = [
+  { href: "/lancamentos", label: "Lançamentos" },
+  { href: "/destaques", label: "Destaques" },
+  { href: "/como-pedir", label: "Como pedir" },
+  { href: "/contato", label: "Contato" },
+] as const;
+
 export function categoryHref(slug: string) {
   return `/produtos/${slug}`;
 }

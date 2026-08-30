@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { logoutAdmin, logoutUser } from "@/lib/actions/auth";
-import { categoryHref, FUTURE_TYPE_LABEL, MAIN_CAROUSEL_LABELS, MAIN_CAROUSEL_SLUGS, SUCCULENT_TYPE_SLUGS, isMainCarouselSlug } from "@/lib/catalog";
+import { categoryHref, FUTURE_TYPE_LABEL, MAIN_CAROUSEL_LABELS, MAIN_CAROUSEL_SLUGS, PRIMARY_NAV, SUCCULENT_TYPE_SLUGS, isMainCarouselSlug } from "@/lib/catalog";
 
 type NavCategory = { slug: string; name: string; comingSoon?: boolean };
 
@@ -15,12 +15,7 @@ type Props = {
   whatsappUrl: string;
 };
 
-const LINKS = [
-  { href: "/como-pedir", label: "Como pedir" },
-  { href: "/promocoes", label: "Promoções" },
-  { href: "/novidades", label: "Novidades" },
-  { href: "/contato", label: "Contato" },
-] as const;
+const LINKS = PRIMARY_NAV;
 
 function accountHref(user: Props["user"]) {
   if (!user) return "/entrar";
@@ -97,7 +92,7 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
           {produtosOpen && (
             <div className="nav-mobile-sub">
               <Link href="/produtos" onClick={onClose}>
-                Todos os anúncios
+                Catálogo completo
               </Link>
               {MAIN_CAROUSEL_SLUGS.map((slug) => (
                 <Link key={slug} href={categoryHref(slug)} onClick={onClose}>
@@ -112,9 +107,6 @@ export function MobileNav({ open, onClose, categories, user, whatsappUrl }: Prop
               ))}
               <Link href="/promocoes" onClick={onClose}>
                 Promoções
-              </Link>
-              <Link href="/novidades" onClick={onClose}>
-                Novidades
               </Link>
             </div>
           )}

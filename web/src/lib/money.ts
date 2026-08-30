@@ -9,7 +9,7 @@ export function installmentText(price: number | string) {
   const p = Number(price);
   const n = p < 20 ? 3 : Math.min(6, Math.max(3, Math.floor(p / 5)));
   const parcela = p / n;
-  return `${n} x de ${money(parcela)}`;
+  return `${n} x de ${money(parcela)} sem juros`;
 }
 
 export function pixPrice(price: number | string) {

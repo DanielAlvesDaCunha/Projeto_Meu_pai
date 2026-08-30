@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { HeroCarousel } from "@/components/HeroCarousel";
-import { StoreProductGrid } from "@/components/StoreProductGrid";
+import { ProductCarousel } from "@/components/ProductCarousel";
 import {
   categoryHref,
   MAIN_CAROUSEL_LABELS,
@@ -10,8 +10,8 @@ import {
 } from "@/lib/catalog";
 import { getDemoCatalog } from "@/lib/demoCatalog";
 import { getHeroSlides } from "@/lib/hero";
+import { getDestaques, getLancamentos } from "@/lib/listings";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
-import { toProductDTO } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
 
@@ -34,8 +34,6 @@ type CatWithProducts = {
   }>;
 };
 
-type ProductRow = CatWithProducts["products"][number];
-
 type HomeProps = {
   searchParams: Promise<{ q?: string }>;
 };
@@ -48,8 +46,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
 
   const heroSlides = await getHeroSlides();
   let categories: CatWithProducts[] = [];
-  let featured: ProductRow[] = [];
-  let novidades: ProductRow[] = [];
+  const [lancamentos, destaques] = await Promise.all([getLancamentos(12), getDestaques(12)]);
 
   if (hasUsableDatabaseUrl()) {
     try {
@@ -63,29 +60,13 @@ export default async function HomePage({ searchParams }: HomeProps) {
           },
         },
       });
-
-      featured = await prisma.product.findMany({
-        where: { available: true, featured: true },
-        take: 4,
-        orderBy: [{ order: "asc" }, { name: "asc" }],
-      });
-
-      novidades = await prisma.product.findMany({
-        where: { available: true },
-        take: 4,
-        orderBy: [{ createdAt: "desc" }, { order: "asc" }],
-      });
     } catch (error) {
       console.error("Home catalog query failed:", error);
     }
   }
 
-  // Sem banco / sem produtos → exemplos com fotos da web (Unsplash)
-  if (!categories.length || !featured.length) {
-    const demo = getDemoCatalog();
-    categories = demo.categories;
-    featured = demo.featured;
-    novidades = demo.novidades;
+  if (!categories.length) {
+    categories = getDemoCatalog().categories;
   }
 
   const categoryBySlug = new Map(categories.map((cat) => [cat.slug, cat]));
@@ -171,19 +152,28 @@ export default async function HomePage({ searchParams }: HomeProps) {
         </div>
       </section>
 
-      <section className="container section" id="promocoes">
-        <div className="section-title">
+      <section className="catalog-cta">
+        <div className="container catalog-cta-inner">
+          <h2>Todas as suculentas e cactos</h2>
+          <p>O catálogo completo da loja em um só lugar, com gibbifloras, echeverias e cactos.</p>
+          <Link href="/produtos" className="btn-buy catalog-cta-btn">
+            Clique aqui para ver todas as suculentas e cactos
+          </Link>
+        </div>
+      </section>
+
+      <section className="container section" id="lancamentos">
+        <div className="section-title is-display">
           <h2>
-            <Link href="/promocoes">Promoções</Link>
+            <Link href="/lancamentos">Lançamentos</Link>
           </h2>
-          <Link className="section-more" href="/promocoes">
+          <Link className="section-more" href="/lancamentos">
             Ver todas
           </Link>
         </div>
-        <StoreProductGrid
-          className="product-row product-row-4"
-          products={featured.slice(0, 4).map((p) => toProductDTO(p))}
-          defaultFeatured
+        <ProductCarousel
+          products={lancamentos}
+          emptyText="Nenhum lançamento nos últimos 30 dias."
         />
       </section>
 
@@ -207,18 +197,19 @@ export default async function HomePage({ searchParams }: HomeProps) {
         </div>
       </section>
 
-      <section className="container section" id="novidades">
-        <div className="section-title">
+      <section className="container section" id="destaques">
+        <div className="section-title is-display">
           <h2>
-            <Link href="/novidades">Novidades</Link>
+            <Link href="/destaques">Destaques</Link>
           </h2>
-          <Link className="section-more" href="/novidades">
+          <Link className="section-more" href="/destaques">
             Ver todas
           </Link>
         </div>
-        <StoreProductGrid
-          className="product-row product-row-4"
-          products={novidades.slice(0, 4).map((p) => toProductDTO(p))}
+        <ProductCarousel
+          products={destaques}
+          emptyText="Nenhum destaque no momento."
+          defaultFeatured
         />
       </section>
     </div>

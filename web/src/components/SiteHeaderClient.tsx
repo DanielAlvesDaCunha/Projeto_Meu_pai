@@ -7,6 +7,7 @@ import {
   FUTURE_TYPE_LABEL,
   MAIN_CAROUSEL_LABELS,
   MAIN_CAROUSEL_SLUGS,
+  PRIMARY_NAV,
   SUCCULENT_TYPE_SLUGS,
   isMainCarouselSlug,
 } from "@/lib/catalog";
@@ -25,12 +26,7 @@ type Props = {
   user: { name?: string | null; role?: string } | null;
 };
 
-const NAV_AFTER = [
-  { href: "/como-pedir", label: "Como pedir" },
-  { href: "/promocoes", label: "Promoções" },
-  { href: "/novidades", label: "Novidades" },
-  { href: "/contato", label: "Contato" },
-] as const;
+const NAV_AFTER = PRIMARY_NAV;
 
 /** Ícones de utilitário (outline) */
 function IconSupport() {
@@ -44,7 +40,7 @@ function IconSupport() {
 }
 function IconSearch() {
   return (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <circle cx="11" cy="11" r="6.5" />
       <path d="M16.2 16.2 20 20" strokeLinecap="round" />
     </svg>
@@ -215,15 +211,18 @@ export function SiteHeaderClient({
               <div className="mega-col">
                 <strong>Categorias</strong>
                 <Link href="/produtos" onClick={() => setProdutosOpen(false)}>
-                  Todos os anúncios
+                  Catálogo completo
                 </Link>
                 {MAIN_CAROUSEL_SLUGS.map((slug) => (
                   <Link key={slug} href={categoryHref(slug)} onClick={() => setProdutosOpen(false)}>
                     {MAIN_CAROUSEL_LABELS[slug]}
                   </Link>
                 ))}
-                <Link href="/novidades" onClick={() => setProdutosOpen(false)}>
-                  Novidades
+                <Link href="/lancamentos" onClick={() => setProdutosOpen(false)}>
+                  Lançamentos
+                </Link>
+                <Link href="/destaques" onClick={() => setProdutosOpen(false)}>
+                  Destaques
                 </Link>
                 <Link href="/promocoes" onClick={() => setProdutosOpen(false)}>
                   Promoções

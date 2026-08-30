@@ -215,6 +215,8 @@ function revalidateCatalogPaths() {
   revalidatePath("/produtos", "layout");
   revalidatePath("/promocoes");
   revalidatePath("/novidades");
+  revalidatePath("/lancamentos");
+  revalidatePath("/destaques");
   revalidatePath("/suculentas");
   revalidatePath("/admin");
   revalidatePath("/admin/produtos");

@@ -59,8 +59,10 @@ export async function SiteFooter() {
                 {cat.comingSoon ? ` · ${FUTURE_TYPE_LABEL}` : ""}
               </Link>
             ))}
+            <Link href="/produtos">Catálogo completo</Link>
+            <Link href="/lancamentos">Lançamentos</Link>
+            <Link href="/destaques">Destaques</Link>
             <Link href="/promocoes">Promoções</Link>
-            <Link href="/novidades">Novidades</Link>
           </div>
           <div>
             <strong>Navegação</strong>

@@ -151,7 +151,7 @@ export default async function ProdutosPage({ searchParams }: Props) {
 
         <div>
           <div className="category-head">
-            <h1>{query ? `Resultados para “${query}”` : "Todos os produtos"}</h1>
+            <h1>{query ? `Resultados para “${query}”` : "Todas as suculentas e cactos"}</h1>
             <p className="muted" style={{ margin: 0 }}>
               {products.length} anúncio(s) · pedido pelo WhatsApp
             </p>
