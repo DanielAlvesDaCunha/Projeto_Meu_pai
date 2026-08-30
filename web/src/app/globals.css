@@ -761,13 +761,20 @@ body.menu-open {
   transform: translateY(-50%);
   z-index: 4;
   border: 0;
-  background: transparent;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
   color: #666;
-  font-size: 2.4rem;
-  line-height: 1;
-  padding: 0.35rem 0.55rem;
+  padding: 0.35rem 0.45rem;
   cursor: pointer;
-  opacity: 0.75;
+  opacity: 0.85;
+  display: grid;
+  place-items: center;
+}
+
+.hero-nav .chevron-icon {
+  width: 1.7rem;
+  height: 1.7rem;
 }
 
 .hero-nav:hover { opacity: 1; color: #222; }
@@ -966,13 +973,22 @@ body.menu-open {
   appearance: none;
   -webkit-appearance: none;
   color: #3d3a35;
-  font-size: 2.6rem;
-  font-weight: 300;
-  line-height: 1;
   cursor: pointer;
   display: grid;
   place-items: center;
   -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-arrow .chevron-icon {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+
+.chevron-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: block;
+  overflow: visible;
 }
 
 .carousel-arrow.is-prev {
@@ -1088,16 +1104,18 @@ body.menu-open {
   appearance: none;
   -webkit-appearance: none;
   color: #fff;
-  font-size: 2.55rem;
-  font-weight: 300;
-  line-height: 1;
   cursor: pointer;
   display: grid;
   place-items: center;
   padding: 0;
   box-shadow: none;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
   -webkit-tap-highlight-color: transparent;
+}
+
+.gallery-side .chevron-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
 }
 
 .gallery-side.is-prev {
@@ -2928,7 +2946,10 @@ body.menu-open {
   .gallery-side {
     width: 2.4rem;
     height: 2.6rem;
-    font-size: 2.2rem;
+  }
+  .gallery-side .chevron-icon {
+    width: 1.25rem;
+    height: 1.25rem;
   }
   .product-media {
     min-height: 320px;
@@ -2998,9 +3019,13 @@ body.menu-open {
 }
 
 .product-detail-main .gallery-side {
-  font-size: 3.2rem;
   width: 3rem;
   height: 3.2rem;
+}
+
+.product-detail-main .gallery-side .chevron-icon {
+  width: 1.7rem;
+  height: 1.7rem;
 }
 
 .product-detail-main img,

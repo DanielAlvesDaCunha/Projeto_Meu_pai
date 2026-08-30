@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ChevronIcon } from "@/components/ChevronIcon";
 import { categoryHref } from "@/lib/catalog";
 import { useCart } from "@/lib/cart";
 import { discountPercent, installmentText, money, type ProductDTO } from "@/lib/money";
@@ -58,7 +59,7 @@ export function ProductDetail({ product, categoryName }: Props) {
                 onClick={() => setPhotoIndex((i) => (i - 1 + images.length) % images.length)}
                 aria-label="Foto anterior"
               >
-                ‹
+                <ChevronIcon dir="prev" />
               </button>
               <button
                 type="button"
@@ -66,7 +67,7 @@ export function ProductDetail({ product, categoryName }: Props) {
                 onClick={() => setPhotoIndex((i) => (i + 1) % images.length)}
                 aria-label="Próxima foto"
               >
-                ›
+                <ChevronIcon dir="next" />
               </button>
             </>
           ) : null}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ChevronIcon } from "@/components/ChevronIcon";
 import type { HeroSlideDTO } from "@/lib/hero";
 
 export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
@@ -64,10 +65,10 @@ export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
         {items.length > 1 ? (
           <>
             <button type="button" className="hero-nav hero-nav-prev" onClick={() => go(-1)} aria-label="Anterior">
-              ‹
+              <ChevronIcon dir="prev" />
             </button>
             <button type="button" className="hero-nav hero-nav-next" onClick={() => go(1)} aria-label="Próximo">
-              ›
+              <ChevronIcon dir="next" />
             </button>
             <div className="hero-dots" role="tablist" aria-label="Slides">
               {items.map((slide, i) => (

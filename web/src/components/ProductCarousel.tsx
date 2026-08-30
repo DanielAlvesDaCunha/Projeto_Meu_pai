@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { ChevronIcon } from "@/components/ChevronIcon";
 import { StoreProductGrid } from "@/components/StoreProductGrid";
 import type { ProductDTO } from "@/lib/money";
 
@@ -33,7 +34,7 @@ export function ProductCarousel({
         aria-label="Anterior"
         onClick={() => scrollByPage(-1)}
       >
-        ‹
+        <ChevronIcon dir="prev" />
       </button>
       <div className="product-carousel-scroller" ref={scroller}>
         <StoreProductGrid
@@ -50,7 +51,7 @@ export function ProductCarousel({
         aria-label="Próximo"
         onClick={() => scrollByPage(1)}
       >
-        ›
+        <ChevronIcon dir="next" />
       </button>
     </div>
   );

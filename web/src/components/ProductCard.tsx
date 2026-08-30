@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ChevronIcon } from "@/components/ChevronIcon";
 import { useCart } from "@/lib/cart";
 import { discountPercent, installmentText, money, type ProductDTO } from "@/lib/money";
 
@@ -79,10 +80,10 @@ export function ProductCard({
           {hasGallery && !preview ? (
             <>
               <button type="button" className="gallery-side is-prev" onClick={prevPhoto} aria-label="Foto anterior">
-                ‹
+                <ChevronIcon dir="prev" />
               </button>
               <button type="button" className="gallery-side is-next" onClick={nextPhoto} aria-label="Próxima foto">
-                ›
+                <ChevronIcon dir="next" />
               </button>
             </>
           ) : null}
