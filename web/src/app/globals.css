@@ -962,7 +962,9 @@ body.menu-open {
   padding: 0;
   border: 0;
   border-radius: 0;
-  background: transparent;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
   color: #3d3a35;
   font-size: 2.6rem;
   font-weight: 300;
@@ -970,6 +972,7 @@ body.menu-open {
   cursor: pointer;
   display: grid;
   place-items: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .carousel-arrow.is-prev {
@@ -1081,7 +1084,9 @@ body.menu-open {
   height: 2.8rem;
   border: 0;
   border-radius: 0;
-  background: transparent;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
   color: #fff;
   font-size: 2.55rem;
   font-weight: 300;
@@ -1092,6 +1097,7 @@ body.menu-open {
   padding: 0;
   box-shadow: none;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .gallery-side.is-prev {
