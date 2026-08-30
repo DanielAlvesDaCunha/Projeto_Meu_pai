@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { saveHeroSlide, type AdminFormState } from "@/lib/actions/admin";
+import { uploadAdminImage } from "@/lib/uploadImage";
 
 const initial: AdminFormState = {};
 
@@ -27,12 +28,7 @@ export function BannerForm({ slide }: { slide?: HeroSlideValues }) {
     if (!file) return;
     setUploading(true);
     try {
-      const body = new FormData();
-      body.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Falha no upload");
-      setImage(data.url);
+      setImage(await uploadAdminImage(file));
     } catch (error) {
       alert(error instanceof Error ? error.message : "Erro no upload");
     } finally {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { uploadAdminImage } from "@/lib/uploadImage";
 
 const MAX_PHOTOS = 4;
 
@@ -12,22 +13,19 @@ type Props = {
 
 export function PhotoGalleryEditor({ images, onChange, disabled }: Props) {
   const [uploadingSlot, setUploadingSlot] = useState<number | null>(null);
+  const [error, setError] = useState("");
   const slots = Array.from({ length: MAX_PHOTOS }, (_, index) => images[index] || "");
 
   async function uploadFile(file: File, slot: number) {
     setUploadingSlot(slot);
+    setError("");
     try {
-      const body = new FormData();
-      body.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Falha no upload");
-
+      const url = await uploadAdminImage(file);
       const next = [...images];
-      next[slot] = data.url;
+      next[slot] = url;
       onChange(next.filter(Boolean).slice(0, MAX_PHOTOS));
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Erro no upload");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Erro no upload");
     } finally {
       setUploadingSlot(null);
     }
@@ -69,7 +67,7 @@ export function PhotoGalleryEditor({ images, onChange, disabled }: Props) {
               </>
             ) : (
               <label className="photo-slot-empty">
-                <span>{uploadingSlot === slot ? "Enviando…" : `Foto ${slot + 1}`}</span>
+                <span>{uploadingSlot === slot ? "Enviando…" : `Toque para foto ${slot + 1}`}</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -85,6 +83,7 @@ export function PhotoGalleryEditor({ images, onChange, disabled }: Props) {
           </div>
         ))}
       </div>
+      {error ? <p className="form-error photo-gallery-error">{error}</p> : null}
     </div>
   );
 }
