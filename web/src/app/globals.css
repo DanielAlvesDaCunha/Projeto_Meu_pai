@@ -3237,6 +3237,7 @@ body.menu-open {
 .stock-stepper {
   display: inline-flex;
   align-items: center;
+  width: max-content;
   gap: 0.75rem;
   background: var(--bg-soft);
   border-radius: 999px;
