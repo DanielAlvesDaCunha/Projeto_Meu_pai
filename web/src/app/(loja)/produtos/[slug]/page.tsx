@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StoreProductGrid } from "@/components/StoreProductGrid";
 import { SortSelect } from "@/components/SortSelect";
+import { CatalogFilters } from "@/components/CatalogFilters";
 import {
   categoryHref,
   FUTURE_TYPE_LABEL,
@@ -270,8 +271,24 @@ async function SuculentasCatalog({ sp }: { sp: { de?: string; ate?: string; orde
             <span>/</span>
             <strong>Suculentas</strong>
           </nav>
-          <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
+          <div className="catalog-sort-desktop">
+            <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
+          </div>
         </div>
+
+        <CatalogFilters
+          types={[
+            { href: categoryHref("suculentas"), label: "Todas as suculentas", active: true },
+            ...sidebarTypes.map((cat) => ({
+              href: categoryHref(cat.slug),
+              label: cat.name,
+              soon: Boolean(cat.comingSoon),
+            })),
+          ]}
+          sort={sort}
+          de={sp.de}
+          ate={sp.ate}
+        />
 
         <div className="category-layout">
           <aside>
@@ -454,8 +471,29 @@ function CatalogView({
             ) : null}
             <strong>{categoryName}</strong>
           </nav>
-          <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
+          <div className="catalog-sort-desktop">
+            <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} />
+          </div>
         </div>
+
+        <CatalogFilters
+          types={[
+            { href: "/produtos", label: "Todos os anúncios" },
+            ...(isSucculent
+              ? [{ href: categoryHref("suculentas"), label: "Todas as suculentas" }]
+              : []),
+            ...sidebarCats.map((cat) => ({
+              href: categoryHref(cat.slug),
+              label: cat.name,
+              active: cat.slug === categorySlug,
+              soon: Boolean(cat.comingSoon),
+            })),
+          ]}
+          sort={sort}
+          de={sp.de}
+          ate={sp.ate}
+          priceHints={priceHints}
+        />
 
         <div className="category-layout">
           <aside>

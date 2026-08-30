@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { StoreProductGrid } from "@/components/StoreProductGrid";
 import { SortSelect } from "@/components/SortSelect";
+import { CatalogFilters } from "@/components/CatalogFilters";
 import {
   buildProductTextSearch,
   categoryHref,
@@ -101,8 +102,25 @@ export default async function ProdutosPage({ searchParams }: Props) {
           <span>/</span>
           <strong>Produtos</strong>
         </nav>
-        <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} q={query || undefined} />
+        <div className="catalog-sort-desktop">
+          <SortSelect defaultValue={sort} de={sp.de} ate={sp.ate} q={query || undefined} />
+        </div>
       </div>
+
+      <CatalogFilters
+        types={[
+          { href: "/produtos", label: "Todos os anúncios", active: true },
+          ...typeCategories.map((cat) => ({
+            href: categoryHref(cat.slug),
+            label: cat.name,
+            soon: Boolean(cat.comingSoon),
+          })),
+        ]}
+        sort={sort}
+        de={sp.de}
+        ate={sp.ate}
+        q={query || undefined}
+      />
 
       <div className="category-layout">
         <aside>

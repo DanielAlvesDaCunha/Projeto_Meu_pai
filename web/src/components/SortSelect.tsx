@@ -1,12 +1,12 @@
 "use client";
 
 const OPTIONS = [
-  { value: "mais-novo", label: "Mais novo ao mais antigo" },
-  { value: "mais-antigo", label: "Mais antigo ao mais novo" },
-  { value: "menor-preco", label: "Preço: menor ao maior" },
-  { value: "maior-preco", label: "Preço: maior ao menor" },
-  { value: "a-z", label: "A — Z" },
-  { value: "z-a", label: "Z — A" },
+  { value: "mais-novo", label: "Mais novo ao mais antigo", short: "Recentes" },
+  { value: "mais-antigo", label: "Mais antigo ao mais novo", short: "Antigos" },
+  { value: "menor-preco", label: "Preço: menor ao maior", short: "Menor preço" },
+  { value: "maior-preco", label: "Preço: maior ao menor", short: "Maior preço" },
+  { value: "a-z", label: "A — Z", short: "A — Z" },
+  { value: "z-a", label: "Z — A", short: "Z — A" },
 ] as const;
 
 export function SortSelect({
@@ -14,24 +14,27 @@ export function SortSelect({
   de,
   ate,
   q,
+  compact = false,
 }: {
   defaultValue: string;
   de?: string;
   ate?: string;
   q?: string;
+  compact?: boolean;
 }) {
   const value = OPTIONS.some((o) => o.value === defaultValue) ? defaultValue : "mais-novo";
+  const selectId = compact ? "ordenar-mobile" : "ordenar";
 
   return (
-    <form className="sort-form sort-form-pill" method="get">
+    <form className={`sort-form sort-form-pill${compact ? " is-compact" : ""}`} method="get">
       {de ? <input type="hidden" name="de" value={de} /> : null}
       {ate ? <input type="hidden" name="ate" value={ate} /> : null}
       {q ? <input type="hidden" name="q" value={q} /> : null}
-      <label htmlFor="ordenar" className="sr-only">
+      <label htmlFor={selectId} className="sr-only">
         Ordenar
       </label>
       <select
-        id="ordenar"
+        id={selectId}
         name="ordenar"
         defaultValue={value}
         onChange={(e) => e.currentTarget.form?.submit()}
@@ -39,7 +42,7 @@ export function SortSelect({
       >
         {OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>
-            {o.label}
+            {compact ? o.short : o.label}
           </option>
         ))}
       </select>
