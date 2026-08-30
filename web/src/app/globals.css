@@ -3173,9 +3173,9 @@ body.menu-open {
 
 .add-listing-tile {
   min-height: 22rem;
-  border: 2px dashed rgba(107, 127, 90, 0.7);
+  border: 2px dashed var(--accent);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
