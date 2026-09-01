@@ -66,7 +66,7 @@ export function toHeroSlideDTO(slide: {
     image: slide.image.trim(),
     alt: slide.alt || slide.title,
     badges: slide.badges,
-    photoBanner: !kicker,
+    photoBanner: true,
   };
 }
 

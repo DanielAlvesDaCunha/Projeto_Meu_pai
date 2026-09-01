@@ -37,9 +37,15 @@ export function BannerForm({ slide }: { slide?: HeroSlideValues }) {
   }
 
   return (
-    <form action={action} className="admin-form">
+    <form
+      action={(formData) => {
+        formData.set("image", image);
+        action(formData);
+      }}
+      className="admin-form"
+    >
       {slide?.id != null && <input type="hidden" name="id" value={slide.id} />}
-      <input type="hidden" name="image" value={image} />
+      <input type="hidden" name="image" value={image} readOnly />
 
       <p className="muted">
         Esta foto é o banner grande da tela inicial. Depois de salvar, o site abre a home para você

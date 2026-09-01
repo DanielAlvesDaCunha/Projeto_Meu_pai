@@ -35,14 +35,14 @@ export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
         {items.map((slide, i) => (
           <div
             key={`${slide.id}-${slide.title}`}
-            className={`hero-slide${i === index ? " is-active" : ""}${slide.photoBanner ? " is-photo" : ""}`}
+            className={`hero-slide${i === index ? " is-active" : ""} is-photo`}
             aria-hidden={i !== index}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="hero-plants"
               src={slide.image || HERO_FALLBACK_IMAGE}
-              alt={slide.photoBanner ? "" : slide.alt}
+              alt={slide.alt || ""}
               onError={(event) => {
                 if (event.currentTarget.src.includes(HERO_FALLBACK_IMAGE)) return;
                 event.currentTarget.src = HERO_FALLBACK_IMAGE;
