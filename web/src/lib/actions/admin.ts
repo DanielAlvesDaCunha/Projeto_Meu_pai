@@ -408,8 +408,7 @@ export async function saveHeroSlide(
   }
 
   revalidateCatalogPaths();
-  if (idRaw) revalidatePath(`/admin/banners/${idRaw}`);
-  return { ok: true };
+  redirect("/");
 }
 
 export async function deleteHeroSlide(formData: FormData) {

@@ -761,6 +761,33 @@ body.menu-open {
   pointer-events: none;
 }
 
+.editable-hero {
+  position: relative;
+}
+
+.editable-hero-btn {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 6;
+  background: #fff;
+  color: #2c2a26;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.editable-hero-btn:hover {
+  background: #f3efe6;
+}
+
+.editable-hero.is-editing .hero-carousel {
+  outline: 3px dashed rgba(255, 255, 255, 0.7);
+  outline-offset: -3px;
+}
+
 .hero-photo-link {
   position: absolute;
   inset: 0;

@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { hasUsableDatabaseUrl, prisma } from "@/lib/prisma";
 
 export type HeroSlideDTO = {
@@ -22,27 +23,7 @@ export const CATALOG_HERO_SLIDE: HeroSlideDTO = {
   photoBanner: true,
 };
 
-export const DEFAULT_HERO_SLIDES: HeroSlideDTO[] = [
-  CATALOG_HERO_SLIDE,
-  {
-    id: 1,
-    kicker: "Pedido fácil pelo",
-    title: "WhatsApp",
-    cta: { href: "/como-pedir", label: "Como pedir" },
-    image: "/hero-suculentas.svg",
-    alt: "Mudas",
-    badges: false,
-  },
-  {
-    id: 2,
-    kicker: "Fotos reais das",
-    title: "mudas",
-    cta: { href: "/produtos", label: "Ver produtos" },
-    image: "/hero-suculentas.svg",
-    alt: "Variedades",
-    badges: false,
-  },
-];
+export const DEFAULT_HERO_SLIDES: HeroSlideDTO[] = [CATALOG_HERO_SLIDE];
 
 export function toHeroSlideDTO(slide: {
   id: number;
@@ -54,27 +35,22 @@ export function toHeroSlideDTO(slide: {
   alt: string;
   badges: boolean;
 }): HeroSlideDTO {
-  const kicker = slide.kicker.trim();
+  const image = slide.image.trim();
   return {
     id: slide.id,
-    kicker,
+    kicker: slide.kicker.trim(),
     title: slide.title,
     cta: { href: slide.ctaHref, label: slide.ctaLabel },
-    image: slide.image,
+    image,
     alt: slide.alt || slide.title,
     badges: slide.badges,
-    photoBanner: !kicker,
+    photoBanner: true,
   };
 }
 
-function withSafeHeroImage(slide: HeroSlideDTO): HeroSlideDTO {
-  if (!slide.image || slide.image.includes("images.unsplash.com")) {
-    return { ...slide, image: "/hero-suculentas.svg" };
-  }
-  return slide;
-}
-
 export async function getHeroSlides(): Promise<HeroSlideDTO[]> {
+  noStore();
+
   if (hasUsableDatabaseUrl()) {
     try {
       const rows = await prisma.heroSlide.findMany({
@@ -82,12 +58,13 @@ export async function getHeroSlides(): Promise<HeroSlideDTO[]> {
         orderBy: [{ order: "asc" }, { id: "asc" }],
       });
       if (rows.length) {
-        return rows.map((row) => withSafeHeroImage(toHeroSlideDTO(row)));
+        const slides = rows.map(toHeroSlideDTO).filter((slide) => Boolean(slide.image));
+        if (slides.length) return slides;
       }
     } catch (error) {
       console.error("Hero slides query failed:", error);
     }
   }
 
-  return DEFAULT_HERO_SLIDES.map(withSafeHeroImage);
+  return DEFAULT_HERO_SLIDES;
 }

@@ -65,8 +65,8 @@ export default async function AdminHomePage() {
         <Link className="admin-action-btn admin-action-btn-secondary" href="/admin/produtos">
           Ver todos os anúncios
         </Link>
-        <Link className="admin-action-btn admin-action-btn-secondary" href="/admin/pedidos">
-          Ver pedidos
+        <Link className="admin-action-btn admin-action-btn-secondary" href="/admin/banners">
+          Editar banner da home
         </Link>
       </div>
 

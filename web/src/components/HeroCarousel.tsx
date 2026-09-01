@@ -29,7 +29,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
         {items.map((slide, i) => (
           <div
             key={`${slide.id}-${slide.title}`}
-            className={`hero-slide${i === index ? " is-active" : ""}${slide.photoBanner ? " is-photo" : ""}`}
+            className={`hero-slide${i === index ? " is-active" : ""} is-photo`}
             aria-hidden={i !== index}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -16,7 +16,7 @@ export function AdminEditToolbar() {
           <strong>{editMode ? "Modo edição ligado" : "Você é administrador"}</strong>
           <span>
             {editMode
-              ? "X fecha o anúncio. O + no espaço vazio sobe um novo."
+              ? "X fecha o anúncio. Toque no banner da home para trocar a foto."
               : "Ative para editar os anúncios direto na vitrine."}
           </span>
         </div>

@@ -41,14 +41,40 @@ export function BannerForm({ slide }: { slide?: HeroSlideValues }) {
       {slide?.id != null && <input type="hidden" name="id" value={slide.id} />}
       <input type="hidden" name="image" value={image} />
 
+      <p className="muted">
+        Esta foto é o banner grande da tela inicial. Depois de salvar, o site abre a home para você
+        conferir.
+      </p>
+
+      <div className="form-field">
+        <label htmlFor="banner-photo">Foto do banner da home</label>
+        <input
+          id="banner-photo"
+          type="file"
+          accept="image/*"
+          onChange={(event) => onUpload(event.target.files?.[0] || null)}
+        />
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={image} alt="Preview do banner" className="admin-thumb admin-banner-preview" />
+        ) : null}
+        {uploading && <p className="muted">Enviando imagem…</p>}
+      </div>
+
       <div className="admin-grid-2">
         <div className="form-field">
-          <label htmlFor="kicker">Texto pequeno (acima do título)</label>
-          <input id="kicker" name="kicker" defaultValue={slide?.kicker || ""} placeholder="Grande variedade de" />
+          <label htmlFor="title">Título em cima da foto</label>
+          <input
+            id="title"
+            name="title"
+            defaultValue={slide?.title || ""}
+            required
+            placeholder="Todas as suculentas e cactos"
+          />
         </div>
         <div className="form-field">
-          <label htmlFor="title">Título grande</label>
-          <input id="title" name="title" defaultValue={slide?.title || ""} required placeholder="suculentas" />
+          <label htmlFor="kicker">Texto pequeno (opcional)</label>
+          <input id="kicker" name="kicker" defaultValue={slide?.kicker || ""} placeholder="Opcional" />
         </div>
       </div>
 
@@ -65,28 +91,13 @@ export function BannerForm({ slide }: { slide?: HeroSlideValues }) {
 
       <div className="admin-grid-2">
         <div className="form-field">
-          <label htmlFor="order">Ordem</label>
-          <input id="order" name="order" type="number" defaultValue={slide?.order ?? 0} />
+          <label htmlFor="order">Ordem (1 = primeiro na home)</label>
+          <input id="order" name="order" type="number" defaultValue={slide?.order ?? 1} />
         </div>
         <div className="form-field">
-          <label htmlFor="alt">Texto alternativo da imagem</label>
+          <label htmlFor="alt">Texto da imagem</label>
           <input id="alt" name="alt" defaultValue={slide?.alt || ""} placeholder="Suculentas" />
         </div>
-      </div>
-
-      <div className="form-field">
-        <label htmlFor="banner-photo">Imagem do banner</label>
-        <input
-          id="banner-photo"
-          type="file"
-          accept="image/*"
-          onChange={(event) => onUpload(event.target.files?.[0] || null)}
-        />
-        {image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt="Preview do banner" className="admin-thumb admin-banner-preview" />
-        ) : null}
-        {uploading && <p className="muted">Enviando imagem…</p>}
       </div>
 
       <label className="check-row">
@@ -95,13 +106,12 @@ export function BannerForm({ slide }: { slide?: HeroSlideValues }) {
       </label>
       <label className="check-row">
         <input name="active" type="checkbox" defaultChecked={slide?.active ?? true} />
-        Ativo na home
+        Mostrar este banner na home
       </label>
 
       {state.error && <p className="form-error">{state.error}</p>}
-      {state.ok && <p className="form-ok">Banner salvo!</p>}
-      <button type="submit" className="btn-buy" disabled={pending || uploading}>
-        {pending ? "Salvando…" : slide ? "Salvar banner" : "Criar banner"}
+      <button type="submit" className="btn-buy" disabled={pending || uploading || !image}>
+        {pending ? "Salvando…" : "Salvar e ver na home"}
       </button>
     </form>
   );

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { HeroCarousel } from "@/components/HeroCarousel";
 import { ProductCarousel } from "@/components/ProductCarousel";
+import { EditableHero } from "@/components/admin/EditableHero";
 import {
   categoryHref,
   MAIN_CAROUSEL_LABELS,
@@ -85,7 +85,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
   return (
     <div className="template-home">
       <div className="home-first-screen">
-      <HeroCarousel slides={heroSlides} />
+      <EditableHero slides={heroSlides} />
 
       <section className="services-row">
         <div className="container services-grid">

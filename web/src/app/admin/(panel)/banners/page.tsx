@@ -21,8 +21,8 @@ export default async function AdminBannersPage() {
         </Link>
       </div>
       <p className="muted" style={{ marginBottom: "1rem" }}>
-        O que você salvar aqui é o carrossel grande da página inicial. A ordem menor aparece primeiro.
-        Depois de salvar, abra a home para ver a foto nova.
+        Estes banners são o carrossel grande da tela inicial. Clique em Editar, troque a foto e
+        salve — o site abre a home já com a imagem nova.
       </p>
 
       <div className="admin-table-wrap">
