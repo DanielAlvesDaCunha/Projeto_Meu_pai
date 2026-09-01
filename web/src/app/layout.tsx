@@ -19,6 +19,14 @@ export const metadata: Metadata = {
     template: "%s | Paulo Suculentas",
   },
   description: "Cultivo e vendas de suculentas. Pedido pelo WhatsApp.",
+  applicationName: "Paulo Suculentas",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
   alternates: {
     canonical: "/",
   },
