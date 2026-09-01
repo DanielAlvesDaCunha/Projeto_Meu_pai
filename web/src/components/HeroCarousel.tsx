@@ -5,9 +5,15 @@ import { useEffect, useState } from "react";
 import { ChevronIcon } from "@/components/ChevronIcon";
 import type { HeroSlideDTO } from "@/lib/hero";
 
+const HERO_FALLBACK_IMAGE = "/hero-suculentas.svg";
+
 export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
   const [index, setIndex] = useState(0);
   const items = slides.length ? slides : [];
+
+  useEffect(() => {
+    setIndex(0);
+  }, [items.length]);
 
   useEffect(() => {
     if (items.length <= 1) return;
@@ -29,11 +35,19 @@ export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
         {items.map((slide, i) => (
           <div
             key={`${slide.id}-${slide.title}`}
-            className={`hero-slide${i === index ? " is-active" : ""} is-photo`}
+            className={`hero-slide${i === index ? " is-active" : ""}${slide.photoBanner ? " is-photo" : ""}`}
             aria-hidden={i !== index}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="hero-plants" src={slide.image} alt={slide.alt} />
+            <img
+              className="hero-plants"
+              src={slide.image || HERO_FALLBACK_IMAGE}
+              alt={slide.photoBanner ? "" : slide.alt}
+              onError={(event) => {
+                if (event.currentTarget.src.includes(HERO_FALLBACK_IMAGE)) return;
+                event.currentTarget.src = HERO_FALLBACK_IMAGE;
+              }}
+            />
             {slide.photoBanner ? (
               <Link className="hero-photo-link" href={slide.cta.href}>
                 <span className="hero-photo-label">{slide.title}</span>
