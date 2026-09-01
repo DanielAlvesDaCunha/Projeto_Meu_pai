@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useAdminEdit } from "@/components/admin/AdminEditContext";
 import { HeroCarousel } from "@/components/HeroCarousel";
-import type { HeroSlideDTO } from "@/lib/hero";
+import type { HeroSlideDTO } from "@/lib/hero-slides";
 
 export function EditableHero({ slides }: { slides: HeroSlideDTO[] }) {
   const { editMode } = useAdminEdit();

@@ -21,8 +21,8 @@ export default async function AdminBannersPage() {
         </Link>
       </div>
       <p className="muted" style={{ marginBottom: "1rem" }}>
-        Estes banners são o carrossel grande da tela inicial. Clique em Editar, troque a foto e
-        salve — o site abre a home já com a imagem nova.
+        O carrossel da home sempre tem 3 fotos. Cadastre até 3 banners ativos, na ordem que
+        quiser. Clique em Editar, troque a foto e salve — o site abre a home já com a imagem nova.
       </p>
 
       <div className="admin-table-wrap">

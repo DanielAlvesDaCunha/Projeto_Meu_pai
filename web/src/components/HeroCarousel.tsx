@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ChevronIcon } from "@/components/ChevronIcon";
-import type { HeroSlideDTO } from "@/lib/hero";
-
-const HERO_FALLBACK_IMAGE = "/hero-suculentas.svg";
+import { HERO_FALLBACK_IMAGE, withThreeHeroSlides, type HeroSlideDTO } from "@/lib/hero-slides";
 
 export function HeroCarousel({ slides }: { slides: HeroSlideDTO[] }) {
   const [index, setIndex] = useState(0);
-  const items = slides.length ? slides : [];
+  const items = withThreeHeroSlides(slides);
 
   useEffect(() => {
     setIndex(0);
