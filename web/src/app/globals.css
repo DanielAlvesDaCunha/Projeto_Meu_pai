@@ -685,7 +685,21 @@ body.menu-open {
 
 .home-first-screen .services-row {
   flex: 0 0 auto;
-  padding: 0.7rem 0 0.85rem;
+  padding: 0.55rem 0 0.65rem;
+}
+
+.home-first-screen .service-badge {
+  width: 52px;
+  height: 52px;
+}
+
+.home-first-screen .service-card {
+  gap: 0.75rem;
+  padding: 0.25rem;
+}
+
+.home-first-screen .service-card p {
+  font-size: 0.88rem;
 }
 
 .hero-carousel {

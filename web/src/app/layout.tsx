@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var i=window.innerHeight,v=window.visualViewport&&window.visualViewport.height||i,c=Math.max(0,(window.outerHeight||i)-i),a=((screen&&screen.availHeight)||i)-c,h=Math.max(320,Math.min(i,v,document.documentElement.clientHeight||i,a||i));document.documentElement.style.setProperty("--app-h",Math.round(h)+"px");}catch(e){}})();`,
+            __html: `(function(){try{var i=window.innerHeight,v=window.visualViewport&&window.visualViewport.height||i,sh=screen&&screen.height||i,ah=screen&&screen.availHeight||i,r=Math.max(0,sh-ah),c=Math.max(0,(window.outerHeight||i)-i),h=Math.min(i,v,document.documentElement.clientHeight||i);if(r>=24){h=Math.min(h,Math.max(320,ah-c));}else if((window.outerHeight||0)>=sh-16&&window.innerWidth>=900){h=Math.min(h,i-48);}document.documentElement.style.setProperty("--app-h",Math.round(Math.max(320,h-8))+"px");}catch(e){}})();`,
           }}
         />
       </head>

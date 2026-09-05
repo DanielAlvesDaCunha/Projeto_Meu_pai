@@ -33,9 +33,20 @@ function visibleAppHeight() {
   const inner = window.innerHeight;
   const visual = window.visualViewport?.height ?? inner;
   const client = document.documentElement.clientHeight || inner;
-  const chrome = Math.max(0, window.outerHeight - inner);
-  const avail = (window.screen?.availHeight || inner) - chrome;
-  return Math.round(Math.max(320, Math.min(inner, visual, client, avail || inner)));
+  const screenH = window.screen?.height || inner;
+  const availH = window.screen?.availHeight || inner;
+  const reserved = Math.max(0, screenH - availH);
+  const chrome = Math.max(0, (window.outerHeight || inner) - inner);
+  let height = Math.min(inner, visual, client);
+  if (reserved >= 24) {
+    height = Math.min(height, Math.max(320, availH - chrome));
+  } else {
+    const maximized = (window.outerHeight || 0) >= screenH - 16;
+    if (maximized && window.innerWidth >= 900) {
+      height = Math.min(height, inner - 48);
+    }
+  }
+  return Math.round(Math.max(320, height - 8));
 }
 
 /** Ícones de utilitário (outline) */
