@@ -635,12 +635,9 @@ body.menu-open {
 .home-first-screen {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--header-h));
-  min-height: calc(100dvh - var(--header-h));
+  overflow: hidden;
   min-height: calc(100svh - var(--header-h));
   min-height: calc(var(--app-h) - var(--header-h));
-  max-height: calc(100vh - var(--header-h));
-  max-height: calc(100dvh - var(--header-h));
   max-height: calc(100svh - var(--header-h));
   max-height: calc(var(--app-h) - var(--header-h));
   height: calc(var(--app-h) - var(--header-h));
@@ -688,7 +685,7 @@ body.menu-open {
 
 .home-first-screen .services-row {
   flex: 0 0 auto;
-  padding: 1.15rem 0 1.3rem;
+  padding: 0.7rem 0 0.85rem;
 }
 
 .hero-carousel {
@@ -773,6 +770,13 @@ body.menu-open {
 .hero-slide.is-photo {
   padding: 0;
   min-height: min(68vh, 620px);
+}
+
+.home-first-screen .hero-track,
+.home-first-screen .hero-slide,
+.home-first-screen .hero-slide.is-photo {
+  min-height: 0;
+  height: 100%;
 }
 
 .hero-slide.is-photo .hero-plants {
@@ -3148,9 +3152,6 @@ body.filters-open {
     min-height: 0;
   }
   .home-first-screen {
-    min-height: calc(100vh - var(--header-h));
-    min-height: calc(100dvh - var(--header-h));
-    min-height: calc(100svh - var(--header-h));
     min-height: calc(var(--app-h) - var(--header-h));
     max-height: calc(var(--app-h) - var(--header-h));
     height: calc(var(--app-h) - var(--header-h));

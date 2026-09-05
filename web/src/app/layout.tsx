@@ -42,6 +42,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var i=window.innerHeight,v=window.visualViewport&&window.visualViewport.height||i,c=Math.max(0,(window.outerHeight||i)-i),a=((screen&&screen.availHeight)||i)-c,h=Math.max(320,Math.min(i,v,document.documentElement.clientHeight||i,a||i));document.documentElement.style.setProperty("--app-h",Math.round(h)+"px");}catch(e){}})();`,
+          }}
+        />
       </head>
       <body>
         <Providers storeName={store.storeName} whatsappNumber={store.whatsappNumber}>

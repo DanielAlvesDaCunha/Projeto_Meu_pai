@@ -28,6 +28,16 @@ type Props = {
 
 const NAV_AFTER = PRIMARY_NAV;
 
+/** Visible browser height, excluding the Windows taskbar when possible. */
+function visibleAppHeight() {
+  const inner = window.innerHeight;
+  const visual = window.visualViewport?.height ?? inner;
+  const client = document.documentElement.clientHeight || inner;
+  const chrome = Math.max(0, window.outerHeight - inner);
+  const avail = (window.screen?.availHeight || inner) - chrome;
+  return Math.round(Math.max(320, Math.min(inner, visual, client, avail || inner)));
+}
+
 /** Ícones de utilitário (outline) */
 function IconSupport() {
   return (
@@ -91,8 +101,7 @@ export function SiteHeaderClient({
         "--header-h",
         `${Math.round(header.getBoundingClientRect().height)}px`
       );
-      const viewportH = Math.round(window.visualViewport?.height ?? window.innerHeight);
-      document.documentElement.style.setProperty("--app-h", `${viewportH}px`);
+      document.documentElement.style.setProperty("--app-h", `${visibleAppHeight()}px`);
     };
 
     syncHeaderHeight();
