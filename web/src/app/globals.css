@@ -11,6 +11,7 @@
   --header-fg: #fff;
   --header-line: rgba(255, 255, 255, 0.14);
   --header-h: 10.75rem;
+  --app-h: 100svh;
   --wa: #25d366;
   --adbar: #6b7f5a;
   --font: "Montserrat", "Segoe UI", sans-serif;
@@ -636,33 +637,41 @@ body.menu-open {
   flex-direction: column;
   min-height: calc(100vh - var(--header-h));
   min-height: calc(100dvh - var(--header-h));
+  min-height: calc(100svh - var(--header-h));
+  min-height: calc(var(--app-h) - var(--header-h));
+  max-height: calc(100vh - var(--header-h));
+  max-height: calc(100dvh - var(--header-h));
+  max-height: calc(100svh - var(--header-h));
+  max-height: calc(var(--app-h) - var(--header-h));
+  height: calc(var(--app-h) - var(--header-h));
 }
 
 .home-first-screen .editable-hero {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: min(72vh, 680px);
+  min-height: 0;
 }
 
 .home-first-screen .editable-hero .hero-est {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: min(72vh, 680px);
+  min-height: 0;
   border-bottom: 0;
 }
 
 .home-first-screen .hero-carousel {
   flex: 1 1 auto;
   position: relative;
-  min-height: min(72vh, 680px);
+  min-height: 0;
 }
 
 .home-first-screen .hero-track,
 .home-first-screen .hero-slide,
 .home-first-screen .hero-slide.is-photo {
-  min-height: min(72vh, 680px);
+  min-height: 0;
+  height: 100%;
 }
 
 .home-first-screen .hero-slide {
@@ -3136,11 +3145,15 @@ body.filters-open {
   .home-first-screen .hero-est,
   .home-first-screen .hero-carousel,
   .home-first-screen .editable-hero {
-    min-height: min(62vh, 560px);
+    min-height: 0;
   }
   .home-first-screen {
     min-height: calc(100vh - var(--header-h));
     min-height: calc(100dvh - var(--header-h));
+    min-height: calc(100svh - var(--header-h));
+    min-height: calc(var(--app-h) - var(--header-h));
+    max-height: calc(var(--app-h) - var(--header-h));
+    height: calc(var(--app-h) - var(--header-h));
   }
   .services-grid,
   .category-grid,
