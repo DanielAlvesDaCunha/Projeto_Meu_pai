@@ -641,6 +641,7 @@ body.menu-open {
   max-height: calc(100svh - var(--header-h));
   max-height: calc(var(--app-h) - var(--header-h));
   height: calc(var(--app-h) - var(--header-h));
+  padding-bottom: 0.4rem;
 }
 
 .home-first-screen .editable-hero {
