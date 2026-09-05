@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { getAdminEmails } from "../src/lib/admin-emails";
+import { ensureAdmins } from "./ensure-admins";
 
 const prisma = new PrismaClient();
 
@@ -289,35 +290,8 @@ function guessCategorySlug(name: string, sku: string) {
 }
 
 async function main() {
-  const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-  const adminPassword = process.env.ADMIN_PASSWORD || "Admin123!";
-  const passwordHash = await bcrypt.hash(adminPassword, 10);
-
-  for (const email of adminEmails) {
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      await prisma.user.update({
-        where: { email },
-        data: { role: "ADMIN" },
-      });
-      continue;
-    }
-
-    await prisma.user.create({
-      data: {
-        name: "Administrador",
-        email,
-        passwordHash,
-        role: "ADMIN",
-        phone: process.env.WHATSAPP_LABEL || "",
-      },
-    });
-  }
-
-  const adminEmail = adminEmails[0] || "admin@paulosuculentas.com";
+  await ensureAdmins(prisma);
+  const adminEmail = getAdminEmails()[0] || "admin@paulosuculentas.com";
   const cats: Record<string, number> = {};
 
   for (const cat of CATEGORIES) {

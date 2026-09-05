@@ -3,6 +3,7 @@
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
+import { getAdminEmails } from "@/lib/admin-emails";
 import { prisma, describeDatabaseUrlIssue, hasUsableDatabaseUrl } from "@/lib/prisma";
 import { resolveLoginRedirect } from "@/lib/session";
 
@@ -141,10 +142,7 @@ export async function loginAdmin(
     return { error: "E-mail ou senha inválidos." };
   }
 
-  const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
+  const adminEmails = getAdminEmails();
 
   const willBeAdmin = user.role === "ADMIN" || adminEmails.includes(email);
   if (!willBeAdmin) {

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { getAdminEmails } from "@/lib/admin-emails";
 import { prisma } from "@/lib/prisma";
 import { authConfig } from "@/lib/auth.config";
 import type { Role } from "@prisma/client";
@@ -54,11 +55,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const ok = await bcrypt.compare(password, user.passwordHash);
         if (!ok) return null;
 
-        // Promove automaticamente e-mails listados em ADMIN_EMAIL
-        const adminEmails = (process.env.ADMIN_EMAIL || "admin@paulosuculentas.com")
-          .split(",")
-          .map((e) => e.trim().toLowerCase())
-          .filter(Boolean);
+        const adminEmails = getAdminEmails();
         let role = user.role;
         if (adminEmails.includes(user.email) && role !== "ADMIN") {
           await prisma.user.update({
